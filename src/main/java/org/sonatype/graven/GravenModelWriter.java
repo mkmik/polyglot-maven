@@ -7,9 +7,11 @@ import org.codehaus.groovy.tools.xml.DomToGroovy;
 import org.codehaus.plexus.util.IOUtil;
 import org.w3c.dom.Document;
 import org.xml.sax.InputSource;
+import org.xml.sax.SAXException;
 
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
+import javax.xml.parsers.ParserConfigurationException;
 import java.io.BufferedOutputStream;
 import java.io.File;
 import java.io.FileOutputStream;
@@ -67,7 +69,10 @@ public class GravenModelWriter
             converter.print(doc);
             output.flush();
         }
-        catch (Exception e) {
+        catch (ParserConfigurationException e) {
+            throw new IOException(e);
+        }
+        catch (SAXException e) {
             throw new IOException(e);
         }
     }
