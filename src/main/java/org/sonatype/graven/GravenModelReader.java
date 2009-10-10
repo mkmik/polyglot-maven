@@ -10,16 +10,15 @@ import org.apache.maven.model.io.ModelParseException;
 import org.apache.maven.model.io.ModelReader;
 import org.codehaus.plexus.util.IOUtil;
 
+import java.io.BufferedInputStream;
 import java.io.ByteArrayInputStream;
 import java.io.File;
-import java.io.FileReader;
+import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.Reader;
 import java.io.StringReader;
 import java.io.StringWriter;
-import java.io.FileInputStream;
-import java.io.BufferedInputStream;
 import java.util.Map;
 
 /**
@@ -34,9 +33,16 @@ import java.util.Map;
 public class GravenModelReader
     implements ModelReader
 {
-    public Model read(final File input, final Map<String,?> options) throws IOException, ModelParseException {
-        assert input != null;
-        return read(new BufferedInputStream(new FileInputStream(input)), options);
+    public Model read(final File file, final Map<String,?> options) throws IOException, ModelParseException {
+        assert file != null;
+
+        InputStream in = new BufferedInputStream(new FileInputStream(file));
+        try {
+            return read(in, options);
+        }
+        finally {
+            in.close();
+        }
     }
 
     public Model read(final Reader input, final Map<String,?> options) throws IOException, ModelParseException {

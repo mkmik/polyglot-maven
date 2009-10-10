@@ -2,6 +2,7 @@ package org.sonatype.graven;
 
 import junit.framework.TestCase;
 import org.apache.maven.model.Model;
+import org.apache.maven.model.Parent;
 import org.apache.maven.model.io.DefaultModelWriter;
 import org.codehaus.plexus.util.IOUtil;
 
@@ -10,18 +11,18 @@ import java.io.StringWriter;
 import java.net.URL;
 
 /**
- * Tests for {@link GravenModelReader}.
+ * Tests for {@link org.sonatype.graven.GravenModelWriter}.
  *
  * @author <a href="mailto:jason@planet57.com">Jason Dillon</a>
  */
-public class GravenModelReaderTest
+public class GravenModelWriterTest
     extends TestCase
 {
-    private GravenModelReader reader;
+    private GravenModelWriter writer;
 
     @Override
     public void setUp() throws Exception {
-        reader = new GravenModelReader();
+        writer = new GravenModelWriter();
     }
 
     private String load(final String name) throws IOException {
@@ -40,16 +41,19 @@ public class GravenModelReaderTest
     }
 
     public void test1() throws Exception {
-        URL input = getClass().getResource("test1.groovy");
-        assertNotNull(input);
+        Model model = new Model();
+        Parent parent = new Parent();
+        parent.setGroupId("a");
+        parent.setArtifactId("c");
+        parent.setVersion("c");
+        model.setParent(parent);
 
-        Model model = reader.read(input.openStream(), null);
+        StringWriter buff = new StringWriter();
+        writer.write(buff, null, model);
 
-        String xml = chew(model);
+        System.out.println(buff);
 
-        System.out.println(xml);
-
-        String expected = load("test1.xml");
-        assertEquals(expected, xml);
+        String expected = load("test2.groovy");
+        assertEquals(expected, buff.toString());
     }
 }
