@@ -3,9 +3,9 @@ package org.sonatype.graven;
 import org.apache.maven.model.Model;
 import org.apache.maven.model.io.DefaultModelWriter;
 import org.codehaus.plexus.util.IOUtil;
-import org.junit.Test;
-import org.junit.Before;
 import static org.junit.Assert.*;
+import org.junit.Before;
+import org.junit.Test;
 
 import java.io.IOException;
 import java.io.StringWriter;
@@ -45,6 +45,8 @@ public class GravenModelReaderTest
         URL input = getClass().getResource("test1.groovy");
         assertNotNull(input);
 
+        System.err.println(input.openStream());
+        
         Model model = reader.read(input.openStream(), null);
 
         String xml = chew(model);

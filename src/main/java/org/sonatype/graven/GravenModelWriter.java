@@ -4,6 +4,7 @@ import org.apache.maven.model.Model;
 import org.apache.maven.model.io.DefaultModelWriter;
 import org.apache.maven.model.io.ModelWriter;
 import org.codehaus.groovy.tools.xml.DomToGroovy;
+import org.codehaus.plexus.util.IOUtil;
 import org.w3c.dom.Document;
 import org.xml.sax.InputSource;
 
@@ -39,7 +40,7 @@ public class GravenModelWriter
             out.flush();
         }
         finally {
-            out.close();
+            IOUtil.close(out);
         }
     }
 

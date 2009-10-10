@@ -41,7 +41,7 @@ public class GravenModelReader
             return read(in, options);
         }
         finally {
-            in.close();
+            IOUtil.close(in);
         }
     }
 
@@ -61,12 +61,10 @@ public class GravenModelReader
         MarkupBuilder builder = new MarkupBuilder(buff);
 
         Binding binding = new Binding();
-        binding.setProperty("project", ProjectRootFactory.create(script, builder));
-        
+        binding.setProperty("project", ProjectRoot.create(script, builder));
         script.setBinding(binding);
-        script.run();
 
-        buff.flush();
+        script.run(); // we ignore the result
 
         return transform(buff, options);
     }

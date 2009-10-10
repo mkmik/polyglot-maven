@@ -5,7 +5,7 @@ package org.sonatype.graven
  *
  * @author <a href="mailto:jason@planet57.com">Jason Dillon</a>
  */
-public class ProjectRootFactory
+public class ProjectRoot
 {
     // NOTE: I have no clue ATM how to implement this in Java, so we use some Groovy glue here to create the proper closure
     

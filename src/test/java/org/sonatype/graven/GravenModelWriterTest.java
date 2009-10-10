@@ -4,9 +4,9 @@ import org.apache.maven.model.Model;
 import org.apache.maven.model.Parent;
 import org.apache.maven.model.io.DefaultModelWriter;
 import org.codehaus.plexus.util.IOUtil;
+import static org.junit.Assert.*;
 import org.junit.Before;
 import org.junit.Test;
-import static org.junit.Assert.*;
 
 import java.io.IOException;
 import java.io.StringWriter;
