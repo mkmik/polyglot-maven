@@ -1,10 +1,12 @@
 package org.sonatype.graven;
 
-import junit.framework.TestCase;
 import org.apache.maven.model.Model;
 import org.apache.maven.model.Parent;
 import org.apache.maven.model.io.DefaultModelWriter;
 import org.codehaus.plexus.util.IOUtil;
+import org.junit.Before;
+import org.junit.Test;
+import static org.junit.Assert.*;
 
 import java.io.IOException;
 import java.io.StringWriter;
@@ -16,11 +18,10 @@ import java.net.URL;
  * @author <a href="mailto:jason@planet57.com">Jason Dillon</a>
  */
 public class GravenModelWriterTest
-    extends TestCase
 {
     private GravenModelWriter writer;
 
-    @Override
+    @Before
     public void setUp() throws Exception {
         writer = new GravenModelWriter();
     }
@@ -40,6 +41,7 @@ public class GravenModelWriterTest
         return buff.toString();
     }
 
+    @Test
     public void test1() throws Exception {
         Model model = new Model();
         Parent parent = new Parent();

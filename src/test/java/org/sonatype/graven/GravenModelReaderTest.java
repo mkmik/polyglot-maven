@@ -1,9 +1,11 @@
 package org.sonatype.graven;
 
-import junit.framework.TestCase;
 import org.apache.maven.model.Model;
 import org.apache.maven.model.io.DefaultModelWriter;
 import org.codehaus.plexus.util.IOUtil;
+import org.junit.Test;
+import org.junit.Before;
+import static org.junit.Assert.*;
 
 import java.io.IOException;
 import java.io.StringWriter;
@@ -15,11 +17,10 @@ import java.net.URL;
  * @author <a href="mailto:jason@planet57.com">Jason Dillon</a>
  */
 public class GravenModelReaderTest
-    extends TestCase
 {
     private GravenModelReader reader;
 
-    @Override
+    @Before
     public void setUp() throws Exception {
         reader = new GravenModelReader();
     }
@@ -39,6 +40,7 @@ public class GravenModelReaderTest
         return buff.toString();
     }
 
+    @Test
     public void test1() throws Exception {
         URL input = getClass().getResource("test1.groovy");
         assertNotNull(input);
