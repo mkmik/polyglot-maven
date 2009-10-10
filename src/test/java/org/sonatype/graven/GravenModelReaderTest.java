@@ -25,6 +25,7 @@ public class GravenModelReaderTest
     }
 
     private String load(final String name) throws IOException {
+        assertNotNull(name);
         URL url = getClass().getResource(name);
         assertNotNull(url);
         return IOUtil.toString(url.openStream());
