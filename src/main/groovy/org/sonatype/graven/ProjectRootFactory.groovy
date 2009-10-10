@@ -9,15 +9,15 @@ public class ProjectRootFactory
 {
     // NOTE: I have no clue ATM how to implement this in Java, so we use some Groovy glue here to create the proper closure
     
-    static def create(def script, def builder) {
+    static Closure create(final Script script, final BuilderSupport builder) {
         assert script != null
         assert builder != null
 
-        return {pom ->
+        return {Closure c ->
             builder.project {
-                pom.owner = script
-                pom.delegate = builder
-                pom()
+                c.owner = script
+                c.delegate = builder
+                c()
             }
         }
     }
