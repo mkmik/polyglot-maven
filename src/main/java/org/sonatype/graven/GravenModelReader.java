@@ -18,6 +18,8 @@ import java.io.InputStream;
 import java.io.Reader;
 import java.io.StringReader;
 import java.io.StringWriter;
+import java.io.FileInputStream;
+import java.io.BufferedInputStream;
 import java.util.Map;
 
 /**
@@ -34,7 +36,7 @@ public class GravenModelReader
 {
     public Model read(final File input, final Map<String,?> options) throws IOException, ModelParseException {
         assert input != null;
-        return read(new FileReader(input), options);
+        return read(new BufferedInputStream(new FileInputStream(input)), options);
     }
 
     public Model read(final Reader input, final Map<String,?> options) throws IOException, ModelParseException {
