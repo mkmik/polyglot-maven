@@ -29,22 +29,21 @@ class ScriptFactory
         def include = {source ->
             assert source != null
 
+            def include
+            
             if (source instanceof Class) {
-                def include = source.newInstance()
-                include.run()
-                include.binding.properties.variables.each {
-                    binding.setVariable(it.key, it.value.curry(builder))
-                }
+                include = source.newInstance()
             }
             else if (source instanceof File) {
-                def include = shell.parse(source)
-                include.run()
-                include.binding.properties.variables.each {
-                    binding.setVariable(it.key, it.value.curry(builder))
-                }
+                include = shell.parse(source)
             }
             else {
                 throw new IllegalArgumentException("Invalid include source: $source")
+            }
+
+            include.run()
+            include.binding.properties.variables.each {
+                binding.setVariable(it.key, it.value.curry(builder))
             }
         }
 
