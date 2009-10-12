@@ -15,18 +15,17 @@ class ScriptFactory
 
         def shell = new GroovyShell()
         def script = shell.parse(input)
-
         def builder = new MarkupBuilder(output)
-        def binding = script.binding = new Binding()
-
-        binding.setProperty("project", {Closure c ->
+        def binding = shell.context
+        
+        def root = {Closure c ->
             builder.project {
                 c.owner = script
                 c.delegate = builder
                 c()
             }
-        })
-        
+        }
+
         def include = {source ->
             assert source != null
 
@@ -48,10 +47,12 @@ class ScriptFactory
                 throw new IllegalArgumentException("Invalid include source: $source")
             }
         }
-        
-        binding.setProperty("include", include)
-    
+
         include(Defaults)
+
+        // Bind these last so they don't get clobbered
+        binding.setProperty("project", root)
+        binding.setProperty("include", include)
 
         return script
     }
