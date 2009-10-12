@@ -1,5 +1,6 @@
 package org.sonatype.graven;
 
+import groovy.util.IndentPrinter;
 import org.apache.maven.model.Model;
 import org.apache.maven.model.io.DefaultModelWriter;
 import org.apache.maven.model.io.ModelWriter;
@@ -23,8 +24,6 @@ import java.io.StringReader;
 import java.io.StringWriter;
 import java.io.Writer;
 import java.util.Map;
-
-import groovy.util.IndentPrinter;
 
 /**
  * Writes a Maven {@link org.apache.maven.model.Model} to a <tt>pom.groovy</tt>.

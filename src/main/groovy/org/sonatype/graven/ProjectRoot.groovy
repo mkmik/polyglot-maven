@@ -1,7 +1,5 @@
 package org.sonatype.graven
 
-import org.apache.maven.model.Model
-
 /**
  * Builds the <tt>project</tt> root element.
  *

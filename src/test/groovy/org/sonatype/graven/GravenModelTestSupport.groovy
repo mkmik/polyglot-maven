@@ -1,13 +1,13 @@
 package org.sonatype.graven
 
-import org.apache.maven.model.Model
-import org.apache.maven.model.io.DefaultModelWriter
-import static org.junit.Assert.*
-import org.codehaus.groovy.tools.xml.DomToGroovy
 import javax.xml.parsers.DocumentBuilder
 import javax.xml.parsers.DocumentBuilderFactory
+import org.apache.maven.model.Model
+import org.apache.maven.model.io.DefaultModelWriter
+import org.codehaus.groovy.tools.xml.DomToGroovy
 import org.w3c.dom.Document
 import org.xml.sax.InputSource
+import static org.junit.Assert.*
 
 /**
  * Support for model tests.
