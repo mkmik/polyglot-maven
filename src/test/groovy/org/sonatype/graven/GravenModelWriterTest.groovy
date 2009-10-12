@@ -2,9 +2,9 @@ package org.sonatype.graven
 
 import org.apache.maven.model.Model
 import org.apache.maven.model.Parent
-import org.apache.maven.model.io.DefaultModelWriter
 import org.junit.Before
 import org.junit.Test
+import org.sonatype.graven.GravenModelTestSupport
 import org.sonatype.graven.GravenModelWriter
 import static org.junit.Assert.*
 

@@ -3,6 +3,7 @@ package org.sonatype.graven
 import org.junit.Before
 import org.junit.Test
 import org.sonatype.graven.GravenModelReader
+import org.sonatype.graven.GravenModelTestSupport
 import static org.junit.Assert.*
 
 /**
