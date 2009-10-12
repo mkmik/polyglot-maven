@@ -1,5 +1,13 @@
 package org.sonatype.graven
 
+parent = {parent, gid, aid, v ->
+    parent.parent {
+        groupId gid
+        artifactId aid
+        version v
+    }
+}
+
 dependency = {parent, gid, aid, v, s=null ->
     parent.dependency {
         groupId gid
