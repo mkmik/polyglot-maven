@@ -39,4 +39,23 @@ public class GravenModelReaderTest
         assertEquals("c", parent.version)
         assertEquals("../pom.xml", parent.relativePath)
     }
+
+    @Test
+    public void test2() throws Exception {
+        def input = getClass().getResource("test3.groovy")
+        assertNotNull(input)
+
+        def model = reader.read(input.openStream(), null)
+        assertNotNull(model)
+
+        dump(model)
+
+        def parent = model.parent
+        assertNotNull(parent)
+
+        assertEquals("a", parent.groupId)
+        assertEquals("b", parent.artifactId)
+        assertEquals("c", parent.version)
+        assertEquals("../pom.xml", parent.relativePath)
+    }
 }
