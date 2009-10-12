@@ -25,12 +25,7 @@ public class GravenModelWriterTest
 
     @Test
     public void test1() throws Exception {
-        def model = new Model()
-        def parent = new Parent()
-        parent.groupId = "a"
-        parent.artifactId = "b"
-        parent.version = "c"
-        model.parent = parent
+        def model = new Model(parent: new Parent(groupId: "a", artifactId: "b", version: "c"))
 
         def buff = new StringWriter()
         writer.write(buff, null, model)

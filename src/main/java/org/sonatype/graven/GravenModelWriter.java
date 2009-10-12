@@ -24,6 +24,8 @@ import java.io.StringWriter;
 import java.io.Writer;
 import java.util.Map;
 
+import groovy.util.IndentPrinter;
+
 /**
  * Writes a Maven {@link org.apache.maven.model.Model} to a <tt>pom.groovy</tt>.
  *
@@ -61,7 +63,7 @@ public class GravenModelWriter
         DefaultModelWriter writer = new DefaultModelWriter();
         writer.write(buff, options, model);
 
-        DomToGroovy converter = new DomToGroovy(new PrintWriter(output));
+        DomToGroovy converter = new DomToGroovy(new IndentPrinter(new PrintWriter(output), "    "));
 
         try {
             DocumentBuilder builder = DocumentBuilderFactory.newInstance().newDocumentBuilder();

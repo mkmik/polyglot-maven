@@ -29,8 +29,11 @@ public class GravenModelReaderTest
         def model = reader.read(input.openStream(), null)
         assertNotNull(model)
 
+        dump(model)
+
         def parent = model.parent
         assertNotNull(parent)
+        
         assertEquals("a", parent.groupId)
         assertEquals("b", parent.artifactId)
         assertEquals("c", parent.version)
