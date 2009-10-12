@@ -54,17 +54,9 @@ public class GravenModelReader
     public Model read(final InputStream input, final Map<String,?> options) throws IOException, ModelParseException {
         assert input != null;
 
-        GroovyShell shell = new GroovyShell();
-        Script script = shell.parse(input);
-
         StringWriter buff = new StringWriter();
-        MarkupBuilder builder = new MarkupBuilder(buff);
-
-        Binding binding = new Binding();
-        binding.setProperty("project", ProjectRoot.create(script, builder));
-        script.setBinding(binding);
-
-        script.run(); // we ignore the result
+        Script script = ScriptFactory.create(input, buff);
+        script.run();
 
         return transform(buff, options);
     }
