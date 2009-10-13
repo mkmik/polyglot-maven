@@ -4,7 +4,7 @@ import javax.xml.parsers.DocumentBuilder
 import javax.xml.parsers.DocumentBuilderFactory
 import org.apache.maven.model.Model
 import org.apache.maven.model.io.DefaultModelWriter
-import org.codehaus.groovy.tools.xml.DomToGroovy
+import org.sonatype.graven.Dom2Groovy
 import org.w3c.dom.Document
 import org.xml.sax.InputSource
 import static org.junit.Assert.*
@@ -33,7 +33,7 @@ public class GravenModelTestSupport
 
     protected void dump(final Model model) {
         def buff = new StringWriter()
-        DomToGroovy converter = new DomToGroovy(new IndentPrinter(new PrintWriter(buff), "    "))
+        Dom2Groovy converter = new Dom2Groovy(new IndentPrinter(new PrintWriter(buff), "    "))
         DocumentBuilder builder = DocumentBuilderFactory.newInstance().newDocumentBuilder()
         Document doc = builder.parse(new InputSource(new StringReader(chew(model))))
         

@@ -4,7 +4,6 @@ import groovy.util.IndentPrinter;
 import org.apache.maven.model.Model;
 import org.apache.maven.model.io.DefaultModelWriter;
 import org.apache.maven.model.io.ModelWriter;
-import org.codehaus.groovy.tools.xml.DomToGroovy;
 import org.codehaus.plexus.component.annotations.Component;
 import org.codehaus.plexus.util.IOUtil;
 import org.w3c.dom.Attr;
@@ -67,7 +66,7 @@ public class GravenModelWriter
         DefaultModelWriter writer = new DefaultModelWriter();
         writer.write(buff, options, model);
 
-        DomToGroovy converter = new DomToGroovy(new IndentPrinter(new PrintWriter(output), "    "));
+        Dom2Groovy converter = new Dom2Groovy(new IndentPrinter(new PrintWriter(output), "    "));
 
         try {
             DocumentBuilder builder = DocumentBuilderFactory.newInstance().newDocumentBuilder();

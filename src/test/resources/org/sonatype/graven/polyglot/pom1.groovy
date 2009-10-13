@@ -1,7 +1,7 @@
-project() {
-    parent() {
-        artifactId('b')
-        groupId('a')
-        version('c')
+project {
+    parent {
+        artifactId 'b'
+        groupId 'a'
+        version 'c'
     }
 }
