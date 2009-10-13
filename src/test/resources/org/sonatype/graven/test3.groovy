@@ -3,6 +3,7 @@ project {
     $parent('a', 'b', 'c')
     
     dependencies {
-        $dependency("a", "b", "c")
+        // dependency { groupId 'a'; artifactId 'b'; version 'c' }
+        $dependency('a', 'b', 'c')
     }
 }
