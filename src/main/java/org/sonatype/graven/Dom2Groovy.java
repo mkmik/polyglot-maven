@@ -31,7 +31,8 @@ import java.util.List;
 import java.util.Map;
 
 //
-// NOTE: Augmented from Groovy's DomToGroovy, we strip out the () muck
+// NOTE: Augmented from Groovy's DomToGroovy, we strip out the () muck.  Can not extend really due to the evil private fields
+//       used directly by the protected methods.
 //
 
 /**
@@ -43,13 +44,13 @@ import java.util.Map;
  */
 public class Dom2Groovy
 {
-    private final List<String> keywords = Arrays.asList("import", "private", "public", "protected");
+    protected final List<String> keywords = Arrays.asList("import", "protected", "public", "protected");
 
-    private final IndentPrinter out;
+    protected final IndentPrinter out;
 
-    private boolean inMixed = false;
+    protected boolean inMixed = false;
 
-    private String qt = "'";
+    protected String qt = "'";
 
     public Dom2Groovy(final PrintWriter out) {
         this(new IndentPrinter(out));
@@ -140,7 +141,7 @@ public class Dom2Groovy
         }
     }
 
-    private void printQuoted(final String text) {
+    protected void printQuoted(final String text) {
         if (text.indexOf("\n") != -1) {
             print("'''");
             print(text);
@@ -182,7 +183,7 @@ public class Dom2Groovy
         }
     }
 
-    private String escapeQuote(final String text) {
+    protected String escapeQuote(final String text) {
         return text.replaceAll("\\\\", "\\\\\\\\").replaceAll(qt, "\\\\" + qt);
     }
 
@@ -245,7 +246,7 @@ public class Dom2Groovy
         return hasAttribute;
     }
 
-    private void printAttributeWithPrefix(final Attr attribute, final StringBuffer buffer) {
+    protected void printAttributeWithPrefix(final Attr attribute, final StringBuffer buffer) {
         String prefix = attribute.getPrefix();
         if (prefix != null && prefix.length() > 0 && !prefix.equals("xmlns")) {
             if (buffer.length() > 0) {
@@ -261,11 +262,11 @@ public class Dom2Groovy
         }
     }
 
-    private String getAttributeValue(final Attr attribute) {
+    protected String getAttributeValue(final Attr attribute) {
         return attribute.getValue();
     }
 
-    private boolean printAttributeWithoutPrefix(final Attr attribute, boolean hasAttribute) {
+    protected boolean printAttributeWithoutPrefix(final Attr attribute, boolean hasAttribute) {
         String prefix = attribute.getPrefix();
         if (prefix == null || prefix.length() == 0) {
             if (!hasAttribute) {
@@ -284,7 +285,7 @@ public class Dom2Groovy
         return hasAttribute;
     }
 
-    private boolean checkEscaping(final String localName) {
+    protected boolean checkEscaping(final String localName) {
         return keywords.contains(localName) || localName.indexOf("-") != -1 || localName.indexOf(":") != -1;
     }
 
