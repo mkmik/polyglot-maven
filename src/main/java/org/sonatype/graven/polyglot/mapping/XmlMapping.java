@@ -3,6 +3,7 @@ package org.sonatype.graven.polyglot.mapping;
 import org.apache.maven.model.io.ModelReader;
 import org.apache.maven.model.io.DefaultModelReader;
 import org.codehaus.plexus.component.annotations.Component;
+import org.codehaus.plexus.component.annotations.Requirement;
 
 /**
  * Xml model mapping.
@@ -19,22 +20,26 @@ public class XmlMapping
 
     private final String[] EXTS = { ".xml", ".pom" };
 
+    @Requirement
+    private ModelReader reader;
+
     @Override
-        protected String[] getAcceptOptionKeys() {
+    protected String[] getAcceptOptionKeys() {
         return KEYS;
     }
 
     @Override
-        protected String[] getPomNames() {
+    protected String[] getPomNames() {
         return NAMES;
     }
 
     @Override
-        protected String[] getAcceptFileExtentions() {
+    protected String[] getAcceptFileExtentions() {
         return EXTS;
     }
 
     public ModelReader getReader() {
-        return new DefaultModelReader();
+        assert reader != null;
+        return reader;
     }
 }
