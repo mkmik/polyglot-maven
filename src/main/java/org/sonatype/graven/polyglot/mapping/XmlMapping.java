@@ -14,31 +14,16 @@ import org.codehaus.plexus.component.annotations.Requirement;
 public class XmlMapping
     extends MappingSupport
 {
-    private final String[] KEYS = { "xml:4.0.0" };
-
-    private final String[] NAMES = { "pom.xml" };
-
-    private final String[] EXTS = { ".xml", ".pom" };
-
     @Requirement
     private ModelReader reader;
 
     @Requirement
     private ModelWriter writer;
 
-    @Override
-    protected String[] getAcceptOptionKeys() {
-        return KEYS;
-    }
-
-    @Override
-    protected String[] getPomNames() {
-        return NAMES;
-    }
-
-    @Override
-    protected String[] getAcceptLocationExtentions() {
-        return EXTS;
+    public XmlMapping() {
+        setPomNames("pom.xml");
+        setAcceptLocationExtentions(".xml", ".pom");
+        setAcceptOptionKeys("xml:4.0.0");
     }
 
     public ModelReader getReader() {

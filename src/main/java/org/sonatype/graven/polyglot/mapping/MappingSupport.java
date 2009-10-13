@@ -13,15 +13,41 @@ import java.util.Map;
 public abstract class MappingSupport
     implements Mapping
 {
-    protected abstract String[] getPomNames();
+    private static final String[] EMPTY = {};
 
-    protected abstract String[] getAcceptOptionKeys();
+    private String[] pomNames = EMPTY;
 
-    protected abstract String[] getAcceptLocationExtentions();
+    private String[] acceptOptionKeys = EMPTY;
+
+    private String[] acceptLocationExtentions = EMPTY;
+
+    public String[] getAcceptLocationExtentions() {
+        return acceptLocationExtentions;
+    }
+
+    public void setAcceptLocationExtentions(final String... acceptLocationExtentions) {
+        this.acceptLocationExtentions = acceptLocationExtentions;
+    }
+
+    public String[] getAcceptOptionKeys() {
+        return acceptOptionKeys;
+    }
+
+    public void setAcceptOptionKeys(final String... acceptOptionKeys) {
+        this.acceptOptionKeys = acceptOptionKeys;
+    }
+
+    public String[] getPomNames() {
+        return pomNames;
+    }
+
+    public void setPomNames(final String... pomNames) {
+        this.pomNames = pomNames;
+    }
 
     public File locatePom(final File dir) {
         assert dir != null;
-        
+
         for (String name : getPomNames()) {
             File file = new File(dir, name);
             if (file.exists()) {

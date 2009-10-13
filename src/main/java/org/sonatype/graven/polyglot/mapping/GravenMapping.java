@@ -14,31 +14,16 @@ import org.codehaus.plexus.component.annotations.Requirement;
 public class GravenMapping
     extends MappingSupport
 {
-    private final String[] KEYS = { "graven:4.0.0" };
-
-    private final String[] NAMES = { "pom.groovy", "pom.gy" };
-
-    private final String[] EXTS = { ".groovy", ".gy" };
-
     @Requirement(hint="graven")
     private ModelReader reader;
 
     @Requirement(hint="graven")
     private ModelWriter writer;
 
-    @Override
-    protected String[] getAcceptOptionKeys() {
-        return KEYS;
-    }
-
-    @Override
-    protected String[] getPomNames() {
-        return NAMES;
-    }
-
-    @Override
-    protected String[] getAcceptLocationExtentions() {
-        return EXTS;
+    public GravenMapping() {
+        setPomNames("pom.groovy", "pom.gy");
+        setAcceptLocationExtentions(".groovy", ".gy");
+        setAcceptOptionKeys("graven:4.0.0");
     }
 
     public ModelReader getReader() {
