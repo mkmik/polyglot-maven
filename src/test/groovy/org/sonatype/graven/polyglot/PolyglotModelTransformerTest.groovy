@@ -17,7 +17,7 @@ public class PolyglotModelTranslatorTest
     private PolyglotModelTranslator translator
 
     @Before
-    void setUp() throws Exception {
+    void setUp() {
         translator = lookup(PolyglotModelTranslator.class)
     }
 
@@ -42,7 +42,6 @@ public class PolyglotModelTranslatorTest
     @Test
     void testXml2Graven() {
         def text = translate("pom1.xml", "pom.groovy")
-        println text
         def expect = getClass().getResource("pom1.groovy").text
         assertEquals(expect, text)
     }
@@ -50,7 +49,6 @@ public class PolyglotModelTranslatorTest
     @Test
     void testGraven2Xml() {
         def text = translate("pom1.groovy", "pom.xml")
-        println text
         def expect = getClass().getResource("pom1.xml").text
         assertEquals(expect, text)
     }

@@ -19,67 +19,46 @@ public class PolyglotModelManagerTest
     private PolyglotModelManager manager
 
     @Before
-    void setUp() throws Exception {
+    void setUp() {
         manager = lookup(PolyglotModelManager.class)
+    }
+
+    private void expectReader(def key, def value, def type) {
+        def options = [:]
+        options.put(key, value)
+
+        def reader = manager.getReaderFor(options)
+        assertNotNull(reader)
+        assertEquals(type, reader.getClass())
     }
 
     @Test
     void testAcceptLocationXml() {
-        def options = [:]
-        options.put(LOCATION, "foo.xml")
-
-        def reader = manager.getReaderFor(options)
-        assertNotNull(reader)
-        assertEquals(DefaultModelReader.class, reader.getClass())
+        expectReader(LOCATION, "foo.xml", DefaultModelReader)
     }
 
     @Test
     void testAcceptLocationPom() {
-        def options = [:]
-        options.put(LOCATION, "foo.pom")
-
-        def reader = manager.getReaderFor(options)
-        assertNotNull(reader)
-        assertEquals(DefaultModelReader.class, reader.getClass())
+        expectReader(LOCATION, "foo.pom", DefaultModelReader)
     }
 
     @Test
     void testAcceptKeyXml() {
-        def options = [:]
-        options.put("xml:4.0.0", "xml:4.0.0")
-
-        def reader = manager.getReaderFor(options)
-        assertNotNull(reader)
-        assertEquals(DefaultModelReader.class, reader.getClass())
+        expectReader("xml:4.0.0", "xml:4.0.0", DefaultModelReader)
     }
 
     @Test
     void testAcceptLocationGroovy() {
-        def options = [:]
-        options.put(LOCATION, "foo.groovy")
-
-        def reader = manager.getReaderFor(options)
-        assertNotNull(reader)
-        assertEquals(GravenModelReader.class, reader.getClass())
+        expectReader(LOCATION, "foo.groovy", GravenModelReader)
     }
 
     @Test
     void testAcceptLocationGy() {
-        def options = [:]
-        options.put(LOCATION, "foo.gy")
-
-        def reader = manager.getReaderFor(options)
-        assertNotNull(reader)
-        assertEquals(GravenModelReader.class, reader.getClass())
+        expectReader(LOCATION, "foo.gy", GravenModelReader)
     }
 
     @Test
     void testAcceptKeyGraven() {
-        def options = [:]
-        options.put("graven:4.0.0", "graven:4.0.0")
-
-        def reader = manager.getReaderFor(options)
-        assertNotNull(reader)
-        assertEquals(GravenModelReader.class, reader.getClass())
+        expectReader("graven:4.0.0", "graven:4.0.0", GravenModelReader)
     }
 }
