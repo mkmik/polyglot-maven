@@ -5,10 +5,12 @@ import groovy.lang.GroovyShell;
 import groovy.lang.Script;
 import groovy.xml.MarkupBuilder;
 import org.apache.maven.model.Model;
+import org.apache.maven.model.locator.ModelLocator;
 import org.apache.maven.model.io.DefaultModelReader;
 import org.apache.maven.model.io.ModelParseException;
 import org.apache.maven.model.io.ModelReader;
 import org.codehaus.plexus.util.IOUtil;
+import org.codehaus.plexus.component.annotations.Component;
 
 import java.io.BufferedInputStream;
 import java.io.ByteArrayInputStream;
@@ -30,6 +32,7 @@ import java.util.Map;
  *
  * @author <a href="mailto:jason@planet57.com">Jason Dillon</a>
  */
+@Component(role=ModelReader.class, hint="graven")
 public class GravenModelReader
     implements ModelReader
 {
