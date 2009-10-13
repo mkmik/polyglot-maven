@@ -2,11 +2,13 @@ Index: maven-model-builder/src/main/java/org/apache/maven/model/building/ModelPr
 ===================================================================
 --- maven-model-builder/src/main/java/org/apache/maven/model/building/ModelProcessor.java	(revision 824608)
 +++ maven-model-builder/src/main/java/org/apache/maven/model/building/ModelProcessor.java	(working copy)
-@@ -6,4 +6,5 @@
+@@ -6,4 +6,7 @@
  public interface ModelProcessor
      extends ModelLocator, ModelReader
  {
 +    String LOCATION = "org.apache.maven.model.building.location";
++
++    String SOURCE = "org.apache.maven.model.building.source";
  }
 Index: maven-model-builder/src/main/java/org/apache/maven/model/building/DefaultModelBuilder.java
 ===================================================================
@@ -20,7 +22,7 @@ Index: maven-model-builder/src/main/java/org/apache/maven/model/building/Default
  
  import org.apache.maven.model.Dependency;
  import org.apache.maven.model.DependencyManagement;
-@@ -298,7 +299,9 @@
+@@ -298,7 +299,10 @@
          {
              boolean strict = request.getValidationLevel() >= ModelBuildingRequest.VALIDATION_LEVEL_MAVEN_2_0;
  
@@ -28,6 +30,7 @@ Index: maven-model-builder/src/main/java/org/apache/maven/model/building/Default
 +            Map<String,Object> options = new HashMap<String,Object>();
 +            options.put(ModelProcessor.IS_STRICT, Boolean.valueOf( strict ));
 +            options.put(ModelProcessor.LOCATION, modelSource.getLocation());
++            options.put(ModelProcessor.SOURCE, modelSource);
  
              model = modelProcessor.read( modelSource.getInputStream(), options );
          }
