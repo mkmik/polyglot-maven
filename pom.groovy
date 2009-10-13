@@ -1,45 +1,45 @@
-project  {
+project {
     modelVersion '4.0.0'
     groupId 'org.sonatype.graven'
     artifactId 'graven'
     version '1.0-SNAPSHOT'
     name 'Graven'
-    build  {
+    build {
         defaultGoal 'install'
-        plugins  {
-            plugin  {
+        plugins {
+            plugin {
                 artifactId 'maven-surefire-plugin'
                 version '2.4.3'
-                configuration  {
+                configuration {
                     redirectTestOutputToFile 'true'
                     forkMode 'once'
                     argLine '-ea'
                     failIfNoTests 'false'
                     workingDirectory '${project.build.directory}'
-                    excludes  {
+                    excludes {
                         exclude '**/Abstract*.java'
                         exclude '**/Test*.java'
                     }
-                    includes  {
+                    includes {
                         include '**/*Test.java'
                     }
                 }
             }
-            plugin  {
+            plugin {
                 artifactId 'maven-compiler-plugin'
                 version '2.0.2'
-                configuration  {
+                configuration {
                     source '1.5'
                     target '1.5'
                 }
             }
-            plugin  {
+            plugin {
                 groupId 'org.codehaus.groovy.maven'
                 artifactId 'gmaven-plugin'
                 version '1.0'
-                executions  {
-                    execution  {
-                        goals  {
+                executions {
+                    execution {
+                        goals {
                             goal 'generateStubs'
                             goal 'compile'
                             goal 'generateTestStubs'
@@ -47,35 +47,35 @@ project  {
                         }
                     }
                 }
-                configuration  {
+                configuration {
                     providerSelection '1.6'
                 }
             }
-            plugin  {
+            plugin {
                 groupId 'org.codehaus.plexus'
                 artifactId 'plexus-component-metadata'
                 version '1.4.0-SNAPSHOT'
-                executions  {
-                    execution  {
-                        goals  {
+                executions {
+                    execution {
+                        goals {
                             goal 'generate-metadata'
                             goal 'generate-test-metadata'
                         }
                     }
                 }
             }
-            plugin  {
+            plugin {
                 artifactId 'maven-dependency-plugin'
-                executions  {
-                    execution  {
+                executions {
+                    execution {
                         phase 'process-sources'
-                        goals  {
+                        goals {
                             goal 'unpack'
                         }
-                        configuration  {
+                        configuration {
                             outputAbsoluteArtifactFilename 'false'
-                            artifactItems  {
-                                artifactItem  {
+                            artifactItems {
+                                artifactItem {
                                     groupId 'org.apache.maven'
                                     artifactId 'apache-maven'
                                     classifier 'bin'
@@ -86,16 +86,16 @@ project  {
                     }
                 }
             }
-            plugin  {
+            plugin {
                 artifactId 'maven-assembly-plugin'
-                executions  {
-                    execution  {
+                executions {
+                    execution {
                         phase 'package'
-                        goals  {
+                        goals {
                             goal 'single'
                         }
-                        configuration  {
-                            descriptors  {
+                        configuration {
+                            descriptors {
                                 descriptor 'src/main/assembly/bin.xml'
                             }
                         }
@@ -104,50 +104,50 @@ project  {
             }
         }
     }
-    dependencies  {
-        dependency  {
+    dependencies {
+        dependency {
             groupId 'org.apache.maven'
             artifactId 'maven-model-builder'
             version '${mavenVersion}'
         }
-        dependency  {
+        dependency {
             groupId 'org.apache.maven'
             artifactId 'maven-embedder'
             version '${mavenVersion}'
         }
-        dependency  {
+        dependency {
             groupId 'org.codehaus.groovy'
             artifactId 'groovy'
             version '1.6.5'
-            exclusions  {
-                exclusion  {
+            exclusions {
+                exclusion {
                     artifactId 'jline'
                     groupId 'jline'
                 }
-                exclusion  {
+                exclusion {
                     artifactId 'junit'
                     groupId 'junit'
                 }
-                exclusion  {
+                exclusion {
                     artifactId 'ant'
                     groupId 'org.apache.ant'
                 }
-                exclusion  {
+                exclusion {
                     artifactId 'ant-launcher'
                     groupId 'org.apache.ant'
                 }
             }
         }
-        dependency  {
+        dependency {
             groupId 'junit'
             artifactId 'junit'
             version '4.7'
             scope 'test'
         }
     }
-    dependencyManagement  {
-        dependencies  {
-            dependency  {
+    dependencyManagement {
+        dependencies {
+            dependency {
                 groupId 'org.apache.maven'
                 artifactId 'apache-maven'
                 version '${mavenVersion}'
@@ -156,7 +156,7 @@ project  {
             }
         }
     }
-    properties  {
+    properties {
         mavenVersion '3.0-SNAPSHOT'
     }
 }
