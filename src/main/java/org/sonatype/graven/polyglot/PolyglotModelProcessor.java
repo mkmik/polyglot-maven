@@ -11,17 +11,14 @@ import java.util.Map;
 
 import org.apache.maven.model.Model;
 import org.apache.maven.model.building.ModelProcessor;
-import org.apache.maven.model.io.DefaultModelReader;
 import org.apache.maven.model.io.ModelParseException;
 import org.apache.maven.model.io.ModelReader;
-import org.apache.maven.model.locator.ModelLocator;
 import org.codehaus.plexus.component.annotations.Component;
 import org.codehaus.plexus.component.annotations.Requirement;
 import org.codehaus.plexus.util.IOUtil;
-import org.sonatype.graven.GravenModelReader;
 
 /**
- * ???
+ * Polyglot model processor.
  *
  * @author <a href="mailto:jason@planet57.com">Jason Dillon</a>
  */
@@ -29,32 +26,12 @@ import org.sonatype.graven.GravenModelReader;
 public class PolyglotModelProcessor
     implements ModelProcessor
 {
-    @Requirement(hint="graven")
-    private ModelReader gravenModelReader;
+    @Requirement
+    private PolyglotModelManager manager;
 
-    @Requirement(hint="default")
-    private ModelReader xmlModelReader;
-
-    @Requirement(hint="polyglot")
-    private ModelLocator modelLocator;
-
-    public PolyglotModelProcessor() {
-        // HACK: This component is currently wedged into the container so it does not get requirements processed
-
-        if (gravenModelReader == null) {
-            gravenModelReader = new GravenModelReader();
-        }
-        if (xmlModelReader == null) {
-            xmlModelReader = new DefaultModelReader();
-        }
-        if (modelLocator == null) {
-            modelLocator = new PolyglotModelLocator();
-        }
-    }
-    
     public File locatePom(final File dir) {
-        assert dir != null;
-        return modelLocator.locatePom(dir);
+        assert manager != null;
+        return manager.locatePom(dir);
     }
 
     public Model read(final File input, final  Map<String,?> options) throws IOException, ModelParseException {
@@ -80,26 +57,8 @@ public class PolyglotModelProcessor
     }
 
     public Model read(final Reader input, final Map<String,?> options) throws IOException, ModelParseException {
-        // System.out.println("Options: " + options);
-
-        if (options.containsKey("xml:4.0.0")) {
-            return xmlModelReader.read(input, options);
-        }
-
-        String location = (String) options.get(LOCATION);
-        // System.out.println("Location: " + location);
-
-        if (location != null) {
-            if (location.endsWith(".xml") || location.endsWith(".pom")) {
-                return xmlModelReader.read(input, options);
-            }
-            else if (location.endsWith(".groovy") || location.endsWith(".gy")) {
-                return gravenModelReader.read(input, options);
-            }
-
-            throw new ModelParseException("Unable to handle input for location: " + location, -1, -1);
-        }
-
-        throw new ModelParseException("No context to determine input type", -1, -1);
+        assert manager != null;
+        ModelReader reader = manager.getReaderFor(options);
+        return reader.read(input, options);
     }
 }
