@@ -58,7 +58,7 @@ public abstract class MappingSupport
         return null;
     }
 
-    public boolean accept(final Map<String, ?> options) {
+    public boolean accept(final Map<String,?> options) {
         if (options != null) {
             for (String key : getAcceptOptionKeys()) {
                 if (options.containsKey(key)) {
@@ -66,7 +66,7 @@ public abstract class MappingSupport
                 }
             }
 
-            String location = (String) options.get(ModelProcessor.LOCATION);
+            String location = String.valueOf(options.get(ModelProcessor.LOCATION));
             if (location != null) {
                 for (String ext : getAcceptLocationExtentions()) {
                     if (location.endsWith(ext)) {
