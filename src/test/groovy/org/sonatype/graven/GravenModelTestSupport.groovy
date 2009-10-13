@@ -36,6 +36,15 @@ public class GravenModelTestSupport
         DomToGroovy converter = new DomToGroovy(new IndentPrinter(new PrintWriter(buff), "    "))
         DocumentBuilder builder = DocumentBuilderFactory.newInstance().newDocumentBuilder()
         Document doc = builder.parse(new InputSource(new StringReader(chew(model))))
+        
+        def root = doc.documentElement
+        def attrs = root.attributes
+        for (int i=0; i<attrs.length; i++) {
+            root.removeAttribute(attrs.item(i).name)
+        }
+        // Not sue where this comes from but the above will not nuke it
+        root.removeAttribute("xmlns:xsi")
+        
         converter.print(doc)
         println(buff)
     }
