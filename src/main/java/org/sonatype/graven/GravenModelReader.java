@@ -1,16 +1,13 @@
 package org.sonatype.graven;
 
-import groovy.lang.Binding;
-import groovy.lang.GroovyShell;
 import groovy.lang.Script;
 import groovy.xml.MarkupBuilder;
 import org.apache.maven.model.Model;
-import org.apache.maven.model.locator.ModelLocator;
 import org.apache.maven.model.io.DefaultModelReader;
 import org.apache.maven.model.io.ModelParseException;
 import org.apache.maven.model.io.ModelReader;
-import org.codehaus.plexus.util.IOUtil;
 import org.codehaus.plexus.component.annotations.Component;
+import org.codehaus.plexus.util.IOUtil;
 
 import java.io.BufferedInputStream;
 import java.io.ByteArrayInputStream;

@@ -1,22 +1,15 @@
 package org.sonatype.graven.polyglot;
 
+import org.apache.maven.model.io.ModelReader;
+import org.apache.maven.model.io.ModelWriter;
+import org.apache.maven.model.locator.ModelLocator;
 import org.codehaus.plexus.component.annotations.Component;
 import org.codehaus.plexus.component.annotations.Requirement;
-import org.apache.maven.model.io.ModelReader;
-import org.apache.maven.model.io.DefaultModelReader;
-import org.apache.maven.model.io.ModelWriter;
-import org.apache.maven.model.building.ModelProcessor;
-import org.apache.maven.model.locator.ModelLocator;
-import org.sonatype.graven.GravenModelReader;
 import org.sonatype.graven.polyglot.mapping.Mapping;
-import org.sonatype.graven.polyglot.mapping.MappingSupport;
-import org.sonatype.graven.polyglot.mapping.GravenMapping;
-import org.sonatype.graven.polyglot.mapping.XmlMapping;
 
-import java.util.Map;
-import java.util.List;
-import java.util.LinkedList;
 import java.io.File;
+import java.util.List;
+import java.util.Map;
 
 /**
  * Manages the mapping for polyglot model support.

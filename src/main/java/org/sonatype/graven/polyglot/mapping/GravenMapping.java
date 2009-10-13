@@ -2,7 +2,6 @@ package org.sonatype.graven.polyglot.mapping;
 
 import org.apache.maven.model.io.ModelReader;
 import org.apache.maven.model.io.ModelWriter;
-import org.sonatype.graven.GravenModelReader;
 import org.codehaus.plexus.component.annotations.Component;
 import org.codehaus.plexus.component.annotations.Requirement;
 

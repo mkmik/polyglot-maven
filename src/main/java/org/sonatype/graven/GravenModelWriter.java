@@ -4,14 +4,13 @@ import groovy.util.IndentPrinter;
 import org.apache.maven.model.Model;
 import org.apache.maven.model.io.DefaultModelWriter;
 import org.apache.maven.model.io.ModelWriter;
-import org.apache.maven.model.io.ModelReader;
 import org.codehaus.groovy.tools.xml.DomToGroovy;
-import org.codehaus.plexus.util.IOUtil;
 import org.codehaus.plexus.component.annotations.Component;
+import org.codehaus.plexus.util.IOUtil;
+import org.w3c.dom.Attr;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.NamedNodeMap;
-import org.w3c.dom.Attr;
 import org.xml.sax.InputSource;
 import org.xml.sax.SAXException;
 

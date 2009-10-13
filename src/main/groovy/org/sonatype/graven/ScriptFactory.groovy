@@ -1,6 +1,7 @@
 package org.sonatype.graven
 
 import groovy.xml.MarkupBuilder
+import org.sonatype.graven.Defaults
 
 /**
  * Builds {@link Script} instances to handle <tt>pom.groovy</tt> to XML.
