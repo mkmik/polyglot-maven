@@ -1,15 +1,15 @@
 package org.sonatype.graven
 
-parent = {parent, gid, aid, v ->
-    parent.parent {
+parent = {builder, gid, aid, v ->
+    builder.parent {
         groupId gid
         artifactId aid
         version v
     }
 }
 
-dependency = {parent, gid, aid, v, s=null ->
-    parent.dependency {
+dependency = {builder, gid, aid, v, s=null ->
+    builder.dependency {
         groupId gid
         artifactId aid
         version v
@@ -19,38 +19,11 @@ dependency = {parent, gid, aid, v, s=null ->
     }
 }
 
-testdependency = {parent, gid, aid, v ->
-    parent.dependency {
+testdependency = {builder, gid, aid, v ->
+    builder.dependency {
         groupId gid
         artifactId aid
         version v
         scope "test"
     }
 }
-
-/*
-repository = {parent, _id, _name, _url ->
-    parent.repository {
-        id _id
-        name _name
-        url _url
-    }
-}
-
-legacyrepository = {parent, _id, _name, _url ->
-    parent.repository {
-        id _id
-        name _name
-        url _url
-        layout "legacy"
-    }
-}
-
-pluginRepository = {parent, _id, _name, _url ->
-    parent.pluginRepository {
-        id _id
-        name _name
-        url _url
-    }
-}
-*/

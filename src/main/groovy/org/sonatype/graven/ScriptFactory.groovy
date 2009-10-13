@@ -43,7 +43,9 @@ class ScriptFactory
 
             include.run()
             include.binding.properties.variables.each {
-                binding.setVariable(it.key, it.value.curry(builder))
+                if (it.value instanceof Closure) {
+                    binding.setVariable(it.key, it.value.curry(builder))
+                }
             }
         }
 
