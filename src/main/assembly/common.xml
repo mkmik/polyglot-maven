@@ -6,8 +6,18 @@
             <directory>src/main/underlay/bin</directory>
             <outputDirectory>/bin</outputDirectory>
             <includes>
-                <include>m2.conf</include>
+                <include>*.conf</include>
             </includes>
+        </fileSet>
+
+        <fileSet>
+            <directory>src/main/underlay/bin</directory>
+            <outputDirectory>/bin</outputDirectory>
+            <includes>
+                <include>translator</include>
+            </includes>
+            <lineEnding>unix</lineEnding>
+            <fileMode>0755</fileMode>
         </fileSet>
 
         <fileSet>

@@ -59,7 +59,7 @@ class ScriptFactory
 
         // Bind these last so they don't get clobbered
         binding.setProperty("project", root)
-        binding.setProperty("include", include)
+        // binding.setProperty("include", include)
 
         return script
     }
