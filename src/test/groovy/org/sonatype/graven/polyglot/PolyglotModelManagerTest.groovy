@@ -1,12 +1,13 @@
 package org.sonatype.graven.polyglot
 
+import org.apache.maven.model.building.ModelProcessor
+import org.apache.maven.model.io.DefaultModelReader
+import org.codehaus.plexus.PlexusTestCase
 import org.junit.Before
 import org.junit.Test
-import org.sonatype.graven.polyglot.PolyglotModelTranslator
-import org.codehaus.plexus.PlexusTestCase
-import static org.apache.maven.model.building.ModelProcessor.LOCATION
-import org.apache.maven.model.io.DefaultModelReader
 import org.sonatype.graven.GravenModelReader
+import org.sonatype.graven.polyglot.PolyglotModelManager
+import static org.apache.maven.model.building.ModelProcessor.*
 
 /**
  * Tests for {@link PolyglotModelManager}.
