@@ -9,6 +9,7 @@ import org.codehaus.groovy.tools.xml.DomToGroovy;
 import org.codehaus.plexus.util.IOUtil;
 import org.codehaus.plexus.component.annotations.Component;
 import org.w3c.dom.Document;
+import org.w3c.dom.Element;
 import org.xml.sax.InputSource;
 import org.xml.sax.SAXException;
 
@@ -70,6 +71,12 @@ public class GravenModelWriter
         try {
             DocumentBuilder builder = DocumentBuilderFactory.newInstance().newDocumentBuilder();
             Document doc = builder.parse(new InputSource(new StringReader(buff.toString())));
+
+            Element root = doc.getDocumentElement();
+            root.removeAttribute("xmlns");
+            root.removeAttribute("xmlns:xsi");
+            root.removeAttribute("xsi:schemaLocation");
+
             converter.print(doc);
             output.flush();
         }
