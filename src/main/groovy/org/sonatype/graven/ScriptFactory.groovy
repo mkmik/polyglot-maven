@@ -50,7 +50,7 @@ class ScriptFactory
             // Include each closure variable from the source and curry in the builder
             include.binding.properties.variables.each {
                 if (it.value instanceof Closure) {
-                    binding.setVariable(it.key, it.value.curry(builder))
+                    binding.setVariable("\$${it.key}", it.value.curry(builder))
                 }
             }
         }
@@ -59,7 +59,7 @@ class ScriptFactory
 
         // Bind these last so they don't get clobbered
         binding.setProperty("project", root)
-        // binding.setProperty("include", include)
+        binding.setProperty("\$include", include)
 
         return script
     }

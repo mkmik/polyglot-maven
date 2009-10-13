@@ -25,12 +25,3 @@ exclusion = {builder, gid, aid ->
         artifactId aid
     }
 }
-
-testdependency = {builder, gid, aid, v ->
-    builder.dependency {
-        groupId gid
-        artifactId aid
-        version v
-        scope "test"
-    }
-}
