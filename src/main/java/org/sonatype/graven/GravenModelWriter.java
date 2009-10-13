@@ -79,7 +79,7 @@ public class GravenModelWriter
                 Attr attr = (Attr)attrs.item(i);
                 root.removeAttribute(attr.getName());
             }
-            // Not sue where this comes from but the above will not nuke it
+            // Not sure where this comes from but the above will not nuke it
             root.removeAttribute("xmlns:xsi");
             
             converter.print(doc);

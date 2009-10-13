@@ -42,7 +42,7 @@ public class GravenModelTestSupport
         for (int i=0; i<attrs.length; i++) {
             root.removeAttribute(attrs.item(i).name)
         }
-        // Not sue where this comes from but the above will not nuke it
+        // Not sure where this comes from but the above will not nuke it
         root.removeAttribute("xmlns:xsi")
         
         converter.print(doc)
