@@ -37,11 +37,16 @@ class ScriptFactory
             else if (source instanceof File) {
                 include = shell.parse(source)
             }
+            else if (source instanceof URL) {
+                include = shell.parse(source.openStream())
+            }
             else {
                 throw new IllegalArgumentException("Invalid include source: $source")
             }
 
             include.run()
+
+            // Include each closure variable from the source and curry in the builder
             include.binding.properties.variables.each {
                 if (it.value instanceof Closure) {
                     binding.setVariable(it.key, it.value.curry(builder))
