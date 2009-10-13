@@ -37,7 +37,7 @@ public class GravenMapping
     }
 
     @Override
-    protected String[] getAcceptFileExtentions() {
+    protected String[] getAcceptLocationExtentions() {
         return EXTS;
     }
 

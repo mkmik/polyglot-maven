@@ -37,7 +37,7 @@ public class XmlMapping
     }
 
     @Override
-    protected String[] getAcceptFileExtentions() {
+    protected String[] getAcceptLocationExtentions() {
         return EXTS;
     }
 

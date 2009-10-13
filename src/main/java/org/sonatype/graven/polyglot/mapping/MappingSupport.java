@@ -17,7 +17,7 @@ public abstract class MappingSupport
 
     protected abstract String[] getAcceptOptionKeys();
 
-    protected abstract String[] getAcceptFileExtentions();
+    protected abstract String[] getAcceptLocationExtentions();
 
     public File locatePom(final File dir) {
         assert dir != null;
@@ -42,7 +42,7 @@ public abstract class MappingSupport
 
             String location = (String) options.get(ModelProcessor.LOCATION);
             if (location != null) {
-                for (String ext : getAcceptFileExtentions()) {
+                for (String ext : getAcceptLocationExtentions()) {
                     if (location.endsWith(ext)) {
                         return true;
                     }
