@@ -1,6 +1,7 @@
 package org.sonatype.graven.polyglot.mapping;
 
 import org.apache.maven.model.io.ModelReader;
+import org.apache.maven.model.io.ModelWriter;
 import org.sonatype.graven.GravenModelReader;
 import org.codehaus.plexus.component.annotations.Component;
 import org.codehaus.plexus.component.annotations.Requirement;
@@ -23,6 +24,9 @@ public class GravenMapping
     @Requirement(hint="graven")
     private ModelReader reader;
 
+    @Requirement(hint="graven")
+    private ModelWriter writer;
+
     @Override
     protected String[] getAcceptOptionKeys() {
         return KEYS;
@@ -41,5 +45,10 @@ public class GravenMapping
     public ModelReader getReader() {
         assert reader != null;
         return reader;
+    }
+
+    public ModelWriter getWriter() {
+        assert writer != null;
+        return writer;
     }
 }

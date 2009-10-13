@@ -1,6 +1,7 @@
 package org.sonatype.graven.polyglot.mapping;
 
 import org.apache.maven.model.io.ModelReader;
+import org.apache.maven.model.io.ModelWriter;
 
 import java.io.File;
 import java.util.Map;
@@ -19,4 +20,6 @@ public interface Mapping
     // TODO: Alter accept to take input so it can check the files contents if needed?
 
     ModelReader getReader();
+
+    ModelWriter getWriter();
 }
