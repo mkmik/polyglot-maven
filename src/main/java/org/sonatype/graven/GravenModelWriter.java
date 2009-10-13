@@ -10,6 +10,7 @@ import org.codehaus.plexus.util.IOUtil;
 import org.codehaus.plexus.component.annotations.Component;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
+import org.w3c.dom.NamedNodeMap;
 import org.xml.sax.InputSource;
 import org.xml.sax.SAXException;
 
@@ -73,6 +74,10 @@ public class GravenModelWriter
             Document doc = builder.parse(new InputSource(new StringReader(buff.toString())));
 
             Element root = doc.getDocumentElement();
+            NamedNodeMap attrs = root.getAttributes();
+            for (int i=0; i<attrs.getLength(); i++) {
+                root.removeAttribute(attrs.item(i).getNodeName());
+            }
             root.removeAttribute("xmlns");
             root.removeAttribute("xmlns:xsi");
             root.removeAttribute("xsi:schemaLocation");
