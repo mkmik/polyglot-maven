@@ -19,6 +19,13 @@ dependency = {builder, gid, aid, v, s=null ->
     }
 }
 
+exclusion = {builder, gid, aid ->
+    builder.exclusion {
+        groupId gid
+        artifactId aid
+    }
+}
+
 testdependency = {builder, gid, aid, v ->
     builder.dependency {
         groupId gid
