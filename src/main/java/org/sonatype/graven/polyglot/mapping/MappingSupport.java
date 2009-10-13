@@ -20,6 +20,8 @@ public abstract class MappingSupport
     protected abstract String[] getAcceptFileExtentions();
 
     public File locatePom(final File dir) {
+        assert dir != null;
+        
         for (String name : getPomNames()) {
             File file = new File(dir, name);
             if (file.exists()) {
