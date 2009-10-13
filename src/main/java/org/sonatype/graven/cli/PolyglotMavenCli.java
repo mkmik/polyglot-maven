@@ -1,4 +1,4 @@
-package org.sonatype.graven.polyglot;
+package org.sonatype.graven.cli;
 
 import org.apache.maven.cli.MavenCli;
 import org.apache.maven.model.building.ModelProcessor;
