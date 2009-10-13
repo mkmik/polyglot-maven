@@ -34,7 +34,7 @@ public class PolyglotModelTranslator
         ModelWriter writer = manager.getWriterFor(outputOptions);
 
         Model model = reader.read(input, inputOptions);
-        writer.write(output, (Map<String, Object>)outputOptions, model);
+        writer.write(output, (Map<String,Object>)outputOptions, model);
     }
 
     public void translate(final InputStream input, final Map<String,?> inputOptions, final OutputStream output, final Map<String,?> outputOptions) throws IOException, ModelParseException {
@@ -45,7 +45,7 @@ public class PolyglotModelTranslator
         ModelWriter writer = manager.getWriterFor(outputOptions);
 
         Model model = reader.read(input, inputOptions);
-        writer.write(output, (Map<String, Object>)outputOptions, model);
+        writer.write(output, (Map<String,Object>)outputOptions, model);
     }
 
     public void translate(final Reader input, final Map<String,?> inputOptions, final Writer output, final Map<String,?> outputOptions) throws IOException, ModelParseException {
@@ -56,6 +56,6 @@ public class PolyglotModelTranslator
         ModelWriter writer = manager.getWriterFor(outputOptions);
 
         Model model = reader.read(input, inputOptions);
-        writer.write(output, (Map<String, Object>)outputOptions, model);
+        writer.write(output, (Map<String,Object>)outputOptions, model);
     }
 }

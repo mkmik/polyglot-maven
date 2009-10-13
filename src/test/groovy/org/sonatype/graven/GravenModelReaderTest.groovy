@@ -17,12 +17,12 @@ public class GravenModelReaderTest
     private GravenModelReader reader
 
     @Before
-    public void setUp() throws Exception {
+    void setUp() {
         reader = new GravenModelReader()
     }
 
     @Test
-    public void test1() throws Exception {
+    void test1() {
         def input = getClass().getResource("test1.groovy")
         assertNotNull(input)
 
@@ -41,7 +41,7 @@ public class GravenModelReaderTest
     }
 
     @Test
-    public void test2() throws Exception {
+    void test2() {
         def input = getClass().getResource("test3.groovy")
         assertNotNull(input)
 

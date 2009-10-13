@@ -16,14 +16,14 @@ import static org.junit.Assert.*
  */
 public class GravenModelTestSupport
 {
-    protected String load(final String name) throws IOException {
+    protected String load(final String name) {
         assertNotNull(name)
         def url = getClass().getResource(name)
         assertNotNull(url)
         return url.text
     }
 
-    protected String chew(final Model model) throws IOException {
+    protected String chew(final Model model) {
         assertNotNull(model)
         def writer = new DefaultModelWriter()
         def buff = new StringWriter()

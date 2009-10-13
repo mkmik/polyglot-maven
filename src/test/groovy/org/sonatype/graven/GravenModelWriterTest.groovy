@@ -19,12 +19,12 @@ public class GravenModelWriterTest
     private GravenModelWriter writer
 
     @Before
-    public void setUp() throws Exception {
+    void setUp() {
         writer = new GravenModelWriter()
     }
 
     @Test
-    public void test1() throws Exception {
+    void test1() {
         def model = new Model(parent: new Parent(groupId: "a", artifactId: "b", version: "c"))
 
         def buff = new StringWriter()
