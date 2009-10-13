@@ -25,24 +25,24 @@ public abstract class MappingSupport
         return acceptLocationExtentions;
     }
 
-    public void setAcceptLocationExtentions(final String... acceptLocationExtentions) {
-        this.acceptLocationExtentions = acceptLocationExtentions;
+    public void setAcceptLocationExtentions(final String... accept) {
+        this.acceptLocationExtentions = accept;
     }
 
     public String[] getAcceptOptionKeys() {
         return acceptOptionKeys;
     }
 
-    public void setAcceptOptionKeys(final String... acceptOptionKeys) {
-        this.acceptOptionKeys = acceptOptionKeys;
+    public void setAcceptOptionKeys(final String... accept) {
+        this.acceptOptionKeys = accept;
     }
 
     public String[] getPomNames() {
         return pomNames;
     }
 
-    public void setPomNames(final String... pomNames) {
-        this.pomNames = pomNames;
+    public void setPomNames(final String... names) {
+        this.pomNames = names;
     }
 
     public File locatePom(final File dir) {
