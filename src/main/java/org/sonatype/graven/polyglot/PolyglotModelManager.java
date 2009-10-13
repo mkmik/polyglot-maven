@@ -4,6 +4,7 @@ import org.codehaus.plexus.component.annotations.Component;
 import org.codehaus.plexus.component.annotations.Requirement;
 import org.apache.maven.model.io.ModelReader;
 import org.apache.maven.model.io.DefaultModelReader;
+import org.apache.maven.model.io.ModelWriter;
 import org.apache.maven.model.building.ModelProcessor;
 import org.apache.maven.model.locator.ModelLocator;
 import org.sonatype.graven.GravenModelReader;
@@ -42,6 +43,16 @@ public class PolyglotModelManager
         }
 
         throw new RuntimeException("Unable determine model input format; options=" + options);
+    }
+
+    public ModelWriter getWriterFor(final Map<String, ?> options) {
+        for (Mapping mapping : mappings) {
+            if (mapping.accept(options)) {
+                return mapping.getWriter();
+            }
+        }
+
+        throw new RuntimeException("Unable determine model output format; options=" + options);
     }
 
     public File locatePom(final File dir) {
