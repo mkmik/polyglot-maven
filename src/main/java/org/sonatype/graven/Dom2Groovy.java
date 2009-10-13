@@ -56,18 +56,12 @@ public class Dom2Groovy
     }
 
     public Dom2Groovy(final IndentPrinter out) {
+        assert out != null;
         this.out = out;
     }
 
     public void print(final Document document) {
         printChildren(document, new HashMap());
-    }
-
-    private static Document parse(final String name) throws Exception {
-        DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
-        factory.setNamespaceAware(true);
-        DocumentBuilder builder = factory.newDocumentBuilder();
-        return builder.parse(new File(name));
     }
 
     protected void print(final Node node, final Map namespaces, final boolean endWithComma) {
