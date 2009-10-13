@@ -11,6 +11,7 @@ import org.codehaus.plexus.component.annotations.Component;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.NamedNodeMap;
+import org.w3c.dom.Attr;
 import org.xml.sax.InputSource;
 import org.xml.sax.SAXException;
 
@@ -76,12 +77,12 @@ public class GravenModelWriter
             Element root = doc.getDocumentElement();
             NamedNodeMap attrs = root.getAttributes();
             for (int i=0; i<attrs.getLength(); i++) {
-                root.removeAttribute(attrs.item(i).getNodeName());
+                Attr attr = (Attr)attrs.item(i);
+                root.removeAttribute(attr.getName());
             }
-            root.removeAttribute("xmlns");
+            // Not sue where this comes from but the above will not nuke it
             root.removeAttribute("xmlns:xsi");
-            root.removeAttribute("xsi:schemaLocation");
-
+            
             converter.print(doc);
             output.flush();
         }
