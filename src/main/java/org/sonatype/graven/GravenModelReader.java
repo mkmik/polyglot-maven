@@ -36,13 +36,16 @@ public class GravenModelReader
     public Model read(final File file, final Map<String,?> options) throws IOException, ModelParseException {
         assert file != null;
 
+        Model model;
         InputStream in = new BufferedInputStream(new FileInputStream(file));
         try {
-            return read(in, options);
+            model = read(in, options);
+            model.setPomFile(file);
         }
         finally {
             IOUtil.close(in);
         }
+        return model;
     }
 
     public Model read(final Reader input, final Map<String,?> options) throws IOException, ModelParseException {
