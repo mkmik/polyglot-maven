@@ -33,6 +33,13 @@ public class GravenModelWriterTest
         println(buff)
 
         def expected = load("test2.groovy")
-        assertEquals(expected, buff.toString())
+        assertEqualsGroovy(expected, buff.toString())
     }
+
+    private void assertEqualsGroovy( String expected, String actual ) {
+        def text = actual.replaceAll( "(\r\n)|(\r)|(\n)", "\n" )
+        def expect = expected.replaceAll( "(\r\n)|(\r)|(\n)", "\n" )
+        assertEquals(expect, text)
+    }
+
 }
