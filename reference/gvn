@@ -1,4 +1,0 @@
-#!/bin/sh
-here="`dirname \"$0\"`"
-export CLASSPATH=$here/../src/main/groovy
-groovy $here/../src/main/groovy/com/googlecode/graven/GVN.groovy $*
