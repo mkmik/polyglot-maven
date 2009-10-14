@@ -6,7 +6,9 @@ package org.sonatype.graven
  * @author <a href="mailto:jason@planet57.com">Jason Dillon</a>
  */
 
-private Map parseArtifact(final String... items) {
+def vars = binding.properties.variables
+
+parseArtifact = {String... items ->
     assert items != null && items.size() != 0
 
     if (items.size() == 1 && items[0].contains(':')) {
@@ -42,7 +44,8 @@ private Map parseArtifact(final String... items) {
     return map
 }
 
-$artifact = {builder, String... items ->
+
+vars.'$artifact' = {builder, String... items ->
     def map = parseArtifact(items)
     
     map.each {
@@ -50,7 +53,7 @@ $artifact = {builder, String... items ->
     }
 }
 
-private Map parseParent(final String... items) {
+parseParent = {String... items ->
     assert items != null && items.size() != 0
 
     if (items.size() == 1 && items[0].contains(':')) {
@@ -73,7 +76,7 @@ private Map parseParent(final String... items) {
     return map
 }
 
-$parent = {builder, String... items ->
+vars.'$parent' = {builder, String... items ->
     def map = parseParent(items)
     
     builder.parent {
@@ -83,7 +86,7 @@ $parent = {builder, String... items ->
     }
 }
 
-$gav = {builder, g, a, v=null ->
+vars.'$gav' = {builder, g, a, v=null ->
     builder.groupId g
     builder.artifactId a
     if (v) {
@@ -91,7 +94,7 @@ $gav = {builder, g, a, v=null ->
     }
 }
 
-$dependency = {builder, g, a, v=null, s=null ->
+vars.'$dependency' = {builder, g, a, v=null, s=null ->
     builder.dependency {
         groupId g
         artifactId a
@@ -104,7 +107,7 @@ $dependency = {builder, g, a, v=null, s=null ->
     }
 }
 
-private Map parseExclusion(final String... items) {
+parseExclusion = {String... items ->
     assert items != null && items.size() != 0
 
     if (items.size() == 1 && items[0].contains(':')) {
@@ -126,7 +129,7 @@ private Map parseExclusion(final String... items) {
     return map
 }
 
-$exclusion = {builder, String... items ->
+vars.'$exclusion' = {builder, String... items ->
     def map = parseExclusion(items)
 
     builder.exclusion {
@@ -135,7 +138,7 @@ $exclusion = {builder, String... items ->
     }
 }
 
-$exclusions = {builder, String... items ->
+vars.'$exclusions' = {builder, String... items ->
     builder.exclusions {
         for (String item in items) {
             def artifact = parseArtifact(item)
@@ -147,7 +150,7 @@ $exclusions = {builder, String... items ->
     }
 }
 
-$goals = {builder, String... items ->
+vars.'$goals' = {builder, String... items ->
     builder.goals {
         for (item in items) {
             goal item
@@ -155,7 +158,7 @@ $goals = {builder, String... items ->
     }
 }
 
-$modules = {builder, String... items ->
+vars.'$modules' = {builder, String... items ->
     builder.modules {
         for (item in items) {
             module item
@@ -163,7 +166,7 @@ $modules = {builder, String... items ->
     }
 }
 
-$configuration = {builder, Map items ->
+vars.'$configuration' = {builder, Map items ->
     builder.configuration {
         for (item in items) {
             "${item.key}"(item.value)
@@ -171,7 +174,7 @@ $configuration = {builder, Map items ->
     }
 }
 
-$includes = {builder, Object... items ->
+vars.'$includes' = {builder, Object... items ->
     builder.includes {
         for (item in items) {
             include item
@@ -179,7 +182,7 @@ $includes = {builder, Object... items ->
     }
 }
 
-$excludes = {builder, Object... items ->
+vars.'$excludes' = {builder, Object... items ->
     builder.excludes {
         for (item in items) {
             exclude item
@@ -187,7 +190,7 @@ $excludes = {builder, Object... items ->
     }
 }
 
-$uuid = {builder, prefix=null ->
+vars.'$uuid' = {builder, prefix=null ->
     def val = UUID.randomUUID().toString()
     if (prefix) {
         val = "${prefix}${val}"
