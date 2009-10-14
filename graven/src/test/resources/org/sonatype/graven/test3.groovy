@@ -16,9 +16,9 @@ project {
         }
 
         dependency {
-            groupId 'bar'
-            artifactId 'foo'
-            version 'baz'
+            groupId '1'
+            artifactId '2'
+            version '3'
             $exclusions('a:b', 'c:d')
         }
     }
