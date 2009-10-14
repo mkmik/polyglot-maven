@@ -1,0 +1,60 @@
+modelVersion: 4.0.0
+groupId: org.sonatype.graven
+artifactId: graven-parent
+version: 1.0-SNAPSHOT
+name: Polyglot Maven
+packaging: pom
+
+properties: 
+  mavenVersion: 3.0-SNAPSHOT
+
+modules: [common, graven, raven, cli]
+
+build:
+  plugins:
+  - artifactId: maven-surefire-plugin
+    groupId: org.apache.maven.plugins
+    version: 2.4.3
+    configuration:
+      redirectTestOutputToFile: 'true'
+      forkMode: once
+      argLine: -ea
+      failIfNoTests: 'false'
+      workingDirectory: ${project.build.directory}
+      excludes: {exclude: '**/Test*.java'}
+      includes: {include: '**/*Test.java'}
+  - artifactId: maven-compiler-plugin
+    groupId: org.apache.maven.plugins
+    version: 2.0.2
+    configuration: {source: '1.5', target: '1.5'}
+  - artifactId: gmaven-plugin
+    groupId: org.codehaus.groovy.maven
+    version: '1.0'
+    configuration: {providerSelection: '1.6'}
+    executions:
+    - goals: [generateStubs, compile, generateTestStubs, testCompile]
+  - artifactId: plexus-component-metadata
+    groupId: org.codehaus.plexus
+    version: 1.4.0-SNAPSHOT
+    executions:
+    - goals: [generate-metadata, generate-test-metadata]
+dependencies:
+- {artifactId: junit, groupId: junit, scope: test, version: '4.7'}
+- {artifactId: groovy, groupId: org.codehaus.groovy, scope: test}
+dependencyManagement:
+  dependencies:
+  - {artifactId: apache-maven, classifier: bin, groupId: org.apache.maven, type: zip, version: '${mavenVersion}'}
+  - {artifactId: maven-model-builder, groupId: org.apache.maven, version: '${mavenVersion}'}
+  - {artifactId: maven-embedder, groupId: org.apache.maven, version: '${mavenVersion}'}
+  - artifactId: groovy
+    groupId: org.codehaus.groovy
+    version: 1.6.5
+    exclusions:
+    - {artifactId: jline, groupId: jline}
+    - {artifactId: junit, groupId: junit}
+    - {artifactId: ant, groupId: org.apache.ant}
+    - {artifactId: ant-launcher, groupId: org.apache.ant}
+  - {artifactId: common, groupId: org.sonatype.graven, version: 1.0-SNAPSHOT}
+  - {artifactId: cli, groupId: org.sonatype.graven, version: 1.0-SNAPSHOT}
+  - {artifactId: graven, groupId: org.sonatype.graven, version: 1.0-SNAPSHOT}
+  - {artifactId: raven, groupId: org.sonatype.graven, version: 1.0-SNAPSHOT}
