@@ -1,7 +1,8 @@
 project {
     // parent { groupId 'a'; artifactId 'b'; version 'c' }
-    $parent('a', 'b', 'c')
-
+    // $parent('a', 'b', 'c')
+    $parent('a:b:c')
+    
     // $gav('foo', 'bar', 1.0)
     $artifact('foo:bar:1.0')
 
@@ -14,7 +15,8 @@ project {
             artifactId 'foo'
             version 'baz'
             exclusions {
-                $exclusion('a', 'b')
+                $exclusion('a:b')
+                $exclusion('c', 'd')
             }
         }
 

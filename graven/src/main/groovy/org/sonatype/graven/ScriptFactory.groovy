@@ -49,10 +49,10 @@ class ScriptFactory
 
             include.run()
 
-            // Include each closure variable from the source and curry in the builder
+            // Include each closure variable which starts with '$' and curry in the builder
             include.binding.properties.variables.each {
-                if (it.value instanceof Closure) {
-                    binding.setVariable("\$${it.key}", it.value.curry(builder))
+                if (it.value instanceof Closure && it.key.startsWith('$')) {
+                    binding.setVariable(it.key, it.value.curry(builder))
                 }
             }
         }
