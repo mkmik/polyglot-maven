@@ -1,7 +1,9 @@
 project {
     // parent { groupId 'a'; artifactId 'b'; version 'c' }
     $parent('a', 'b', 'c')
-    
+
+    $gav('foo', 'bar', 1.0)
+
     dependencies {
         // dependency { groupId 'a'; artifactId 'b'; version 'c' }
         $dependency('a', 'b', 'c')

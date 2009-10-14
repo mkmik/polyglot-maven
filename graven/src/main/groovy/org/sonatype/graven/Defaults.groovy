@@ -13,6 +13,14 @@ parent = {builder, g, a, v, p=null ->
     }
 }
 
+gav = {builder, g, a, v=null ->
+    builder.groupId g
+    builder.artifactId a
+    if (v) {
+        builder.version v
+    }
+}
+
 dependency = {builder, g, a, v=null, s=null ->
     builder.dependency {
         groupId g
