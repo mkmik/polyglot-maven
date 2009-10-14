@@ -30,24 +30,28 @@ import org.apache.maven.model.io.ModelReader;
 import org.codehaus.plexus.component.annotations.Component;
 import org.codehaus.plexus.util.IOUtil;
 import org.codehaus.plexus.util.xml.Xpp3Dom;
+import org.yaml.snakeyaml.Dumper;
 import org.yaml.snakeyaml.Loader;
 import org.yaml.snakeyaml.TypeDescription;
 import org.yaml.snakeyaml.Yaml;
 import org.yaml.snakeyaml.constructor.Constructor;
+import org.yaml.snakeyaml.nodes.NodeId;
+import org.yaml.snakeyaml.resolver.Resolver;
 
-@Component(role=ModelReader.class,hint="raven")
+@Component(role = ModelReader.class, hint = "raven")
 public class RavenModelReader
     implements ModelReader
 {
     private Yaml yaml;
-    
+
     public RavenModelReader()
     {
-        ModelConstructor constructor = new ModelConstructor();                
-        Loader loader = new Loader( constructor );        
+        ModelConstructor constructor = new ModelConstructor();
+        Loader loader = new Loader( constructor );              
+        loader.setResolver( new ModelResolver() );
         yaml = new Yaml( loader );
     }
-    
+
     public Model read( File input, Map<String, ?> options )
         throws IOException, ModelParseException
     {
@@ -67,9 +71,29 @@ public class RavenModelReader
         {
             throw new IllegalArgumentException( "YAML Reader is null." );
         }
+
+        Model model = (Model) yaml.load( input );
+        IOUtil.close( input );
+        return model;
+    }
+
+    public class ModelResolver
+        extends Resolver
+    {
+        public ModelResolver()
+        {            
+            System.out.println( "HI!");
+        }
         
-        Model model = (Model) yaml.load( input );      
-        IOUtil.close( input );        
-        return model;                 
+        @Override
+        public String resolve( NodeId kind, String value, boolean implicit )
+        {
+            System.out.println( ">>>>> " + value );
+            
+            String tag = super.resolve( kind, value, implicit );
+
+            
+            return super.resolve( kind, value, implicit );
+        }
     }
 }
