@@ -6,7 +6,7 @@ package org.sonatype.graven
  * @author <a href="mailto:jason@planet57.com">Jason Dillon</a>
  */
 
-private def parseArtifact(final String spec) {
+private Map parseArtifact(final String spec) {
     assert spec != null
     
     def artifact = [:]
@@ -33,6 +33,13 @@ private def parseArtifact(final String spec) {
     }
 
     return artifact
+}
+
+artifact = {builder, String spec ->
+    Map map = parseArtifact(spec);
+    map.each {
+        builder."${it.key}" it.value
+    }
 }
 
 // TODO: Consider making bits that take g:a:v take a string and parse
