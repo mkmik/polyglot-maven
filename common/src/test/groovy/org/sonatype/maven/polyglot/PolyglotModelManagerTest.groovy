@@ -45,21 +45,4 @@ public class PolyglotModelManagerTest
     void testAcceptKeyXml() {
         expectReader("xml:4.0.0", "xml:4.0.0", DefaultModelReader)
     }
-
-    /*
-    @Test
-    void testAcceptLocationGroovy() {
-        expectReader(LOCATION, "foo.groovy", GravenModelReader)
-    }
-
-    @Test
-    void testAcceptLocationGy() {
-        expectReader(LOCATION, "foo.gy", GravenModelReader)
-    }
-
-    @Test
-    void testAcceptKeyGraven() {
-        expectReader("graven:4.0.0", "graven:4.0.0", GravenModelReader)
-    }
-    */
 }
