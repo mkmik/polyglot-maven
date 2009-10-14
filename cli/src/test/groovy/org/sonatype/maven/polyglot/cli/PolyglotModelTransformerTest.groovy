@@ -26,7 +26,7 @@ public class PolyglotTranslatorCliTest
         file.deleteOnExit()
         try {
             translator.translate(url, file.toURI().toURL())
-            assertEquals(getClass().getResource(expected).text, file.text)
+            assertEqualsText(getClass().getResource(expected).text, file.text)
         }
         finally {
             file.delete();
@@ -62,4 +62,11 @@ public class PolyglotTranslatorCliTest
     void testGroovy2Xml() {
         translate("pom1.groovy", ".xml", "pom1.xml")
     }
+
+    private void assertEqualsText( String expected, String actual ) {
+        def text = actual.replaceAll( "(\r\n)|(\r)|(\n)", "\n" )
+        def expect = expected.replaceAll( "(\r\n)|(\r)|(\n)", "\n" )
+        assertEquals(expect, text)
+    }
+
 }

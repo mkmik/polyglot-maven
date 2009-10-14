@@ -1,5 +1,6 @@
 package org.sonatype.raven;
 
+import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.Properties;
 
@@ -68,6 +69,28 @@ public class ModelConstructor
         addTypeDescription( new TypeDescription( Scm.class ) );
         addTypeDescription( new TypeDescription( IssueManagement.class ) );
         addTypeDescription( new TypeDescription( CiManagement.class ) );
+    }
+
+    @Override
+    protected Map<Object, Object> constructMapping( MappingNode node )
+    {
+        Map<Object, Object> mapping = createDefaultMap( node );
+        constructMapping2ndStep( node, mapping );
+        return mapping;
+    }
+
+    // TODO: This should be moved down to SnakeYAML, we shouldn't need to tell how to map Properties
+    protected Map<Object, Object> createDefaultMap( Node node )
+    {
+        if ( node.getType() != null && Properties.class.isAssignableFrom( node.getType() ) )
+        {
+            return new Properties();
+        }
+        else
+        {
+            // respect order from YAML document
+            return new LinkedHashMap<Object, Object>();
+        }
     }
 
     private class ConstructXpp3Dom

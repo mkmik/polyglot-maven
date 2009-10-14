@@ -43,6 +43,15 @@ public class PolyglotModelTranslatorTest
     void testXml2Xml() {
         def text = translate("pom1.xml", "pom.xml")
         def expect = getClass().getResource("pom1.xml").text
+        assertEqualsXml(expect, text)
+    }
+
+    private void assertEqualsXml( String expected, String actual )
+    {
+        // TODO: Use XmlUnit
+        def text = actual.replaceAll( "(\r\n)|(\r)|(\n)", "\n" )
+        def expect = expected.replaceAll( "(\r\n)|(\r)|(\n)", "\n" )
         assertEquals(expect, text)
     }
+
 }
