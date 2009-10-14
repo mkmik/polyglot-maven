@@ -7,6 +7,8 @@ project {
         $dependency('a', 'b', 'c')
     }
 
+    $modules('a', 'b', 'c')
+
     build {
         plugins {
             plugin {

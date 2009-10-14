@@ -38,6 +38,14 @@ goals = {builder, Object... items ->
     }
 }
 
+modules = {builder, Object... items ->
+    builder.modules {
+        for (item in items) {
+            module item
+        }
+    }
+}
+
 configuration = {builder, Map items ->
     builder.configuration {
         for (item in items) {
