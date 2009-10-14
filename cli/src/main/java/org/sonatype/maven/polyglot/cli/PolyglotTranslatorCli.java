@@ -35,15 +35,10 @@ public class PolyglotTranslatorCli
             classWorld = new ClassWorld("plexus.core", Thread.currentThread().getContextClassLoader());
         }
 
-        try {
-            ContainerConfiguration cc = new DefaultContainerConfiguration()
-                    .setClassWorld(classWorld)
-                    .setName("translator");
-            container = new DefaultPlexusContainer(cc);
-        }
-        catch (PlexusContainerException e) {
-            throw new IllegalStateException("Could not start component container: " + e.getMessage(), e);
-        }
+        ContainerConfiguration cc = new DefaultContainerConfiguration()
+                .setClassWorld(classWorld)
+                .setName("translator");
+        container = new DefaultPlexusContainer(cc);
 
         translator = container.lookup(PolyglotModelTranslator.class);
     }
