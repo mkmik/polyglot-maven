@@ -1,5 +1,7 @@
 package org.sonatype.graven
 
+// TODO: Consider making bits that take g:a:v take a string and parse
+
 parent = {builder, g, a, v ->
     builder.parent {
         groupId g
@@ -25,6 +27,38 @@ exclusion = {builder, g, a ->
     builder.exclusion {
         groupId g
         artifactId a
+    }
+}
+
+goals = {builder, Object... items ->
+    builder.goals {
+        for (item in items) {
+            goal item
+        }
+    }
+}
+
+configuration = {builder, Map items ->
+    builder.configuration {
+        for (item in items) {
+            "${item.key}"(item.value)
+        }
+    }
+}
+
+includes = {builder, Object... items ->
+    builder.includes {
+        for (item in items) {
+            include item
+        }
+    }
+}
+
+excludes = {builder, Object... items ->
+    builder.excludes {
+        for (item in items) {
+            exclude item
+        }
     }
 }
 
