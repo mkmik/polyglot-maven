@@ -11,12 +11,14 @@ import org.apache.maven.model.Dependency;
 import org.apache.maven.model.DependencyManagement;
 import org.apache.maven.model.Developer;
 import org.apache.maven.model.DistributionManagement;
+import org.apache.maven.model.Exclusion;
 import org.apache.maven.model.IssueManagement;
 import org.apache.maven.model.Model;
 import org.apache.maven.model.ModelBase;
 import org.apache.maven.model.Organization;
 import org.apache.maven.model.Parent;
 import org.apache.maven.model.Plugin;
+import org.apache.maven.model.PluginExecution;
 import org.apache.maven.model.Profile;
 import org.apache.maven.model.Repository;
 import org.apache.maven.model.Scm;
@@ -43,6 +45,10 @@ public class ModelConstructor
 
         TypeDescription modelDescription = new TypeDescription( Model.class );
         addTypeDescription( modelDescription );
+
+        TypeDescription dependencyDescription = new TypeDescription( Dependency.class );
+        dependencyDescription.putListPropertyType( "exclusions", Exclusion.class );
+        addTypeDescription( dependencyDescription );        
         
         addTypeDescription( new TypeDescription( Parent.class ) );
         addTypeDescription( new TypeDescription( Organization.class ) );
@@ -60,6 +66,10 @@ public class ModelConstructor
         buildDescription.putListPropertyType( "plugins", Plugin.class );
         addTypeDescription( buildDescription );
 
+        TypeDescription pluginDescription = new TypeDescription( Plugin.class );
+        pluginDescription.putListPropertyType( "executions", PluginExecution.class );
+        addTypeDescription( pluginDescription );        
+        
         modelDescription.putListPropertyType( "modules", String.class );
         modelDescription.putListPropertyType( "profiles", Profile.class );
         modelDescription.putListPropertyType( "repositories", Repository.class );
