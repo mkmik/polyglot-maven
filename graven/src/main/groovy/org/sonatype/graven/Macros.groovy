@@ -78,7 +78,7 @@ exclusion = {builder, g, a ->
 
 exclusions = {builder, String... items ->
     builder.exclusions {
-        for (item in items) {
+        for (String item in items) {
             def artifact = parseArtifact(item)
             exclusion {
                 groupId artifact.groupId
