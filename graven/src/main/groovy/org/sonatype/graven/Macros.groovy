@@ -6,6 +6,35 @@ package org.sonatype.graven
  * @author <a href="mailto:jason@planet57.com">Jason Dillon</a>
  */
 
+private def parseArtifact(final String spec) {
+    assert spec != null
+    
+    def artifact = [:]
+    def items = spec.split(':')
+
+    if (items.length == 5) {
+        artifact.groupId = items[0]
+        artifact.artifactId = items[1]
+        artifact.type = items[2]
+        artifact.classifier = items[3]
+        artifact.version = items[4]
+    }
+    else if (items.length == 3) {
+        artifact.groupId = items[0]
+        artifact.artifactId = items[1]
+        artifact.version = items[4]
+    }
+    else if (items.length == 2) {
+        artifact.groupId = items[0]
+        artifact.artifactId = items[1]
+    }
+    else {
+        throw new IllegalArgumentException("Unable to parse artifact for: $spec")
+    }
+
+    return artifact
+}
+
 // TODO: Consider making bits that take g:a:v take a string and parse
 
 parent = {builder, g, a, v, p=null ->
@@ -50,11 +79,10 @@ exclusion = {builder, g, a ->
 exclusions = {builder, String... items ->
     builder.exclusions {
         for (item in items) {
-            // TODO: Use a Maven parser here
-            def ab = item.split(':')
+            def artifact = parseArtifact(item)
             exclusion {
-                groupId ab[0]
-                artifactId ab[1]
+                groupId artifact.groupId
+                artifactId artifact.artifactId
             }
         }
     }
@@ -103,7 +131,7 @@ excludes = {builder, Object... items ->
 uuid = {builder, prefix=null ->
     def val = UUID.randomUUID().toString()
     if (prefix) {
-        val = "${prefix}:${val}"
+        val = "${prefix}${val}"
     }
     builder.id val
 }
