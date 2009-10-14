@@ -27,6 +27,14 @@ dependencyManagement:
 dependencies:
   - { groupId: org.apache.maven, artifactId: maven-core, version: 3.0 }
   - { groupId: org.yaml, artifactId: snakeyaml, version: 1.4 }
+  - artifactId: groovy
+    groupId: org.codehaus.groovy
+    version: 1.6.5
+    exclusions:
+    - {artifactId: jline, groupId: jline}
+    - {artifactId: junit, groupId: junit}
+    - {artifactId: ant, groupId: org.apache.ant}
+    - {artifactId: ant-launcher, groupId: org.apache.ant} 
 
 build:
   plugins:

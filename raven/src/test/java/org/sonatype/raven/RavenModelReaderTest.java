@@ -1,14 +1,13 @@
 package org.sonatype.raven;
 
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileReader;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
+
 import java.io.InputStream;
-import java.io.Reader;
 import java.io.StringWriter;
+import java.net.URL;
 import java.util.List;
 import java.util.Properties;
-import java.net.URL;
 
 import org.apache.maven.model.Build;
 import org.apache.maven.model.CiManagement;
@@ -25,10 +24,7 @@ import org.apache.maven.model.Scm;
 import org.apache.maven.model.Site;
 import org.apache.maven.model.io.ModelWriter;
 import org.codehaus.plexus.util.xml.Xpp3Dom;
-import static org.junit.Assert.*;
 import org.junit.Test;
-
-import junit.framework.TestCase;
 
 public class RavenModelReaderTest
 {
@@ -68,12 +64,12 @@ public class RavenModelReaderTest
         assertEquals( "Will Price", con0.getName() );
 
         // DependencyManagement
-        List<Dependency> depManDependencies = model.getDependencies();
+        List<Dependency> depManDependencies = model.getDependencyManagement().getDependencies();
         assertEquals( 2, depManDependencies.size() );
 
         Dependency dmd0 = depManDependencies.get( 0 );
         assertEquals( "org.apache.maven", dmd0.getGroupId() );
-        assertEquals( "maven-core", dmd0.getArtifactId() );
+        assertEquals( "maven-model-builder", dmd0.getArtifactId() );
         assertEquals( "3.0", dmd0.getVersion() );
 
         Dependency dmd1 = depManDependencies.get( 1 );
@@ -83,7 +79,7 @@ public class RavenModelReaderTest
 
         // Dependencies
         List<Dependency> dependencies = model.getDependencies();
-        assertEquals( 2, dependencies.size() );
+        assertEquals( 3, dependencies.size() );
 
         Dependency d0 = dependencies.get( 0 );
         assertEquals( "org.apache.maven", d0.getGroupId() );

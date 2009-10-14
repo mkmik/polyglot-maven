@@ -11,6 +11,7 @@ import org.apache.maven.model.Dependency;
 import org.apache.maven.model.DependencyManagement;
 import org.apache.maven.model.Developer;
 import org.apache.maven.model.DistributionManagement;
+import org.apache.maven.model.Exclusion;
 import org.apache.maven.model.IssueManagement;
 import org.apache.maven.model.Model;
 import org.apache.maven.model.ModelBase;
@@ -43,6 +44,10 @@ public class ModelConstructor
 
         TypeDescription modelDescription = new TypeDescription( Model.class );
         addTypeDescription( modelDescription );
+
+        TypeDescription dependencyDescription = new TypeDescription( Dependency.class );
+        dependencyDescription.putListPropertyType( "exclusions", Exclusion.class );
+        addTypeDescription( dependencyDescription );        
         
         addTypeDescription( new TypeDescription( Parent.class ) );
         addTypeDescription( new TypeDescription( Organization.class ) );
