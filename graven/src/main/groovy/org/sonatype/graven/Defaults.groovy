@@ -1,27 +1,44 @@
 package org.sonatype.graven
 
-parent = {builder, gid, aid, v ->
+parent = {builder, g, a, v ->
     builder.parent {
-        groupId gid
-        artifactId aid
+        groupId g
+        artifactId a
         version v
     }
 }
 
-dependency = {builder, gid, aid, v, s=null ->
+dependency = {builder, g, a, v=null, s=null ->
     builder.dependency {
-        groupId gid
-        artifactId aid
-        version v
+        groupId g
+        artifactId a
+        if (v) {
+            version v
+        }
         if (s) {
             scope s
         }
     }
 }
 
-exclusion = {builder, gid, aid ->
+exclusion = {builder, g, a ->
     builder.exclusion {
-        groupId gid
-        artifactId aid
+        groupId g
+        artifactId a
     }
 }
+
+/*
+plugin = {builder, g, a, v=null, content=null ->
+    builder.plugin {
+        groupId g
+        artifactId a
+        if (v) {
+            version v
+        }
+        if (content) {
+            content()
+        }
+    }
+}
+*/
