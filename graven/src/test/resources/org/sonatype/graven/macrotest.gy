@@ -18,9 +18,7 @@ project {
         }
 
         dependency {
-            groupId '1'
-            artifactId '2'
-            version '3'
+            $gav(1, 2, 3)
             $exclusions('a:b', 'c:d')
         }
     }
