@@ -57,5 +57,7 @@ public class GravenModelReaderTest
         assertEquals("b", parent.artifactId)
         assertEquals("c", parent.version)
         assertEquals("../pom.xml", parent.relativePath)
+
+        // TODO: Need a heck of a lot more validation
     }
 }
