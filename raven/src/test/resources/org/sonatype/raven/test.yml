@@ -10,9 +10,8 @@ packaging: jar
 name: Raven
 description: Hybrid Maven 3.x & JRuby Build System
 
-#FIMXE: Currently raven can't parse properties
-#properties:
-#  mavenVersion: 3.0    
+properties:
+  mavenVersion: 3.0    
     
 developers:
  - { id: jvanzyl, name: Jason van Zyl }
