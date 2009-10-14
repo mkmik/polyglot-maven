@@ -32,6 +32,7 @@ project {
                 artifactId 'b'
                 executions {
                     execution {
+                        $uuid()
                         phase 'compile'
                         $goals('foo', 'bar')
                         configuration {
@@ -40,6 +41,7 @@ project {
                         }
                     }
                     execution {
+                        $uuid('foo')
                         $configuration(foo: "bar", a: "b")
                     }
                 }

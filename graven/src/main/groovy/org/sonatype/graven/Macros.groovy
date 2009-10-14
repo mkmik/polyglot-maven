@@ -99,3 +99,11 @@ excludes = {builder, Object... items ->
         }
     }
 }
+
+uuid = {builder, prefix=null ->
+    def val = UUID.randomUUID().toString()
+    if (prefix) {
+        val = "${prefix}${val}"
+    }
+    builder.id val
+}
