@@ -29,11 +29,9 @@ import java.net.URL;
  */
 public class PolyglotTranslatorCli
 {
-    private DefaultPlexusContainer container;
+    private final DefaultPlexusContainer container;
 
-    private PrintStreamLogger logger;
-
-    private PolyglotModelTranslator translator;
+    private final PolyglotModelTranslator translator;
 
     public PolyglotTranslatorCli(ClassWorld classWorld) throws Exception {
         if (classWorld == null) {
@@ -49,10 +47,6 @@ public class PolyglotTranslatorCli
         catch (PlexusContainerException e) {
             throw new IllegalStateException("Could not start component container: " + e.getMessage(), e);
         }
-
-        logger = new PrintStreamLogger(System.out);
-
-        container.setLoggerManager(new MavenLoggerManager(logger));
 
         translator = container.lookup(PolyglotModelTranslator.class);
     }
