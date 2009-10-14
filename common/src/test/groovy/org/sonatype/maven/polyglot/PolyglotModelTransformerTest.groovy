@@ -39,25 +39,9 @@ public class PolyglotModelTranslatorTest
     }
 
     @Test
-    void testXml2Graven() {
+    void testXml2Xml() {
         def text = translate("pom1.xml", "pom.xml")
         def expect = getClass().getResource("pom1.xml").text
         assertEquals(expect, text)
     }
-
-    /*
-    @Test
-    void testXml2Graven() {
-        def text = translate("pom1.xml", "pom.groovy")
-        def expect = getClass().getResource("pom1.groovy").text
-        assertEquals(expect, text)
-    }
-
-    @Test
-    void testGraven2Xml() {
-        def text = translate("pom1.groovy", "pom.xml")
-        def expect = getClass().getResource("pom1.xml").text
-        assertEquals(expect, text)
-    }
-    */
 }

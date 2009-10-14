@@ -7,12 +7,20 @@ import org.codehaus.plexus.ContainerConfiguration;
 import org.codehaus.plexus.DefaultContainerConfiguration;
 import org.codehaus.plexus.DefaultPlexusContainer;
 import org.codehaus.plexus.PlexusContainerException;
+import org.codehaus.plexus.util.IOUtil;
+import org.codehaus.plexus.component.repository.exception.ComponentLookupException;
 import org.codehaus.plexus.classworlds.ClassWorld;
 import org.sonatype.maven.polyglot.PolyglotModelTranslator;
 
 import java.io.File;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
+import java.io.FileOutputStream;
+import java.io.BufferedOutputStream;
 import java.util.HashMap;
 import java.util.Map;
+import java.net.URL;
 
 /**
  * Polgyglot model translator.
@@ -25,7 +33,9 @@ public class PolyglotTranslatorCli
 
     private PrintStreamLogger logger;
 
-    public PolyglotTranslatorCli(ClassWorld classWorld) {
+    private PolyglotModelTranslator translator;
+
+    public PolyglotTranslatorCli(ClassWorld classWorld) throws Exception {
         if (classWorld == null) {
             classWorld = new ClassWorld("plexus.core", Thread.currentThread().getContextClassLoader());
         }
@@ -43,6 +53,12 @@ public class PolyglotTranslatorCli
         logger = new PrintStreamLogger(System.out);
 
         container.setLoggerManager(new MavenLoggerManager(logger));
+
+        translator = container.lookup(PolyglotModelTranslator.class);
+    }
+
+    public PolyglotTranslatorCli() throws Exception {
+        this(null);
     }
 
     public int run(final String[] args) throws Exception {
@@ -52,22 +68,54 @@ public class PolyglotTranslatorCli
         }
 
         File input = new File(args[0]).getCanonicalFile();
+        File output = new File(args[1]).getCanonicalFile();
+
+        translate(input, output);
+
+        return 0;
+    }
+
+    public void translate(final File input, final File output) throws IOException {
+        assert input != null;
+        assert output != null;
+
+        translate(input.toURI().toURL(), output.toURI().toURL());
+    }
+
+    public void translate(final URL input, final URL output) throws IOException {
+        assert input != null;
+        assert output != null;
+
+        System.out.println("Input: " + input);
         Map<String,String> inputOptions = new HashMap<String,String>();
         inputOptions.put(ModelProcessor.LOCATION, input.getPath());
-        System.out.println("Input: " + input);
 
-        File output = new File(args[1]).getCanonicalFile();
+        System.out.println("Output: " + output);
         Map<String,String> outputOptions = new HashMap<String,String>();
         outputOptions.put(ModelProcessor.LOCATION, output.getPath());
-        System.out.println("Output: " + output);
 
-        PolyglotModelTranslator translator = container.lookup(PolyglotModelTranslator.class);
+        InputStream is = null;
+        OutputStream os = null;
 
-        translator.translate(input, inputOptions, output, outputOptions);
+        try {
+            is = input.openConnection().getInputStream();
 
-        System.out.println("Done");
-        
-        return 0;
+            if (output.getProtocol().equals("file")) {
+                File file = new File(output.getPath());
+                os = new BufferedOutputStream(new FileOutputStream(file));
+            }
+            else {
+                os = output.openConnection().getOutputStream();
+            }
+
+            translator.translate(is, inputOptions, os, outputOptions);
+
+            System.out.println("Done");
+        }
+        finally {
+            IOUtil.close(is);
+            IOUtil.close(os);
+        }
     }
 
     public static void main(final String[] args) throws Exception {
