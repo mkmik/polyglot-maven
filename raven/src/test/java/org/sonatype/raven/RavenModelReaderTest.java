@@ -7,6 +7,7 @@ import java.io.InputStream;
 import java.io.Reader;
 import java.io.StringWriter;
 import java.util.List;
+import java.util.Properties;
 
 import org.apache.maven.model.Build;
 import org.apache.maven.model.CiManagement;
@@ -29,46 +30,16 @@ import junit.framework.TestCase;
 public class RavenModelReaderTest
     extends TestCase
 {
-    public void testRepeatedReads()
-        throws Exception
-    {
-        RavenModelReader modelReader = new RavenModelReader();
-        File yml = new File( System.getProperty( "basedir" ), "src/test/resources/test.yml" );
-
-        InputStream reader;
-        Model model;
-
-        reader = new FileInputStream( yml );
-        model = modelReader.read( reader, null );
-
-        reader = new FileInputStream( yml );
-        model = modelReader.read( reader, null );
-        
-        Model newModel = model.clone();
-    }
-
     public void testModelCloning()
         throws Exception
     {
-        RavenModelReader modelReader = new RavenModelReader();
-        File yml = new File( System.getProperty( "basedir" ), "src/test/resources/test.yml" );
-
-        InputStream reader;
-        Model model;
-
-        reader = new FileInputStream( yml );
-        model = modelReader.read( reader, null );
-
-        Model newModel = model.clone();
+        getModel().clone();
     }
 
     public void testRavenModelReader()
         throws Exception
     {
-        RavenModelReader modelReader = new RavenModelReader();
-        File yml = new File( System.getProperty( "basedir" ), "src/test/resources/test.yml" );
-        InputStream reader = new FileInputStream( yml );
-        Model model = modelReader.read( reader, null );
+        Model model = getModel();
         assertNotNull( model );
 
         Parent parent = model.getParent();
@@ -171,19 +142,27 @@ public class RavenModelReaderTest
         assertEquals( "http://grid.sonatype.org/ci", ciManagement.getUrl() );
 
         // Profiles
+    }
 
-        /*
+    public void testRavenWriter()
+        throws Exception
+    {
         StringWriter sw = new StringWriter();
         ModelWriter writer = new RavenModelWriter();
+        Model model = getModel();
+        Properties p = new Properties();
+        p.setProperty( "FOO", "BAR" );
+        model.setProperties( p );
         writer.write( sw, null, model );
         System.out.println( sw.toString() );
-        */
-    }
-        
-    public class Person
-    {
-        public String firstName;
-        public String lastName;
     }
 
+    protected Model getModel()
+        throws Exception
+    {
+        RavenModelReader modelReader = new RavenModelReader();
+        File yml = new File( System.getProperty( "basedir" ), "src/test/resources/test.yml" );
+        InputStream reader = new FileInputStream( yml );        
+        return modelReader.read( reader, null );
+    }
 }

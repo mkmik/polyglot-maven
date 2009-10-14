@@ -9,7 +9,10 @@ version: 1.0-SNAPSHOT
 packaging: jar
 name: Raven
 description: Hybrid Maven 3.x & JRuby Build System
-
+    
+properties:
+  mavenVersion: 3.0    
+    
 developers:
  - { id: jvanzyl, name: Jason van Zyl }
 
