@@ -32,7 +32,7 @@ class ScriptFactory
 
             def include
 
-            // TODO: Support String?
+            // TODO: Support String, support loading from resource
             
             if (source instanceof Class) {
                 include = source.newInstance()
