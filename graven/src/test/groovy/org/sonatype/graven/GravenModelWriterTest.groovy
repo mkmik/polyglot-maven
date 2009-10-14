@@ -24,7 +24,7 @@ public class GravenModelWriterTest
     }
 
     @Test
-    void test1() {
+    void testWriting() {
         def model = new Model(parent: new Parent(groupId: "a", artifactId: "b", version: "c"))
 
         def buff = new StringWriter()

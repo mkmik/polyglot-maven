@@ -22,7 +22,7 @@ public class GravenModelReaderTest
     }
 
     @Test
-    void test1() {
+    void testReading() {
         def input = getClass().getResource("test1.groovy")
         assertNotNull(input)
 
@@ -41,8 +41,8 @@ public class GravenModelReaderTest
     }
 
     @Test
-    void test2() {
-        def input = getClass().getResource("macrotest.groovy")
+    void testMacros() {
+        def input = getClass().getResource("macrotest.gy")
         assertNotNull(input)
 
         def model = reader.read(input.openStream(), null)
