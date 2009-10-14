@@ -106,6 +106,11 @@ project {
                 version '${mavenVersion}'
             }
             dependency {
+                groupId 'org.apache.maven'
+                artifactId 'maven-compat'
+                version '${mavenVersion}'
+            }
+            dependency {
                 groupId 'org.codehaus.groovy'
                 artifactId 'groovy'
                 version '1.6.5'
@@ -152,5 +157,6 @@ project {
     }
     properties {
         mavenVersion '3.0-SNAPSHOT'
+        'project.build.sourceEncoding' 'UTF-8'
     }
 }

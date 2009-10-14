@@ -289,7 +289,10 @@ public class Dom2Groovy
     }
 
     protected boolean checkEscaping(final String localName) {
-        return keywords.contains(localName) || localName.indexOf("-") != -1 || localName.indexOf(":") != -1;
+        return keywords.contains(localName) ||
+                localName.contains("-") ||
+                localName.contains(".") ||
+                localName.contains(":");
     }
 
     protected String getTextNodeData(final Text node) {
