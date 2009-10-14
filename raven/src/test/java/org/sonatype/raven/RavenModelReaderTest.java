@@ -8,6 +8,7 @@ import java.io.Reader;
 import java.io.StringWriter;
 import java.util.List;
 import java.util.Properties;
+import java.net.URL;
 
 import org.apache.maven.model.Build;
 import org.apache.maven.model.CiManagement;
@@ -24,18 +25,21 @@ import org.apache.maven.model.Scm;
 import org.apache.maven.model.Site;
 import org.apache.maven.model.io.ModelWriter;
 import org.codehaus.plexus.util.xml.Xpp3Dom;
+import static org.junit.Assert.*;
+import org.junit.Test;
 
 import junit.framework.TestCase;
 
 public class RavenModelReaderTest
-    extends TestCase
 {
+    @Test
     public void testModelCloning()
         throws Exception
     {
         getModel().clone();
     }
 
+    @Test
     public void testRavenModelReader()
         throws Exception
     {
@@ -144,6 +148,7 @@ public class RavenModelReaderTest
         // Profiles
     }
 
+    @Test
     public void testRavenWriter()
         throws Exception
     {
@@ -161,8 +166,9 @@ public class RavenModelReaderTest
         throws Exception
     {
         RavenModelReader modelReader = new RavenModelReader();
-        File yml = new File( System.getProperty( "basedir" ), "src/test/resources/test.yml" );
-        InputStream reader = new FileInputStream( yml );        
+        URL url = getClass().getResource("test.yml");
+        assertNotNull(url);
+        InputStream reader = url.openStream();
         return modelReader.read( reader, null );
     }
 }
