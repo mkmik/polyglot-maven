@@ -8,7 +8,7 @@ package org.sonatype.graven
 
 def vars = binding.properties.variables
 
-parseArtifact = {String... items ->
+def parseArtifact = {String... items ->
     assert items != null && items.size() != 0
 
     if (items.size() == 1 && items[0].contains(':')) {
@@ -53,7 +53,7 @@ vars.'$artifact' = {builder, String... items ->
     }
 }
 
-parseParent = {String... items ->
+def parseParent = {String... items ->
     assert items != null && items.size() != 0
 
     if (items.size() == 1 && items[0].contains(':')) {
@@ -107,7 +107,7 @@ vars.'$dependency' = {builder, g, a, v=null, s=null ->
     }
 }
 
-parseExclusion = {String... items ->
+def parseExclusion = {String... items ->
     assert items != null && items.size() != 0
 
     if (items.size() == 1 && items[0].contains(':')) {
