@@ -1,7 +1,7 @@
 package org.sonatype.graven
 
 import groovy.xml.MarkupBuilder
-import org.sonatype.graven.Defaults
+import org.sonatype.graven.Macros
 
 /**
  * Builds {@link Script} instances to handle <tt>pom.groovy</tt> to XML.
@@ -31,6 +31,8 @@ class ScriptFactory
             assert source != null
 
             def include
+
+            // TODO: Support String?
             
             if (source instanceof Class) {
                 include = source.newInstance()
@@ -55,7 +57,7 @@ class ScriptFactory
             }
         }
 
-        include(Defaults)
+        include(Macros)
 
         // Bind these last so they don't get clobbered
         binding.setProperty("project", root)

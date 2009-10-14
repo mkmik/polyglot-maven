@@ -42,7 +42,7 @@ public class GravenModelReaderTest
 
     @Test
     void test2() {
-        def input = getClass().getResource("test3.groovy")
+        def input = getClass().getResource("macrotest.groovy")
         assertNotNull(input)
 
         def model = reader.read(input.openStream(), null)

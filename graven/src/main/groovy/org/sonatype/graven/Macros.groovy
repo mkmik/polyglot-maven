@@ -1,5 +1,11 @@
 package org.sonatype.graven
 
+/**
+ * Default pom macros.
+ *
+ * @author <a href="mailto:jason@planet57.com">Jason Dillon</a>
+ */
+
 // TODO: Consider making bits that take g:a:v take a string and parse
 
 parent = {builder, g, a, v, p=null ->
