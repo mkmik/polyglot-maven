@@ -6,33 +6,40 @@ package org.sonatype.graven
  * @author <a href="mailto:jason@planet57.com">Jason Dillon</a>
  */
 
-private Map parseArtifact(final String spec) {
-    assert spec != null
-    
+private Map parseArtifact(final String... items) {
+    assert items != null && items.size() != 0
     def artifact = [:]
-    def items = spec.trim().split(':')
 
-    if (items.length == 5) {
-        artifact.groupId = items[0]
-        artifact.artifactId = items[1]
-        artifact.type = items[2]
-        artifact.classifier = items[3]
-        artifact.version = items[4]
-    }
-    else if (items.length == 3) {
-        artifact.groupId = items[0]
-        artifact.artifactId = items[1]
-        artifact.version = items[2]
-    }
-    else if (items.length == 2) {
-        artifact.groupId = items[0]
-        artifact.artifactId = items[1]
-    }
-    else {
-        throw new IllegalArgumentException("Unable to parse artifact for: $spec")
+    switch (items.size()) {
+        case 5:
+            artifact.groupId = items[0]
+            artifact.artifactId = items[1]
+            artifact.type = items[2]
+            artifact.classifier = items[3]
+            artifact.version = items[4]
+            break
+
+        case 3:
+            artifact.groupId = items[0]
+            artifact.artifactId = items[1]
+            artifact.version = items[2]
+            break
+
+        case 2:
+            artifact.groupId = items[0]
+            artifact.artifactId = items[1]
+            break
+
+        default:
+            throw new IllegalArgumentException("Unable to parse artifact for: ${items}")
     }
 
     return artifact
+}
+
+private Map parseArtifact(final String spec) {
+    assert spec != null
+    return parseArtifact(spec.trim().split(':'))
 }
 
 artifact = {builder, String spec ->
