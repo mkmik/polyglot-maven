@@ -10,7 +10,7 @@ private def parseArtifact(final String spec) {
     assert spec != null
     
     def artifact = [:]
-    def items = spec.split(':')
+    def items = spec.trim().split(':')
 
     if (items.length == 5) {
         artifact.groupId = items[0]
