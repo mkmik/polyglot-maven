@@ -3,9 +3,7 @@ package org.sonatype.maven.polyglot.cli
 import org.codehaus.plexus.PlexusTestCase
 import org.junit.Before
 import org.junit.Test
-import static org.apache.maven.model.building.ModelProcessor.*
 import org.sonatype.maven.polyglot.cli.PolyglotTranslatorCli
-import org.sonatype.maven.polyglot.PolyglotModelTranslator
 
 /**
  * Tests for {@link PolyglotTranslatorCli}.

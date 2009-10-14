@@ -1,26 +1,23 @@
 package org.sonatype.maven.polyglot.cli;
 
-import org.apache.maven.cli.MavenLoggerManager;
-import org.apache.maven.cli.PrintStreamLogger;
 import org.apache.maven.model.building.ModelProcessor;
 import org.codehaus.plexus.ContainerConfiguration;
 import org.codehaus.plexus.DefaultContainerConfiguration;
 import org.codehaus.plexus.DefaultPlexusContainer;
 import org.codehaus.plexus.PlexusContainerException;
-import org.codehaus.plexus.util.IOUtil;
-import org.codehaus.plexus.component.repository.exception.ComponentLookupException;
 import org.codehaus.plexus.classworlds.ClassWorld;
+import org.codehaus.plexus.util.IOUtil;
 import org.sonatype.maven.polyglot.PolyglotModelTranslator;
 
+import java.io.BufferedOutputStream;
 import java.io.File;
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
-import java.io.FileOutputStream;
-import java.io.BufferedOutputStream;
+import java.net.URL;
 import java.util.HashMap;
 import java.util.Map;
-import java.net.URL;
 
 /**
  * Polgyglot model translator.

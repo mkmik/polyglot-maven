@@ -3,6 +3,7 @@ package org.sonatype.maven.polyglot
 import org.codehaus.plexus.PlexusTestCase
 import org.junit.Before
 import org.junit.Test
+import org.sonatype.maven.polyglot.PolyglotModelTranslator
 import static org.apache.maven.model.building.ModelProcessor.*
 
 /**
