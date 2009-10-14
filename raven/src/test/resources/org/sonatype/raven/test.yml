@@ -41,6 +41,8 @@ build:
     - groupId: org.apache.maven.plugins   
       artifactId: maven-compiler-plugin
       version: 2.0.2
+      executions:
+      - goals: [generateStubs, compile, generateTestStubs, testCompile]      
       configuration:
         source: 1.6
         target: 1.5

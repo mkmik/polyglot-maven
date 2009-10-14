@@ -18,6 +18,7 @@ import org.apache.maven.model.ModelBase;
 import org.apache.maven.model.Organization;
 import org.apache.maven.model.Parent;
 import org.apache.maven.model.Plugin;
+import org.apache.maven.model.PluginExecution;
 import org.apache.maven.model.Profile;
 import org.apache.maven.model.Repository;
 import org.apache.maven.model.Scm;
@@ -65,6 +66,10 @@ public class ModelConstructor
         buildDescription.putListPropertyType( "plugins", Plugin.class );
         addTypeDescription( buildDescription );
 
+        TypeDescription pluginDescription = new TypeDescription( Plugin.class );
+        pluginDescription.putListPropertyType( "executions", PluginExecution.class );
+        addTypeDescription( pluginDescription );        
+        
         modelDescription.putListPropertyType( "modules", String.class );
         modelDescription.putListPropertyType( "profiles", Profile.class );
         modelDescription.putListPropertyType( "repositories", Repository.class );
