@@ -2,11 +2,14 @@ package org.sonatype.graven
 
 // TODO: Consider making bits that take g:a:v take a string and parse
 
-parent = {builder, g, a, v ->
+parent = {builder, g, a, v, p=null ->
     builder.parent {
         groupId g
         artifactId a
         version v
+        if (p) {
+            relativePath p
+        }
     }
 }
 
@@ -30,7 +33,20 @@ exclusion = {builder, g, a ->
     }
 }
 
-goals = {builder, Object... items ->
+exclusions = {builder, String... items ->
+    builder.exclusions {
+        for (item in items) {
+            // TODO: Use a Maven parser here
+            def ab = item.split(':')
+            exclusion {
+                groupId ab[0]
+                artifactId ab[1]
+            }
+        }
+    }
+}
+
+goals = {builder, String... items ->
     builder.goals {
         for (item in items) {
             goal item
@@ -38,7 +54,7 @@ goals = {builder, Object... items ->
     }
 }
 
-modules = {builder, Object... items ->
+modules = {builder, String... items ->
     builder.modules {
         for (item in items) {
             module item
@@ -69,18 +85,3 @@ excludes = {builder, Object... items ->
         }
     }
 }
-
-/*
-plugin = {builder, g, a, v=null, content=null ->
-    builder.plugin {
-        groupId g
-        artifactId a
-        if (v) {
-            version v
-        }
-        if (content) {
-            content()
-        }
-    }
-}
-*/

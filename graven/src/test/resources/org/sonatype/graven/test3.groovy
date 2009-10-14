@@ -5,6 +5,22 @@ project {
     dependencies {
         // dependency { groupId 'a'; artifactId 'b'; version 'c' }
         $dependency('a', 'b', 'c')
+
+        dependency {
+            groupId 'bar'
+            artifactId 'foo'
+            version 'baz'
+            exclusions {
+                $exclusion('a', 'b')
+            }
+        }
+
+        dependency {
+            groupId 'bar'
+            artifactId 'foo'
+            version 'baz'
+            $exclusions('a:b', 'c:d')
+        }
     }
 
     $modules('a', 'b', 'c')
