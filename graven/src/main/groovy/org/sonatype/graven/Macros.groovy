@@ -22,7 +22,7 @@ private def parseArtifact(final String spec) {
     else if (items.length == 3) {
         artifact.groupId = items[0]
         artifact.artifactId = items[1]
-        artifact.version = items[4]
+        artifact.version = items[2]
     }
     else if (items.length == 2) {
         artifact.groupId = items[0]
