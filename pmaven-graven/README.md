@@ -18,35 +18,35 @@ Macros must be used in the correct context, or they will produce the given eleme
     $artifact('foo:bar')
 
 ##### Result
-    <groupId>foo</groupId>
-    <artifactId>bar</artifactId>
-
+    groupId 'foo'
+    artifactId 'bar'
+    
 #### Example
     $artifact('foo:bar:1.0')
 
 ##### Result
-    <groupId>foo</groupId>
-    <artifactId>bar</artifactId>
-    <version>1.0</version>
+    groupId 'foo'
+    artifactId 'bar'
+    version '1.0'
 
 #### Example
     $artifact('foo:bar:bin:1.0')
 
 ##### Result
-    <groupId>foo</groupId>
-    <artifactId>bar</artifactId>
-    <version>1.0</version>
-    <classifier>bin</classifier>
-            
+    groupId 'foo'
+    artifactId 'bar'
+    version '1.0'
+    classifier 'bin'
+
 #### Example
     $artifact('foo:bar:jar:bin:1.0')
 
 ##### Result
-    <groupId>foo</groupId>
-    <artifactId>bar</artifactId>
-    <version>1.0</version>
-    <type>jar</type>
-    <classifier>bin</classifier>
+    groupId 'foo'
+    artifactId 'bar'
+    version '1.0'
+    type 'jar'
+    classifier 'bin'
 
 ### $parent
 
@@ -54,43 +54,43 @@ Macros must be used in the correct context, or they will produce the given eleme
     $parent('foo:bar:1.0')
 
 ##### Result
-    <parent>
-        <groupId>foo</groupId>
-        <artifactId>bar</artifactId>
-        <version>1.0</version>
-    </parent>
+    parent {
+        groupId 'foo'
+        artifactId 'bar'
+        version: '1.0'
+    }
 
 ### $dependency
 
 #### Example
     $dependency('foo:bar:1.0:test')
 
-##### Result
-    <dependency>
-        <groupId>foo</groupId>
-        <artifactId>bar</artifactId>
-        <version>1.0</version>
-        <scope>test</scope>
-    </dependency>
+#####  Result
+    dependency {
+        groupId 'foo' 
+        artifactId 'bar' 
+        version '1.0' 
+        scope 'test' 
+    } 
 
 #### Example
     $dependency('foo:bar:1.0')
 
 ##### Result
-    <dependency>
-        <groupId>foo</groupId>
-        <artifactId>bar</artifactId>
-        <version>1.0</version>
-    </dependency>
+    dependency { 
+        groupId 'foo' 
+        artifactId 'bar' 
+        version '1.0' 
+    } 
 
 #### Example
     $dependency('foo:bar')
 
 ##### Result
-    <dependency>
-        <groupId>foo</groupId>
-        <artifactId>bar</artifactId>
-    </dependency>
+    dependency {
+        groupId 'foo' 
+        artifactId 'bar' 
+    } 
 
 ### $exclusion
 
@@ -98,10 +98,10 @@ Macros must be used in the correct context, or they will produce the given eleme
     $exclusion('foo:bar')
 
 ##### Result
-    <exclusion>
-        <groupId>foo</groupId>
-        <artifactId>bar</artifactId>
-    </exclusion>
+    exclusion {
+        groupId 'foo' 
+        artifactId 'bar' 
+    } 
 
 ### $exclusions
 
@@ -109,16 +109,16 @@ Macros must be used in the correct context, or they will produce the given eleme
     $exclusions('foo:bar', 'a:b')
 
 ##### Result
-    <exclusions>
-        <exclusion>
-            <groupId>foo</groupId>
-            <artifactId>bar</artifactId>
-        </exclusion>
-        <exclusion>
-            <groupId>a</groupId>
-            <artifactId>b</artifactId>
-        </exclusion>
-    </exclusions>
+    exclusions { 
+        exclusion { 
+            groupId 'foo' 
+            artifactId 'bar' 
+        } 
+        exclusion {
+            groupId 'a' 
+            artifactId 'b' 
+        } 
+    } 
 
 ### $goals
 
@@ -126,10 +126,10 @@ Macros must be used in the correct context, or they will produce the given eleme
     $goals('compile', 'execute')
 
 ##### Result
-    <goals>
-        <goal>compile</goal>
-        <goal>execute</goal>
-    <goals>
+    goals {
+        goal 'compile' 
+        goal 'execute' 
+    } 
 
 ### $modules
 
@@ -137,21 +137,21 @@ Macros must be used in the correct context, or they will produce the given eleme
     $modules('a', 'b')
 
 ##### Result
-    <modules>
-        <goal>a</goal>
-        <goal>b</goal>
-    <modules>
+    modules {
+        goal 'a'
+        goal 'b'
+    } 
 
 ### $configuration
 
 #### Example
-    $configuration(foo: '1', bar: '2')
+    $configuration(foo '1', bar '2')
 
 ##### Result
-    <configuration>
-        <foo>1</foo>
-        <bar>2</bar>
-    </configuration>
+    configuration {
+        foo '1'
+        bar '2'
+    }
 
 ### $includes
 
@@ -159,10 +159,10 @@ Macros must be used in the correct context, or they will produce the given eleme
     $includes('*.bat', '*.sh')
 
 ##### Result
-    <includes>
-        <include>*.bat</include>
-        <include>*.sh</include>
-    </includes>
+    includes {
+        include '*.bat'
+        include '*.sh'
+    }
 
 ### $excludes
 
@@ -170,8 +170,8 @@ Macros must be used in the correct context, or they will produce the given eleme
     $excludes('*.bat', '*.sh')
 
 ##### Result
-    <excludes>
-        <exclude>*.bat</exclude>
-        <exclude>*.sh</exclude>
-    </excludes>
+    excludes {
+        exclude '*.bat'
+        exclude '*.sh'
+    }
 
