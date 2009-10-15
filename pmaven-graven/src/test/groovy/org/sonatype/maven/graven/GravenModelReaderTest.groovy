@@ -1,11 +1,11 @@
 package org.sonatype.maven.graven
 
+import org.apache.maven.model.building.ModelProcessor
 import org.junit.Before
 import org.junit.Test
 import org.sonatype.maven.graven.GravenModelReader
 import org.sonatype.maven.graven.GravenModelTestSupport
 import static org.junit.Assert.*
-import org.apache.maven.model.building.ModelProcessor
 
 /**
  * Tests for {@link GravenModelReader}.

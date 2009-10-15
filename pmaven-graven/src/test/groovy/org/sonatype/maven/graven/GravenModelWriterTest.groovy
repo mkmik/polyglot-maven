@@ -7,7 +7,6 @@ import org.junit.Test
 import org.sonatype.maven.graven.GravenModelTestSupport
 import org.sonatype.maven.graven.GravenModelWriter
 import static org.junit.Assert.*
-import org.sonatype.maven.graven.GravenModelWriter
 
 /**
  * Tests for {@link org.sonatype.maven.graven.GravenModelWriter}.

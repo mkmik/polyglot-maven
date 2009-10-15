@@ -5,7 +5,7 @@ import org.apache.maven.model.Model;
 import org.apache.maven.model.io.DefaultModelWriter;
 import org.apache.maven.model.io.ModelWriter;
 import org.codehaus.plexus.component.annotations.Component;
-import org.codehaus.plexus.util.IOUtil;
+import org.sonatype.maven.polyglot.io.ModelWriterSupport;
 import org.w3c.dom.Attr;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
@@ -16,12 +16,7 @@ import org.xml.sax.SAXException;
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
-import java.io.BufferedOutputStream;
-import java.io.File;
-import java.io.FileOutputStream;
 import java.io.IOException;
-import java.io.OutputStream;
-import java.io.OutputStreamWriter;
 import java.io.PrintWriter;
 import java.io.StringReader;
 import java.io.StringWriter;
@@ -35,29 +30,8 @@ import java.util.Map;
  */
 @Component(role=ModelWriter.class, hint="graven")
 public class GravenModelWriter
-    implements ModelWriter
+    extends ModelWriterSupport
 {
-    public void write(final File file, final Map<String,Object> options, final Model model) throws IOException {
-        assert file != null;
-        assert model != null;
-
-        OutputStream out = new BufferedOutputStream(new FileOutputStream(file));
-        try {
-            write(out, options, model);
-            out.flush();
-        }
-        finally {
-            IOUtil.close(out);
-        }
-    }
-
-    public void write(final OutputStream output, final Map<String,Object> options, final Model model) throws IOException {
-        assert output != null;
-        assert model != null;
-
-        write(new OutputStreamWriter(output), options, model);
-    }
-
     public void write(final Writer output, final Map<String,Object> options, final Model model) throws IOException {
         assert output != null;
         assert model != null;

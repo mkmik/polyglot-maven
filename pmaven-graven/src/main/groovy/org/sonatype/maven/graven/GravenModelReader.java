@@ -8,12 +8,9 @@ import org.apache.maven.model.io.ModelParseException;
 import org.apache.maven.model.io.ModelReader;
 import org.codehaus.plexus.component.annotations.Component;
 import org.codehaus.plexus.util.IOUtil;
-import org.sonatype.maven.graven.ScriptFactory;
+import org.sonatype.maven.polyglot.io.ModelReaderSupport;
 
-import java.io.BufferedInputStream;
 import java.io.ByteArrayInputStream;
-import java.io.File;
-import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.Reader;
@@ -32,23 +29,8 @@ import java.util.Map;
  */
 @Component(role=ModelReader.class, hint="graven")
 public class GravenModelReader
-    implements ModelReader
+    extends ModelReaderSupport
 {
-    public Model read(final File file, final Map<String,?> options) throws IOException, ModelParseException {
-        assert file != null;
-
-        Model model;
-        InputStream in = new BufferedInputStream(new FileInputStream(file));
-        try {
-            model = read(in, options);
-            model.setPomFile(file);
-        }
-        finally {
-            IOUtil.close(in);
-        }
-        return model;
-    }
-
     public Model read(final Reader input, final Map<String,?> options) throws IOException, ModelParseException {
         assert input != null;
         
@@ -56,6 +38,7 @@ public class GravenModelReader
         return read(new ByteArrayInputStream(IOUtil.toByteArray(input)), options);
     }
 
+    @Override
     public Model read(final InputStream input, final Map<String,?> options) throws IOException, ModelParseException {
         assert input != null;
 

@@ -2,6 +2,7 @@ package org.sonatype.maven.graven
 
 import groovy.xml.MarkupBuilder
 import org.apache.maven.model.building.ModelProcessor
+import org.sonatype.maven.graven.Macros
 
 /**
  * Builds {@link Script} instances to handle <tt>pom.groovy</tt> to XML.

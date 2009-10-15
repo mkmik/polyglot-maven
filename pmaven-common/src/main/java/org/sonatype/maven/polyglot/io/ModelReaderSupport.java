@@ -1,11 +1,8 @@
-package org.sonatype.maven.polyglot;
+package org.sonatype.maven.polyglot.io;
 
 import org.apache.maven.model.Model;
-import org.apache.maven.model.building.ModelProcessor;
 import org.apache.maven.model.io.ModelParseException;
 import org.apache.maven.model.io.ModelReader;
-import org.codehaus.plexus.component.annotations.Component;
-import org.codehaus.plexus.component.annotations.Requirement;
 import org.codehaus.plexus.util.IOUtil;
 
 import java.io.BufferedReader;
@@ -18,22 +15,13 @@ import java.io.Reader;
 import java.util.Map;
 
 /**
- * Polyglot model processor.
+ * Support for {@link ModelReader} implementations.
  *
  * @author <a href="mailto:jason@planet57.com">Jason Dillon</a>
  */
-@Component(role=ModelProcessor.class, hint="polyglot")
-public class PolyglotModelProcessor
-    implements ModelProcessor
+public abstract class ModelReaderSupport
+    implements ModelReader
 {
-    @Requirement
-    private PolyglotModelManager manager;
-
-    public File locatePom(final File dir) {
-        assert manager != null;
-        return manager.locatePom(dir);
-    }
-
     public Model read(final File input, final  Map<String,?> options) throws IOException, ModelParseException {
         Model model;
 
@@ -50,11 +38,5 @@ public class PolyglotModelProcessor
 
     public Model read(final InputStream input, final Map<String,?> options) throws IOException, ModelParseException {
         return read(new InputStreamReader(input), options);
-    }
-
-    public Model read(final Reader input, final Map<String,?> options) throws IOException, ModelParseException {
-        assert manager != null;
-        ModelReader reader = manager.getReaderFor(options);
-        return reader.read(input, options);
     }
 }

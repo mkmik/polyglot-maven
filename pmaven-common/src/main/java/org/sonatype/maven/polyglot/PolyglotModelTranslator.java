@@ -13,7 +13,9 @@ import java.io.InputStream;
 import java.io.OutputStream;
 import java.io.Reader;
 import java.io.Writer;
+import java.io.OutputStreamWriter;
 import java.util.Map;
+import java.net.URL;
 
 /**
  * Translates between polyglot model formats.
@@ -37,7 +39,7 @@ public class PolyglotModelTranslator
         Model model = reader.read(input, inputOptions);
         writer.write(output, (Map<String,Object>)outputOptions, model);
     }
-
+    
     @SuppressWarnings({"unchecked"})
     public void translate(final InputStream input, final Map<String,?> inputOptions, final OutputStream output, final Map<String,?> outputOptions) throws IOException, ModelParseException {
         assert input != null;
@@ -49,7 +51,7 @@ public class PolyglotModelTranslator
         Model model = reader.read(input, inputOptions);
         writer.write(output, (Map<String,Object>)outputOptions, model);
     }
-
+    
     @SuppressWarnings({"unchecked"})
     public void translate(final Reader input, final Map<String,?> inputOptions, final Writer output, final Map<String,?> outputOptions) throws IOException, ModelParseException {
         assert input != null;

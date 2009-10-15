@@ -8,9 +8,9 @@ import org.codehaus.plexus.component.annotations.Requirement;
 import org.sonatype.maven.polyglot.mapping.Mapping;
 
 import java.io.File;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
-import java.util.HashSet;
 import java.util.Set;
 
 /**

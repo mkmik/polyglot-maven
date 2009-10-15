@@ -1,14 +1,7 @@
 package org.sonatype.raven;
 
-import java.io.File;
-import java.io.FileWriter;
 import java.io.IOException;
-import java.io.OutputStream;
-import java.io.OutputStreamWriter;
 import java.io.Writer;
-import java.io.BufferedOutputStream;
-import java.io.FileOutputStream;
-import java.io.BufferedWriter;
 import java.util.Map;
 
 import org.apache.maven.model.Model;
@@ -20,32 +13,12 @@ import org.yaml.snakeyaml.DumperOptions.FlowStyle;
 import org.yaml.snakeyaml.nodes.Tags;
 import org.yaml.snakeyaml.representer.Representer;
 import org.codehaus.plexus.component.annotations.Component;
-import org.codehaus.plexus.util.IOUtil;
+import org.sonatype.maven.polyglot.io.ModelWriterSupport;
 
 @Component(role = ModelWriter.class, hint = "raven")
 public class RavenModelWriter
-    implements ModelWriter
+    extends ModelWriterSupport
 {
-    public void write(final File file, final Map<String,Object> options, final Model model) throws IOException {
-        assert file != null;
-        assert model != null;
-
-        Writer out = new BufferedWriter(new FileWriter(file));
-        try {
-            write(out, options, model);
-            out.flush();
-        }
-        finally {
-            IOUtil.close(out);
-        }
-    }
-
-    public void write( OutputStream output, Map<String, Object> options, Model model )
-        throws IOException
-    {
-        write( new OutputStreamWriter( output ), options, model );
-    }
-
     public void write( Writer output, Map<String, Object> o, Model model )
         throws IOException
     {
