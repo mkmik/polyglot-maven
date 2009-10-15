@@ -10,13 +10,13 @@
         <version>1.0-SNAPSHOT</version>
     </parent>
 
-    <artifactId>raven</artifactId>
+    <artifactId>pmaven-raven</artifactId>
     <name>Polyglot Maven :: Raven</name>
 
     <dependencies>
         <dependency>
             <groupId>org.sonatype.pmaven</groupId>
-            <artifactId>common</artifactId>
+            <artifactId>pmaven-common</artifactId>
         </dependency>
 
         <dependency>

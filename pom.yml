@@ -1,6 +1,6 @@
 modelVersion: 4.0.0
-groupId: org.sonatype.graven
-artifactId: graven-parent
+groupId: org.sonatype.pmaven
+artifactId: pmaven
 version: 1.0-SNAPSHOT
 name: Polyglot Maven
 packaging: pom
@@ -8,9 +8,10 @@ packaging: pom
 properties: 
   mavenVersion: 3.0-SNAPSHOT
 
-modules: [common, graven, raven, cli]
+modules: [pmaven-common, pmaven-cli, pmaven-graven, pmaven-raven]
 
 build:
+  defaultGoal: install
   plugins:
   - artifactId: maven-surefire-plugin
     groupId: org.apache.maven.plugins
@@ -54,7 +55,7 @@ dependencyManagement:
     - {artifactId: junit, groupId: junit}
     - {artifactId: ant, groupId: org.apache.ant}
     - {artifactId: ant-launcher, groupId: org.apache.ant}
-  - {artifactId: common, groupId: org.sonatype.graven, version: 1.0-SNAPSHOT}
-  - {artifactId: cli, groupId: org.sonatype.graven, version: 1.0-SNAPSHOT}
-  - {artifactId: graven, groupId: org.sonatype.graven, version: 1.0-SNAPSHOT}
-  - {artifactId: raven, groupId: org.sonatype.graven, version: 1.0-SNAPSHOT}
+  - {artifactId: pmaven-common, groupId: org.sonatype.pmaven, version: 1.0-SNAPSHOT}
+  - {artifactId: pmaven-cli, groupId: org.sonatype.pmaven, version: 1.0-SNAPSHOT}
+  - {artifactId: pmaven-graven, groupId: org.sonatype.pmaven, version: 1.0-SNAPSHOT}
+  - {artifactId: pmaven-raven, groupId: org.sonatype.pmaven, version: 1.0-SNAPSHOT}

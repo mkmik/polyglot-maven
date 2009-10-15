@@ -50,6 +50,8 @@ public class PolyglotModelManager
 
     public File locatePom(final File dir) {
         assert dir != null;
+        
+        // FIXME: Need to complain if we find more than one acceptable pom
 
         for (Mapping mapping : mappings) {
             File file = mapping.locatePom(dir);

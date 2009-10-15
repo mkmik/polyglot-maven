@@ -1,7 +1,7 @@
 project {
     modelVersion '4.0.0'
-    groupId 'org.sonatype.graven'
-    artifactId 'graven-parent'
+    groupId 'org.sonatype.pmaven'
+    artifactId 'pmaven'
     version '1.0-SNAPSHOT'
     packaging 'pom'
     name 'Polyglot Maven'
@@ -68,10 +68,10 @@ project {
         }
     }
     modules {
-        module 'common'
-        module 'graven'
-        module 'raven'
-        module 'cli'
+        module 'pmaven-common'
+        module 'pmaven-cli'
+        module 'pmaven-graven'
+        module 'pmaven-raven'
     }
     dependencies {
         dependency {
@@ -134,23 +134,23 @@ project {
                 }
             }
             dependency {
-                groupId 'org.sonatype.graven'
-                artifactId 'common'
+                groupId 'org.sonatype.pmaven'
+                artifactId 'pmaven-common'
                 version '1.0-SNAPSHOT'
             }
             dependency {
-                groupId 'org.sonatype.graven'
-                artifactId 'cli'
+                groupId 'org.sonatype.pmaven'
+                artifactId 'pmaven-cli'
                 version '1.0-SNAPSHOT'
             }
             dependency {
-                groupId 'org.sonatype.graven'
-                artifactId 'graven'
+                groupId 'org.sonatype.pmaven'
+                artifactId 'pmaven-graven'
                 version '1.0-SNAPSHOT'
             }
             dependency {
-                groupId 'org.sonatype.graven'
-                artifactId 'raven'
+                groupId 'org.sonatype.pmaven'
+                artifactId 'pmaven-raven'
                 version '1.0-SNAPSHOT'
             }
         }

@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <project xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd" xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
-
+    
     <modelVersion>4.0.0</modelVersion>
 
     <parent>
@@ -10,18 +10,18 @@
         <version>1.0-SNAPSHOT</version>
     </parent>
 
-    <artifactId>common</artifactId>
-    <name>Polyglot Maven :: Common</name>
-    
+    <artifactId>pmaven-graven</artifactId>
+    <name>Polyglot Maven :: Graven</name>
+
     <dependencies>
         <dependency>
-            <groupId>org.apache.maven</groupId>
-            <artifactId>maven-model-builder</artifactId>
+            <groupId>org.sonatype.pmaven</groupId>
+            <artifactId>pmaven-common</artifactId>
         </dependency>
-
+        
         <dependency>
-            <groupId>org.apache.maven</groupId>
-            <artifactId>maven-embedder</artifactId>
+            <groupId>org.codehaus.groovy</groupId>
+            <artifactId>groovy</artifactId>
         </dependency>
     </dependencies>
 

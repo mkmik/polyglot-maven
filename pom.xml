@@ -70,25 +70,25 @@
 
             <dependency>
                 <groupId>org.sonatype.pmaven</groupId>
-                <artifactId>common</artifactId>
+                <artifactId>pmaven-common</artifactId>
                 <version>1.0-SNAPSHOT</version>
             </dependency>
 
             <dependency>
                 <groupId>org.sonatype.pmaven</groupId>
-                <artifactId>cli</artifactId>
+                <artifactId>pmaven-cli</artifactId>
                 <version>1.0-SNAPSHOT</version>
             </dependency>
 
             <dependency>
                 <groupId>org.sonatype.pmaven</groupId>
-                <artifactId>graven</artifactId>
+                <artifactId>pmaven-graven</artifactId>
                 <version>1.0-SNAPSHOT</version>
             </dependency>
 
             <dependency>
                 <groupId>org.sonatype.pmaven</groupId>
-                <artifactId>raven</artifactId>
+                <artifactId>pmaven-raven</artifactId>
                 <version>1.0-SNAPSHOT</version>
             </dependency>
         </dependencies>
@@ -110,10 +110,10 @@
     </dependencies>
 
     <modules>
-        <module>common</module>
-        <module>graven</module>
-        <module>raven</module>
-        <module>cli</module>
+        <module>pmaven-common</module>
+        <module>pmaven-cli</module>
+        <module>pmaven-graven</module>
+        <module>pmaven-raven</module>
     </modules>
     
     <build>
