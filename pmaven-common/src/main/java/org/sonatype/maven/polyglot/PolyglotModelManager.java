@@ -10,6 +10,8 @@ import org.sonatype.maven.polyglot.mapping.Mapping;
 import java.io.File;
 import java.util.List;
 import java.util.Map;
+import java.util.HashSet;
+import java.util.Set;
 
 /**
  * Manages the mapping for polyglot model support.
@@ -50,14 +52,21 @@ public class PolyglotModelManager
 
     public File locatePom(final File dir) {
         assert dir != null;
-        
-        // FIXME: Need to complain if we find more than one acceptable pom
 
+        Set<File> found = new HashSet<File>();
         for (Mapping mapping : mappings) {
             File file = mapping.locatePom(dir);
             if (file != null) {
-                return file;
+                found.add(file);
             }
+        }
+
+        if (found.size() > 1) {
+            throw new RuntimeException("Found more than one matching pom file: " + found +
+                    "; Use --file option to select the desired pom to execute.");
+        }
+        else if (!found.isEmpty()) {
+            return found.iterator().next();
         }
 
         return null;

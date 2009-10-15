@@ -17,9 +17,9 @@ public interface Mapping
 
     boolean accept(Map<String,?> options);
 
-    // TODO: Alter accept to take input so it can check the files contents if needed?
-
     ModelReader getReader();
 
     ModelWriter getWriter();
+
+    // TODO: Add priority to support, say picking XML first if there?
 }
