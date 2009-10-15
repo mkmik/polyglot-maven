@@ -2,13 +2,14 @@ package org.sonatype.maven.polyglot.cli
 
 import org.apache.maven.model.Model
 import org.apache.maven.model.building.ModelProcessor
-import org.apache.maven.model.io.DefaultModelWriter
 import org.apache.maven.model.io.ModelWriter
 import org.codehaus.plexus.PlexusTestCase
 import org.junit.Before
 import org.junit.Test
+import org.sonatype.maven.graven.GravenModelWriter
 import org.sonatype.maven.polyglot.PolyglotModelManager
 import org.sonatype.maven.polyglot.cli.PolyglotTranslatorCli
+
 
 /**
  * Tests for {@link PolyglotTranslatorCli}.
@@ -22,7 +23,8 @@ public class PolyglotTranslatorCliTest
 
     private PolyglotTranslatorCli translator;
 
-    private ModelWriter writer = new DefaultModelWriter()
+    // NOTE: Using Graven, as XML seems to put in encoding sometimes that messes up the tests
+    private ModelWriter writer = new GravenModelWriter()
 
     @Before
     void setUp() {
@@ -61,59 +63,16 @@ public class PolyglotTranslatorCliTest
         writer.write(xml2, null, actual)
         assertEquals(xml1.toString(), xml2.toString())
     }
-    
-    @Test
-    void testXml2Xml() {
-        translate("pom1.xml", ".xml", "pom1.xml")
-    }
 
     @Test
-    void testXml2Pom() {
-        translate("pom1.xml", ".pom", "pom1.pom")
-    }
-
-    @Test
-    void testPom2Pom() {
-        translate("pom1.pom", ".pom", "pom1.pom")
-    }
-
-    @Test
-    void testXml2Groovy() {
-        translate("pom1.xml", ".groovy", "pom1.groovy")
-    }
-
-    @Test
-    void testGroovy2Groovy() {
-        translate("pom1.groovy", ".groovy", "pom1.groovy")
-    }
-
-    @Test
-    void testGroovy2Xml() {
-        translate("pom1.groovy", ".xml", "pom1.xml")
-    }
-
-    @Test
-    void testGroovy2Yaml() {
-        translate("pom1.groovy", ".yml", "pom1.yml")
-    }
-
-    @Test
-    void testXml2Yaml() {
-        translate("pom1.xml", ".yml", "pom1.yml")
-    }
-
-    @Test
-    void testYaml2Xml() {
-        translate("pom1.yml", ".xml", "pom1a.xml")
-    }
-
-    @Test
-    void testYaml2Yaml() {
-        translate("pom1.yml", ".yml", "pom1.yml")
-    }
-
-    @Test
-    void testYaml2Groovy() {
-        translate("pom1.yml", ".groovy", "pom1.groovy")
+    void testFormatInterchange() {
+        def formats = [ 'xml', 'groovy', 'yml' ]
+        
+        for (source in formats) {
+            for (target in formats) {
+                println "Testing $source -> $target"
+                translate("pom1.$source", ".$target", "pom1.$target")
+            }
+        }
     }
 }
