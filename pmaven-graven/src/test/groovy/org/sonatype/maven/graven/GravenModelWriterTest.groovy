@@ -1,15 +1,16 @@
-package org.sonatype.graven
+package org.sonatype.maven.graven
 
 import org.apache.maven.model.Model
 import org.apache.maven.model.Parent
 import org.junit.Before
 import org.junit.Test
-import org.sonatype.graven.GravenModelTestSupport
-import org.sonatype.graven.GravenModelWriter
+import org.sonatype.maven.graven.GravenModelTestSupport
+import org.sonatype.maven.graven.GravenModelWriter
 import static org.junit.Assert.*
+import org.sonatype.maven.graven.GravenModelWriter
 
 /**
- * Tests for {@link org.sonatype.graven.GravenModelWriter}.
+ * Tests for {@link org.sonatype.maven.graven.GravenModelWriter}.
  *
  * @author <a href="mailto:jason@planet57.com">Jason Dillon</a>
  */

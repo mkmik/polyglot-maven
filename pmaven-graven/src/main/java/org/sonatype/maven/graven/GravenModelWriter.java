@@ -1,4 +1,4 @@
-package org.sonatype.graven;
+package org.sonatype.maven.graven;
 
 import groovy.util.IndentPrinter;
 import org.apache.maven.model.Model;

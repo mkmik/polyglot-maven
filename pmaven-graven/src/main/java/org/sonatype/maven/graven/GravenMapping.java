@@ -1,4 +1,4 @@
-package org.sonatype.graven;
+package org.sonatype.maven.graven;
 
 import org.codehaus.plexus.component.annotations.Component;
 import org.sonatype.maven.polyglot.mapping.Mapping;

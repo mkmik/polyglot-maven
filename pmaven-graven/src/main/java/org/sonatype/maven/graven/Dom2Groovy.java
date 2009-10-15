@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package org.sonatype.graven;
+package org.sonatype.maven.graven;
 
 import groovy.util.IndentPrinter;
 import org.w3c.dom.Attr;

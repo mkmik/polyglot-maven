@@ -1,4 +1,4 @@
-package org.sonatype.graven
+package org.sonatype.maven.graven
 
 /**
  * Default pom macros.

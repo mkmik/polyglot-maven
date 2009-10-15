@@ -1,4 +1,4 @@
-package org.sonatype.graven;
+package org.sonatype.maven.graven;
 
 import groovy.lang.Script;
 import groovy.xml.MarkupBuilder;
@@ -8,6 +8,7 @@ import org.apache.maven.model.io.ModelParseException;
 import org.apache.maven.model.io.ModelReader;
 import org.codehaus.plexus.component.annotations.Component;
 import org.codehaus.plexus.util.IOUtil;
+import org.sonatype.maven.graven.ScriptFactory;
 
 import java.io.BufferedInputStream;
 import java.io.ByteArrayInputStream;

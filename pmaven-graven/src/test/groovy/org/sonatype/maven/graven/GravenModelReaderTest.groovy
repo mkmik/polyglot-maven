@@ -1,9 +1,9 @@
-package org.sonatype.graven
+package org.sonatype.maven.graven
 
 import org.junit.Before
 import org.junit.Test
-import org.sonatype.graven.GravenModelReader
-import org.sonatype.graven.GravenModelTestSupport
+import org.sonatype.maven.graven.GravenModelReader
+import org.sonatype.maven.graven.GravenModelTestSupport
 import static org.junit.Assert.*
 import org.apache.maven.model.building.ModelProcessor
 

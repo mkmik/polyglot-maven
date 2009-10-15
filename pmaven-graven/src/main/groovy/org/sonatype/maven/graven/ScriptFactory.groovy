@@ -1,7 +1,6 @@
-package org.sonatype.graven
+package org.sonatype.maven.graven
 
 import groovy.xml.MarkupBuilder
-import org.sonatype.graven.Macros
 import org.apache.maven.model.building.ModelProcessor
 
 /**
