@@ -49,7 +49,7 @@ public class PolyglotTranslatorCli
 
     public int run(final String[] args) throws Exception {
         if (args == null || args.length != 2) {
-            System.out.println("translator <input-file> <output-file>");
+            System.out.println("usage: translate <input-file> <output-file>");
             return -1;
         }
 

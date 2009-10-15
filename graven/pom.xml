@@ -5,17 +5,17 @@
     <modelVersion>4.0.0</modelVersion>
 
     <parent>
-        <groupId>org.sonatype.graven</groupId>
-        <artifactId>graven-parent</artifactId>
+        <groupId>org.sonatype.pmaven</groupId>
+        <artifactId>pmaven</artifactId>
         <version>1.0-SNAPSHOT</version>
     </parent>
 
     <artifactId>graven</artifactId>
-    <name>Graven</name>
+    <name>Polyglot Maven :: Graven</name>
 
     <dependencies>
         <dependency>
-            <groupId>org.sonatype.graven</groupId>
+            <groupId>org.sonatype.pmaven</groupId>
             <artifactId>common</artifactId>
         </dependency>
         

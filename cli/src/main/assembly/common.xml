@@ -8,16 +8,26 @@
             <includes>
                 <include>*.conf</include>
             </includes>
+            <lineEnding>dos</lineEnding>
         </fileSet>
 
         <fileSet>
             <directory>src/main/underlay/bin</directory>
             <outputDirectory>/bin</outputDirectory>
             <includes>
-                <include>translator</include>
+                <include>translate</include>
             </includes>
             <lineEnding>unix</lineEnding>
             <fileMode>0755</fileMode>
+        </fileSet>
+
+        <fileSet>
+            <directory>src/main/underlay/bin</directory>
+            <outputDirectory>/bin</outputDirectory>
+            <includes>
+                <include>translate.bat</include>
+            </includes>
+            <lineEnding>dos</lineEnding>
         </fileSet>
 
         <fileSet>
@@ -48,19 +58,33 @@
 
     <dependencySets>
         <dependencySet>
+            <outputDirectory>lib</outputDirectory>
+            <useStrictFiltering>true</useStrictFiltering>
+            <includes>
+                <include>org.sonatype.pmaven:common</include>
+                <include>org.sonatype.pmaven:cli</include>
+            </includes>
+        </dependencySet>
+        
+        <dependencySet>
             <outputDirectory>ext</outputDirectory>
             <useStrictFiltering>true</useStrictFiltering>
             <includes>
-                <include>org.sonatype.graven:common</include>
-                <include>org.sonatype.graven:cli</include>
-                <include>org.sonatype.graven:graven</include>
+                <include>org.sonatype.pmaven:graven</include>
                 <include>org.codehaus.groovy:groovy</include>
                 <include>antlr:antlr</include>
                 <include>asm:asm</include>
                 <include>asm:asm-util</include>
                 <include>asm:asm-analysis</include>
                 <include>asm:asm-tree</include>
-                <include>org.sonatype.graven:raven</include>
+            </includes>
+        </dependencySet>
+
+        <dependencySet>
+            <outputDirectory>ext</outputDirectory>
+            <useStrictFiltering>true</useStrictFiltering>
+            <includes>
+                <include>org.sonatype.pmaven:raven</include>
                 <include>org.yaml:snakeyaml</include>
             </includes>
         </dependencySet>
