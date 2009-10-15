@@ -26,8 +26,16 @@ import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 import org.w3c.dom.ProcessingInstruction;
 import org.w3c.dom.Text;
+import org.xml.sax.InputSource;
+import org.xml.sax.SAXException;
 
+import javax.xml.parsers.DocumentBuilder;
+import javax.xml.parsers.DocumentBuilderFactory;
+import javax.xml.parsers.ParserConfigurationException;
 import java.io.PrintWriter;
+import java.io.StringReader;
+import java.io.Reader;
+import java.io.IOException;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
@@ -68,6 +76,12 @@ public class Dom2Groovy
 
     public void print(final Document document) {
         printChildren(document, new HashMap());
+    }
+
+    public void print(final Reader input) throws Exception {
+        DocumentBuilder builder = DocumentBuilderFactory.newInstance().newDocumentBuilder();
+        Document doc = builder.parse(new InputSource(input));
+        print(doc);
     }
 
     protected void print(final Node node, final Map namespaces, final boolean endWithComma) {
