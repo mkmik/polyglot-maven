@@ -1,8 +1,13 @@
 package org.sonatype.maven.polyglot.cli
 
+import org.apache.maven.model.Model
+import org.apache.maven.model.building.ModelProcessor
+import org.apache.maven.model.io.DefaultModelWriter
+import org.apache.maven.model.io.ModelWriter
 import org.codehaus.plexus.PlexusTestCase
 import org.junit.Before
 import org.junit.Test
+import org.sonatype.maven.polyglot.PolyglotModelManager
 import org.sonatype.maven.polyglot.cli.PolyglotTranslatorCli
 
 /**
@@ -13,10 +18,15 @@ import org.sonatype.maven.polyglot.cli.PolyglotTranslatorCli
 public class PolyglotTranslatorCliTest
     extends PlexusTestCase
 {
+    private PolyglotModelManager manager;
+
     private PolyglotTranslatorCli translator;
+
+    private ModelWriter writer = new DefaultModelWriter()
 
     @Before
     void setUp() {
+        manager = lookup(PolyglotModelManager.class)
         translator = new PolyglotTranslatorCli();
     }
 
@@ -27,21 +37,31 @@ public class PolyglotTranslatorCliTest
         try {
             translator.translate(url, file.toURI().toURL())
 
-            // FIXME: DO not use this lame text muck to check, do a model check...
-            
-            assertEqualsText(getClass().getResource(expected).text, file.text)
+            def expectedModel = loadModel(getClass().getResource(expected).openStream(), expected)
+            def actualModel = loadModel(file.newInputStream(), file.name)
+
+            assertModelEquals(expectedModel, actualModel)
         }
         finally {
             file.delete();
         }
     }
 
-    private void assertEqualsText( String expected, String actual ) {
-        def text = actual.replaceAll( "(\r\n)|(\r)|(\n)", "\n" )
-        def expect = expected.replaceAll( "(\r\n)|(\r)|(\n)", "\n" )
-        assertEquals(expect, text)
+    private Model loadModel(final InputStream input, final String location) {
+        def options = [:]
+        options.put(ModelProcessor.LOCATION, location)
+        def reader = manager.getReaderFor(options);
+        return reader.read(input, options)
     }
 
+    private void assertModelEquals(final Model expected, final Model actual) {
+        def xml1 = new StringWriter()
+        writer.write(xml1, null, expected)
+        def xml2 = new StringWriter()
+        writer.write(xml2, null, actual)
+        assertEquals(xml1.toString(), xml2.toString())
+    }
+    
     @Test
     void testXml2Xml() {
         translate("pom1.xml", ".xml", "pom1.xml")
