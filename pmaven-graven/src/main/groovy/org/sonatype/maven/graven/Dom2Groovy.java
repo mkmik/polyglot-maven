@@ -51,8 +51,16 @@ import java.util.Map;
  */
 public class Dom2Groovy
 {
-    // FIXME: Need the full list, look at ConfigObject or Types for hints on how to generate a full list
-    protected final List<String> keywords = Arrays.asList("import", "protected", "public", "protected");
+    // FIXME: Need the full list, look at Types for hints on how to generate a full list
+    protected final List<String> keywords = Arrays.asList(
+            "class", "extends", "implements", "package", "return", "def",
+            "try", "finally", "this", "new", "catch", "switch", "case", "default", "while", "if",
+            "else", "elseif", "private", "protected", "final", "for", "in", "byte", "short", "break",
+            "instanceof", "synchronized", "const", "float", "null", "throws", "do", "super", "with",
+            "threadsafe", "transient", "native", "interface", "any", "double", "volatile", "as",
+            "assert", "goto", "enum", "int", "boolean", "char", "false", "true", "static", "abstract",
+            "continue", "import", "void", "long"
+    );
 
     protected final IndentPrinter out;
 
