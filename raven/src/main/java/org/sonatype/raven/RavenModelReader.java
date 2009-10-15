@@ -7,6 +7,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.Reader;
+import java.io.BufferedInputStream;
 import java.util.Map;
 import java.util.Properties;
 
@@ -52,10 +53,19 @@ public class RavenModelReader
         yaml = new Yaml( loader );
     }
 
-    public Model read( File input, Map<String, ?> options )
-        throws IOException, ModelParseException
-    {
-        return read( new FileReader( input ), options );
+    public Model read(final File file, final Map<String,?> options) throws IOException, ModelParseException {
+        assert file != null;
+
+        Model model;
+        InputStream in = new BufferedInputStream(new FileInputStream(file));
+        try {
+            model = read(in, options);
+            model.setPomFile(file);
+        }
+        finally {
+            IOUtil.close(in);
+        }
+        return model;
     }
 
     public Model read( InputStream input, Map<String, ?> options )
