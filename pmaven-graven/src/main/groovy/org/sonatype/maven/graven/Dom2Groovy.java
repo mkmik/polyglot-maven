@@ -157,7 +157,7 @@ public class Dom2Groovy
     }
 
     protected void printQuoted(final String text) {
-        if (text.indexOf("\n") != -1) {
+        if (text.contains("\n")) {
             print("'''");
             print(text);
             print("'''");
