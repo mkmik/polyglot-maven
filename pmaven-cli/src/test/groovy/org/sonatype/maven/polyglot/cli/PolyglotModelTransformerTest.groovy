@@ -26,11 +26,20 @@ public class PolyglotTranslatorCliTest
         file.deleteOnExit()
         try {
             translator.translate(url, file.toURI().toURL())
+
+            // FIXME: DO not use this lame text muck to check, do a model check...
+            
             assertEqualsText(getClass().getResource(expected).text, file.text)
         }
         finally {
             file.delete();
         }
+    }
+
+    private void assertEqualsText( String expected, String actual ) {
+        def text = actual.replaceAll( "(\r\n)|(\r)|(\n)", "\n" )
+        def expect = expected.replaceAll( "(\r\n)|(\r)|(\n)", "\n" )
+        assertEquals(expect, text)
     }
 
     @Test
@@ -63,10 +72,18 @@ public class PolyglotTranslatorCliTest
         translate("pom1.groovy", ".xml", "pom1.xml")
     }
 
-    private void assertEqualsText( String expected, String actual ) {
-        def text = actual.replaceAll( "(\r\n)|(\r)|(\n)", "\n" )
-        def expect = expected.replaceAll( "(\r\n)|(\r)|(\n)", "\n" )
-        assertEquals(expect, text)
+    @Test
+    void testXml2Yaml() {
+        translate("pom1.xml", ".yml", "pom1.yml")
     }
 
+    @Test
+    void testYaml2Xml() {
+        translate("pom1.yml", ".xml", "pom1a.xml")
+    }
+
+    @Test
+    void testYaml2Yaml() {
+        translate("pom1.yml", ".yml", "pom1.yml")
+    }
 }
