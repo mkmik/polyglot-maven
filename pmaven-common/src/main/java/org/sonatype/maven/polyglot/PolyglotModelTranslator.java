@@ -29,38 +29,40 @@ public class PolyglotModelTranslator
     private PolyglotModelManager manager;
 
     @SuppressWarnings({"unchecked"})
+    private Map<String,Object> options(final Map<String,?> options) {
+        return (Map<String,Object>)options;
+    }
+
     public void translate(final File input, final Map<String,?> inputOptions, final File output, final Map<String,?> outputOptions) throws IOException, ModelParseException {
         assert input != null;
         assert output != null;
 
         ModelReader reader = manager.getReaderFor(inputOptions);
-        ModelWriter writer = manager.getWriterFor(outputOptions);
-
         Model model = reader.read(input, inputOptions);
-        writer.write(output, (Map<String,Object>)outputOptions, model);
+
+        ModelWriter writer = manager.getWriterFor(outputOptions);
+        writer.write(output, options(outputOptions), model);
     }
-    
-    @SuppressWarnings({"unchecked"})
+
     public void translate(final InputStream input, final Map<String,?> inputOptions, final OutputStream output, final Map<String,?> outputOptions) throws IOException, ModelParseException {
         assert input != null;
         assert output != null;
 
         ModelReader reader = manager.getReaderFor(inputOptions);
-        ModelWriter writer = manager.getWriterFor(outputOptions);
-
         Model model = reader.read(input, inputOptions);
-        writer.write(output, (Map<String,Object>)outputOptions, model);
+
+        ModelWriter writer = manager.getWriterFor(outputOptions);
+        writer.write(output, options(outputOptions), model);
     }
-    
-    @SuppressWarnings({"unchecked"})
+
     public void translate(final Reader input, final Map<String,?> inputOptions, final Writer output, final Map<String,?> outputOptions) throws IOException, ModelParseException {
         assert input != null;
         assert output != null;
 
         ModelReader reader = manager.getReaderFor(inputOptions);
-        ModelWriter writer = manager.getWriterFor(outputOptions);
-
         Model model = reader.read(input, inputOptions);
-        writer.write(output, (Map<String,Object>)outputOptions, model);
+
+        ModelWriter writer = manager.getWriterFor(outputOptions);
+        writer.write(output, options(outputOptions), model);
     }
 }
