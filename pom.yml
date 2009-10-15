@@ -1,21 +1,8 @@
-modelVersion: 4.0.0
-groupId: org.sonatype.pmaven
 artifactId: pmaven
-version: 1.0-SNAPSHOT
-name: Polyglot Maven
-packaging: pom
-
-properties: 
-  mavenVersion: 3.0-SNAPSHOT
-
-modules: [pmaven-common, pmaven-cli, pmaven-graven, pmaven-raven]
-
 build:
   defaultGoal: install
   plugins:
   - artifactId: maven-surefire-plugin
-    groupId: org.apache.maven.plugins
-    version: 2.4.3
     configuration:
       redirectTestOutputToFile: 'true'
       forkMode: once
@@ -24,38 +11,73 @@ build:
       workingDirectory: ${project.build.directory}
       excludes: {exclude: '**/Test*.java'}
       includes: {include: '**/*Test.java'}
-  - artifactId: maven-compiler-plugin
+    extensions: false
     groupId: org.apache.maven.plugins
-    version: 2.0.2
+    inherited: true
+    version: 2.4.3
+  - artifactId: maven-compiler-plugin
     configuration: {source: '1.5', target: '1.5'}
+    extensions: false
+    groupId: org.apache.maven.plugins
+    inherited: true
+    version: 2.0.2
   - artifactId: gmaven-plugin
-    groupId: org.codehaus.groovy.maven
-    version: '1.0'
     configuration: {providerSelection: '1.6'}
     executions:
     - goals: [generateStubs, compile, generateTestStubs, testCompile]
+      id: default
+      inherited: true
+      priority: 0
+    extensions: false
+    groupId: org.codehaus.groovy.maven
+    inherited: true
+    version: '1.0'
   - artifactId: plexus-component-metadata
-    groupId: org.codehaus.plexus
-    version: 1.4.0-SNAPSHOT
     executions:
     - goals: [generate-metadata, generate-test-metadata]
+      id: default
+      inherited: true
+      priority: 0
+    extensions: false
+    groupId: org.codehaus.plexus
+    inherited: true
+    version: 1.4.0-SNAPSHOT
 dependencies:
-- {artifactId: junit, groupId: junit, scope: test, version: '4.7'}
-- {artifactId: groovy, groupId: org.codehaus.groovy, scope: test}
+- {artifactId: junit, groupId: junit, optional: false, scope: test, type: jar, version: '4.7'}
+- {artifactId: groovy, groupId: org.codehaus.groovy, optional: false, scope: test,
+  type: jar}
 dependencyManagement:
   dependencies:
-  - {artifactId: apache-maven, classifier: bin, groupId: org.apache.maven, type: zip, version: '${mavenVersion}'}
-  - {artifactId: maven-model-builder, groupId: org.apache.maven, version: '${mavenVersion}'}
-  - {artifactId: maven-embedder, groupId: org.apache.maven, version: '${mavenVersion}'}
+  - {artifactId: apache-maven, classifier: bin, groupId: org.apache.maven, optional: false,
+    type: zip, version: '${mavenVersion}'}
+  - {artifactId: maven-model-builder, groupId: org.apache.maven, optional: false,
+    type: jar, version: '${mavenVersion}'}
+  - {artifactId: maven-embedder, groupId: org.apache.maven, optional: false, type: jar,
+    version: '${mavenVersion}'}
+  - {artifactId: maven-compat, groupId: org.apache.maven, optional: false, type: jar,
+    version: '${mavenVersion}'}
   - artifactId: groovy
-    groupId: org.codehaus.groovy
-    version: 1.6.5
     exclusions:
     - {artifactId: jline, groupId: jline}
     - {artifactId: junit, groupId: junit}
     - {artifactId: ant, groupId: org.apache.ant}
     - {artifactId: ant-launcher, groupId: org.apache.ant}
-  - {artifactId: pmaven-common, groupId: org.sonatype.pmaven, version: 1.0-SNAPSHOT}
-  - {artifactId: pmaven-cli, groupId: org.sonatype.pmaven, version: 1.0-SNAPSHOT}
-  - {artifactId: pmaven-graven, groupId: org.sonatype.pmaven, version: 1.0-SNAPSHOT}
-  - {artifactId: pmaven-raven, groupId: org.sonatype.pmaven, version: 1.0-SNAPSHOT}
+    groupId: org.codehaus.groovy
+    optional: false
+    type: jar
+    version: 1.6.5
+  - {artifactId: pmaven-common, groupId: org.sonatype.pmaven, optional: false, type: jar,
+    version: 1.0-SNAPSHOT}
+  - {artifactId: pmaven-cli, groupId: org.sonatype.pmaven, optional: false, type: jar,
+    version: 1.0-SNAPSHOT}
+  - {artifactId: pmaven-graven, groupId: org.sonatype.pmaven, optional: false, type: jar,
+    version: 1.0-SNAPSHOT}
+  - {artifactId: pmaven-raven, groupId: org.sonatype.pmaven, optional: false, type: jar,
+    version: 1.0-SNAPSHOT}
+groupId: org.sonatype.pmaven
+modelVersion: 4.0.0
+modules: [pmaven-common, pmaven-cli, pmaven-graven, pmaven-raven]
+name: Polyglot Maven
+packaging: pom
+properties: {mavenVersion: 3.0-SNAPSHOT, project.build.sourceEncoding: UTF-8}
+version: 1.0-SNAPSHOT

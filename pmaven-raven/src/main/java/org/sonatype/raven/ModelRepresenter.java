@@ -24,6 +24,7 @@ import org.yaml.snakeyaml.nodes.ScalarNode;
 import org.yaml.snakeyaml.nodes.Tags;
 import org.yaml.snakeyaml.representer.Represent;
 import org.yaml.snakeyaml.representer.Representer;
+import org.apache.maven.model.Plugin;
 
 class ModelRepresenter
     extends Representer
@@ -197,7 +198,7 @@ class ModelRepresenter
         // add JavaBean getters
         for ( PropertyDescriptor property : Introspector.getBeanInfo( type ).getPropertyDescriptors() )
             // TODO: The API lacks an easy way to exclude some properties
-            if ( property.getReadMethod() != null && !property.getReadMethod().getName().equals( "getClass" )
+            if ( property.getWriteMethod() != null && property.getReadMethod() != null && !property.getReadMethod().getName().equals( "getClass" )
                 && !property.getReadMethod().getName().endsWith( "AsMap" )
                 && !property.getReadMethod().getName().equals( "getModelEncoding" ) )
             {
