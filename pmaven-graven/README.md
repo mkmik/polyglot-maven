@@ -12,6 +12,8 @@ All macros are prefixed with '$' to avoid clashes with POM element names.
 
 Macros must be used in the correct context, or they will produce the given elements in the wrong portion of the POM.
 
+Examples list all supported syntax and result shows what each would produce in the POM.
+
 ### $artifact
 
 #### Example
