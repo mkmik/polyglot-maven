@@ -38,8 +38,7 @@ import java.util.List;
 import java.util.Map;
 
 //
-// NOTE: Augmented from Groovy's DomToGroovy, we strip out the () muck.  Can not extend really due to the evil private fields
-//       used directly by the protected methods.
+// NOTE: Augmented from Groovy's DomToGroovy.
 //
 
 /**
