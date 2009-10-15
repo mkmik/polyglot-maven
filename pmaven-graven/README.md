@@ -16,6 +16,7 @@ Macros must be used in the correct context, or they will produce the given eleme
 
 #### Example
     $artifact('foo:bar')
+    $artifact('foo', 'bar')
 
 ##### Result
     groupId 'foo'
@@ -23,6 +24,7 @@ Macros must be used in the correct context, or they will produce the given eleme
     
 #### Example
     $artifact('foo:bar:1.0')
+    $artifact('foo', 'bar, '1.0')
 
 ##### Result
     groupId 'foo'
@@ -31,6 +33,7 @@ Macros must be used in the correct context, or they will produce the given eleme
 
 #### Example
     $artifact('foo:bar:bin:1.0')
+    $artifact('foo', 'bar', 'bin, '1.0')
 
 ##### Result
     groupId 'foo'
@@ -40,6 +43,7 @@ Macros must be used in the correct context, or they will produce the given eleme
 
 #### Example
     $artifact('foo:bar:jar:bin:1.0')
+    $artifact('f'oo', 'bar', 'jar', 'bin', '1.0')
 
 ##### Result
     groupId 'foo'
@@ -52,6 +56,7 @@ Macros must be used in the correct context, or they will produce the given eleme
 
 #### Example
     $parent('foo:bar:1.0')
+    $parent('foo', 'bar', '1.0')
 
 ##### Result
     parent {
@@ -63,7 +68,29 @@ Macros must be used in the correct context, or they will produce the given eleme
 ### $dependency
 
 #### Example
+    $dependency('foo:bar')
+    $dependency('foo', 'bar')
+
+#####  Result
+    dependency {
+        groupId 'foo' 
+        artifactId 'bar'
+    }
+
+#### Example
+    $dependency('foo:bar:1.0')
+    $dependency('foo', 'bar', '1.0')
+
+#####  Result
+    dependency {
+        groupId 'foo' 
+        artifactId 'bar' 
+        version '1.0' 
+    }
+
+#### Example
     $dependency('foo:bar:1.0:test')
+    $dependency('foo', 'bar', '1.0', 'test')
 
 #####  Result
     dependency {
@@ -73,29 +100,11 @@ Macros must be used in the correct context, or they will produce the given eleme
         scope 'test' 
     } 
 
-#### Example
-    $dependency('foo:bar:1.0')
-
-##### Result
-    dependency { 
-        groupId 'foo' 
-        artifactId 'bar' 
-        version '1.0' 
-    } 
-
-#### Example
-    $dependency('foo:bar')
-
-##### Result
-    dependency {
-        groupId 'foo' 
-        artifactId 'bar' 
-    } 
-
 ### $exclusion
 
 #### Example
     $exclusion('foo:bar')
+    $exclusion('foo', 'bar')
 
 ##### Result
     exclusion {
@@ -145,7 +154,7 @@ Macros must be used in the correct context, or they will produce the given eleme
 ### $configuration
 
 #### Example
-    $configuration(foo '1', bar '2')
+    $configuration(foo: '1', bar: '2')
 
 ##### Result
     configuration {
