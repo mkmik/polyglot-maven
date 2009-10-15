@@ -50,7 +50,8 @@ public class GravenModelReader
 
     public Model read(final Reader input, final Map<String,?> options) throws IOException, ModelParseException {
         assert input != null;
-        // NOTE: GroovyShell does not support parsing readers, so convert to ByteArrayInputStream
+        
+        // GroovyShell does not support parsing readers, so convert to ByteArrayInputStream
         return read(new ByteArrayInputStream(IOUtil.toByteArray(input)), options);
     }
 
@@ -64,12 +65,9 @@ public class GravenModelReader
         return transform(buff, options);
     }
 
-    private Model transform(final StringWriter buff, final Map<String,?> options) throws IOException {
-        assert buff != null;
+    private Model transform(final StringWriter input, final Map<String,?> options) throws IOException {
+        assert input != null;
         ModelReader reader = new DefaultModelReader();
-        StringReader in = new StringReader(buff.toString());
-        Model model = reader.read(in, options);
-        in.close();
-        return model;
+        return reader.read(new StringReader(input.toString()), options);
     }
 }
