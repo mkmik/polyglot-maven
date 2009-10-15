@@ -3,6 +3,14 @@ Description
 
 Graven; Provides Polgyglot Maven the ability to understand Groovy POM files.
 
+Example POM
+------------------
+    project {
+        groupId 'foo'
+        artifactId 'bar'
+        version '1.0'
+    }
+
 Macros
 ------
 
