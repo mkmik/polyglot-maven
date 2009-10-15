@@ -21,5 +21,5 @@ public interface Mapping
 
     ModelWriter getWriter();
 
-    // TODO: Add priority to support, say picking XML first if there?
+    // TODO: Add priority + compariable to support sorting and say picking XML first if there?
 }
