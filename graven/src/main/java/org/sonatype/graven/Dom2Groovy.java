@@ -47,15 +47,15 @@ import java.util.Map;
  */
 public class Dom2Groovy
 {
+    // FIXME: Need the full list, look at ConfigObject or Types for hints on how to generate a full list
     protected final List<String> keywords = Arrays.asList("import", "protected", "public", "protected");
 
     protected final IndentPrinter out;
 
     protected boolean inMixed = false;
 
+    // FIXME: Do not quote things like 'true', 'false' or numbers
     protected String qt = "'";
-
-    protected boolean omitEmptyParens = true;
 
     public Dom2Groovy(final PrintWriter out) {
         this(new IndentPrinter(out));
@@ -106,10 +106,7 @@ public class Dom2Groovy
         if (isKeyword || hasPrefix) print(qt);
         
         boolean hasAttributes = printAttributes(element);
-        if (hasAttributes && !omitEmptyParens) {
-            print("()");
-        }
-        
+
         NodeList list = element.getChildNodes();
         int length = list.getLength();
         if (length == 0) {

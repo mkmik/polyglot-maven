@@ -21,7 +21,7 @@ project {
         }
 
         dependency {
-            $gav(1, 2, 3)
+            $gav('a:b:c')
             $exclusions('a:b', 'c:d')
         }
     }

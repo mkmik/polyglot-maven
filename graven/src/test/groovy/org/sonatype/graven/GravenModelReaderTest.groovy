@@ -5,6 +5,7 @@ import org.junit.Test
 import org.sonatype.graven.GravenModelReader
 import org.sonatype.graven.GravenModelTestSupport
 import static org.junit.Assert.*
+import org.apache.maven.model.building.ModelProcessor
 
 /**
  * Tests for {@link GravenModelReader}.
@@ -26,7 +27,9 @@ public class GravenModelReaderTest
         def input = getClass().getResource("test1.groovy")
         assertNotNull(input)
 
-        def model = reader.read(input.openStream(), null)
+        def options = [:]
+        options.put(ModelProcessor.LOCATION, input)
+        def model = reader.read(input.openStream(), options)
         assertNotNull(model)
 
         dump(model)
@@ -45,7 +48,9 @@ public class GravenModelReaderTest
         def input = getClass().getResource("macrotest.gy")
         assertNotNull(input)
 
-        def model = reader.read(input.openStream(), null)
+        def options = [:]
+        options.put(ModelProcessor.LOCATION, input)
+        def model = reader.read(input.openStream(), options)
         assertNotNull(model)
 
         dump(model)

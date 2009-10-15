@@ -58,7 +58,7 @@ public class GravenModelReader
         assert input != null;
 
         StringWriter buff = new StringWriter();
-        Script script = ScriptFactory.create(input, buff);
+        Script script = ScriptFactory.create(input, buff, options);
         script.run();
 
         return transform(buff, options);

@@ -8,6 +8,10 @@ package org.sonatype.graven
 
 def vars = binding.properties.variables
 
+//
+// FIXME: Create parse helper to share spome of this, need to accept objects not strings
+//
+
 parseArtifact = {String... items ->
     assert items != null && items.size() != 0
 
@@ -26,6 +30,13 @@ parseArtifact = {String... items ->
             map.version = items[4]
             break
 
+        case 4:
+            map.groupId = items[0]
+            map.artifactId = items[1]
+            map.classifier = items[2]
+            map.version = items[3]
+            break
+
         case 3:
             map.groupId = items[0]
             map.artifactId = items[1]
@@ -38,7 +49,7 @@ parseArtifact = {String... items ->
             break
 
         default:
-            throw new IllegalArgumentException("Unable to parse artifact for: ${items}")
+            throw new IllegalArgumentException("Unable to parse artifact for: $items")
     }
 
     return map
@@ -47,7 +58,7 @@ parseArtifact = {String... items ->
 
 vars.'$artifact' = {builder, String... items ->
     def map = parseArtifact(items)
-    
+
     map.each {
         builder."${it.key}" it.value
     }
@@ -70,7 +81,7 @@ parseParent = {String... items ->
             break
 
         default:
-            throw new IllegalArgumentException("Unable to parse parent for: ${items}")
+            throw new IllegalArgumentException("Unable to parse parent for: $items")
     }
 
     return map
@@ -78,7 +89,7 @@ parseParent = {String... items ->
 
 vars.'$parent' = {builder, String... items ->
     def map = parseParent(items)
-    
+
     builder.parent {
         groupId map.groupId
         artifactId map.artifactId
@@ -86,23 +97,96 @@ vars.'$parent' = {builder, String... items ->
     }
 }
 
-vars.'$gav' = {builder, g, a, v=null ->
-    builder.groupId g
-    builder.artifactId a
-    if (v) {
-        builder.version v
+parseGAV = {String... items ->
+    assert items != null && items.size() != 0
+
+    if (items.size() == 1 && items[0].contains(':')) {
+        return parseGAV(items[0].split(':'))
+    }
+
+    def map = [:]
+
+    switch (items.size()) {
+        case 3:
+            map.groupId = items[0]
+            map.artifactId = items[1]
+            map.version = items[2]
+            break
+
+        case 2:
+            map.groupId = items[0]
+            map.artifactId = items[1]
+            break
+
+        case 1:
+            map.artifactId = items[1]
+            break
+
+        default:
+            throw new IllegalArgumentException("Unable to parse GAV for: $items")
+    }
+
+    return map
+}
+
+vars.'$gav' = {builder, String... items ->
+    def map = parseGAV(items)
+
+    builder.groupId map.groupId
+    if (map.artifactId) {
+        builder.artifactId map.artifactId
+    }
+    if (map.version) {
+        builder.version map.version
     }
 }
 
-vars.'$dependency' = {builder, g, a, v=null, s=null ->
+parseDependency = {String... items ->
+    assert items != null && items.size() != 0
+
+    if (items.size() == 1 && items[0].contains(':')) {
+        return parseDependency(items[0].split(':'))
+    }
+
+    def map = [:]
+
+    switch (items.size()) {
+        case 4:
+            map.groupId = items[0]
+            map.artifactId = items[1]
+            map.version = items[2]
+            map.scope = items[3]
+            break
+
+        case 3:
+            map.groupId = items[0]
+            map.artifactId = items[1]
+            map.version = items[2]
+            break
+
+        case 2:
+            map.groupId = items[0]
+            map.artifactId = items[1]
+            break
+
+        default:
+            throw new IllegalArgumentException("Unable to parse dependency for: $items")
+    }
+
+    return map
+}
+
+vars.'$dependency' = {builder, String... items ->
+    def map = parseDependency(items)
+
     builder.dependency {
-        groupId g
-        artifactId a
-        if (v) {
-            version v
+        groupId map.groupId
+        artifactId map.artifactId
+        if (map.version) {
+            version map.version
         }
-        if (s) {
-            scope s
+        if (map.scope) {
+            scope map.scope
         }
     }
 }
@@ -123,7 +207,7 @@ parseExclusion = {String... items ->
             break
 
         default:
-            throw new IllegalArgumentException("Unable to parse exclusion for: ${items}")
+            throw new IllegalArgumentException("Unable to parse exclusion for: $items")
     }
 
     return map

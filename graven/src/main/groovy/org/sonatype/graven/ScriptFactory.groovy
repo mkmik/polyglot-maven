@@ -2,6 +2,7 @@ package org.sonatype.graven
 
 import groovy.xml.MarkupBuilder
 import org.sonatype.graven.Macros
+import org.apache.maven.model.building.ModelProcessor
 
 /**
  * Builds {@link Script} instances to handle <tt>pom.groovy</tt> to XML.
@@ -10,12 +11,14 @@ import org.sonatype.graven.Macros
  */
 class ScriptFactory
 {
-    static Script create(final InputStream input, final Writer output) {
+    static Script create(final InputStream input, final Writer output, final Map options=null) {
         assert input != null;
         assert output != null;
 
         def shell = new GroovyShell()
-        def script = shell.parse(input)
+        def location = options?.get(ModelProcessor.LOCATION)
+        def script = location ? shell.parse(input, "$location") : shell.parse(input)
+        
         def builder = new MarkupBuilder(output)
         def binding = shell.context
         
