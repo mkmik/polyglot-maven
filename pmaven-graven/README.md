@@ -45,7 +45,7 @@ Examples list all supported syntax and result shows what each would produce in t
 
 #### Example
     $artifact('foo:bar:jar:bin:1.0')
-    $artifact('f'oo', 'bar', 'jar', 'bin', '1.0')
+    $artifact('foo', 'bar', 'jar', 'bin', '1.0')
 
 ##### Result
     groupId 'foo'
