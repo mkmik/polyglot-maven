@@ -1,9 +1,6 @@
 package org.sonatype.maven.polyglot.mapping;
 
-import org.apache.maven.model.io.ModelReader;
-import org.apache.maven.model.io.ModelWriter;
 import org.codehaus.plexus.component.annotations.Component;
-import org.codehaus.plexus.component.annotations.Requirement;
 
 /**
  * Xml model mapping.
@@ -14,25 +11,10 @@ import org.codehaus.plexus.component.annotations.Requirement;
 public class XmlMapping
     extends MappingSupport
 {
-    @Requirement
-    private ModelReader reader;
-
-    @Requirement
-    private ModelWriter writer;
-
     public XmlMapping() {
+        super(null);
         setPomNames("pom.xml");
         setAcceptLocationExtentions(".xml", ".pom");
         setAcceptOptionKeys("xml:4.0.0");
-    }
-
-    public ModelReader getReader() {
-        assert reader != null;
-        return reader;
-    }
-
-    public ModelWriter getWriter() {
-        assert writer != null;
-        return writer;
     }
 }

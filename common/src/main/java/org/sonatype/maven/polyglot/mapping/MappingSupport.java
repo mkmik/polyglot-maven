@@ -1,6 +1,11 @@
 package org.sonatype.maven.polyglot.mapping;
 
 import org.apache.maven.model.building.ModelProcessor;
+import org.apache.maven.model.io.ModelReader;
+import org.apache.maven.model.io.ModelWriter;
+import org.codehaus.plexus.component.annotations.Requirement;
+import org.codehaus.plexus.component.repository.exception.ComponentLookupException;
+import org.codehaus.plexus.PlexusContainer;
 
 import java.io.File;
 import java.util.Map;
@@ -15,11 +20,50 @@ public abstract class MappingSupport
 {
     private static final String[] EMPTY = {};
 
+    private String roleHint;
+
     private String[] pomNames = EMPTY;
 
     private String[] acceptOptionKeys = EMPTY;
 
     private String[] acceptLocationExtentions = EMPTY;
+
+    @Requirement
+    private PlexusContainer container;
+
+    private ModelReader reader;
+
+    private ModelWriter writer;
+
+    protected MappingSupport(final String roleHint) {
+        this.roleHint = roleHint;
+    }
+
+    public ModelReader getReader() {
+        if (reader == null) {
+            try {
+                assert container != null;
+                reader = container.lookup(ModelReader.class, roleHint);
+            }
+            catch (ComponentLookupException e) {
+                throw new RuntimeException(e);
+            }
+        }
+        return reader;
+    }
+
+    public ModelWriter getWriter() {
+        if (writer == null) {
+            try {
+                assert container != null;
+                writer = container.lookup(ModelWriter.class, roleHint);
+            }
+            catch (ComponentLookupException e) {
+                throw new RuntimeException(e);
+            }
+        }
+        return writer;
+    }
 
     public String[] getAcceptLocationExtentions() {
         return acceptLocationExtentions;
