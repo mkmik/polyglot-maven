@@ -55,6 +55,8 @@ public class Dom2Groovy
 
     protected String qt = "'";
 
+    protected boolean omitEmptyParens = true;
+
     public Dom2Groovy(final PrintWriter out) {
         this(new IndentPrinter(out));
     }
@@ -104,7 +106,10 @@ public class Dom2Groovy
         if (isKeyword || hasPrefix) print(qt);
         
         boolean hasAttributes = printAttributes(element);
-
+        if (hasAttributes && !omitEmptyParens) {
+            print("()");
+        }
+        
         NodeList list = element.getChildNodes();
         int length = list.getLength();
         if (length == 0) {
@@ -121,7 +126,7 @@ public class Dom2Groovy
                 printEnd("", endWithComma);
             }
             else if (mixedContent(list)) {
-                println(") {");
+                println("{");
                 out.incrementIndent();
                 boolean oldInMixed = inMixed;
                 inMixed = true;
