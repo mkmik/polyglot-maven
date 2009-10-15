@@ -97,50 +97,6 @@ vars.'$parent' = {builder, String... items ->
     }
 }
 
-parseGAV = {String... items ->
-    assert items != null && items.size() != 0
-
-    if (items.size() == 1 && items[0].contains(':')) {
-        return parseGAV(items[0].split(':'))
-    }
-
-    def map = [:]
-
-    switch (items.size()) {
-        case 3:
-            map.groupId = items[0]
-            map.artifactId = items[1]
-            map.version = items[2]
-            break
-
-        case 2:
-            map.groupId = items[0]
-            map.artifactId = items[1]
-            break
-
-        case 1:
-            map.artifactId = items[1]
-            break
-
-        default:
-            throw new IllegalArgumentException("Unable to parse GAV for: $items")
-    }
-
-    return map
-}
-
-vars.'$gav' = {builder, String... items ->
-    def map = parseGAV(items)
-
-    builder.groupId map.groupId
-    if (map.artifactId) {
-        builder.artifactId map.artifactId
-    }
-    if (map.version) {
-        builder.version map.version
-    }
-}
-
 parseDependency = {String... items ->
     assert items != null && items.size() != 0
 
@@ -272,12 +228,4 @@ vars.'$excludes' = {builder, Object... items ->
             exclude item
         }
     }
-}
-
-vars.'$uuid' = {builder, prefix=null ->
-    def val = UUID.randomUUID().toString()
-    if (prefix) {
-        val = "${prefix}${val}"
-    }
-    builder.id val
 }
