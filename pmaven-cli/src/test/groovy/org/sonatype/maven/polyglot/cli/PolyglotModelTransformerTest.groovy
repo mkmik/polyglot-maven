@@ -73,6 +73,11 @@ public class PolyglotTranslatorCliTest
     }
 
     @Test
+    void testGroovy2Yaml() {
+        translate("pom1.groovy", ".yml", "pom1.yml")
+    }
+
+    @Test
     void testXml2Yaml() {
         translate("pom1.xml", ".yml", "pom1.yml")
     }
@@ -85,5 +90,10 @@ public class PolyglotTranslatorCliTest
     @Test
     void testYaml2Yaml() {
         translate("pom1.yml", ".yml", "pom1.yml")
+    }
+
+    @Test
+    void testYaml2Groovy() {
+        translate("pom1.yml", ".groovy", "pom1.groovy")
     }
 }
