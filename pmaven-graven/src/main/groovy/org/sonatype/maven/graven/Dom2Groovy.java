@@ -50,6 +50,8 @@ import java.util.Map;
  */
 public class Dom2Groovy
 {
+    // FIXME: Re-extend from DomToGroovy once version us is released
+
     // FIXME: Need the full list, look at Types for hints on how to generate a full list
     protected final List<String> keywords = Arrays.asList(
             "class", "extends", "implements", "package", "return", "def",
@@ -124,6 +126,11 @@ public class Dom2Groovy
         
         boolean hasAttributes = printAttributes(element);
 
+        //
+        // FIXME: Allow omitting () from empty attributes... needs some more work,
+        //        move back to DomToGroovy once sorted
+        //
+        
         NodeList list = element.getChildNodes();
         int length = list.getLength();
         if (length == 0) {
