@@ -72,36 +72,9 @@ public class PolyglotTranslatorCli
         assert input != null;
         assert output != null;
 
-        System.out.println("Input: " + input);
-        Map<String,String> inputOptions = new HashMap<String,String>();
-        inputOptions.put(ModelProcessor.LOCATION, input.getPath());
+        System.out.println("Translating " + input + " -> " + output);
 
-        System.out.println("Output: " + output);
-        Map<String,String> outputOptions = new HashMap<String,String>();
-        outputOptions.put(ModelProcessor.LOCATION, output.getPath());
-
-        InputStream is = null;
-        OutputStream os = null;
-
-        try {
-            is = input.openConnection().getInputStream();
-
-            if (output.getProtocol().equals("file")) {
-                File file = new File(output.getPath());
-                os = new BufferedOutputStream(new FileOutputStream(file));
-            }
-            else {
-                os = output.openConnection().getOutputStream();
-            }
-
-            translator.translate(is, inputOptions, os, outputOptions);
-
-            System.out.println("Done");
-        }
-        finally {
-            IOUtil.close(is);
-            IOUtil.close(os);
-        }
+        translator.translate(input, output);
     }
 
     public static void main(final String[] args) throws Exception {
