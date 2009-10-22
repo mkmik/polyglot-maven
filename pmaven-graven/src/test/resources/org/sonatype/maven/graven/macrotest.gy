@@ -8,6 +8,7 @@ project {
     dependencies {
         // dependency { groupId 'a'; artifactId 'b'; version 'c' }
         $dependency('a', 'b', 'c')
+        $dependency('junit:junit:4.7:test')
 
         dependency {
             groupId 'bar'

@@ -33,13 +33,23 @@ public class PolyglotTranslatorCliTest
     }
 
     private void translate(String input, String ext, String expected) {
+        println "Translating $input, $ext, $expected"
+        
         def url = getClass().getResource(input)
+        assertNotNull(url)
+
+        println "Input text:\n${url.text}"
+
         def file = File.createTempFile("pom", ext)
         file.deleteOnExit()
         try {
             translator.translate(url, file.toURI().toURL())
+            println "Translated text:\n${file.text}"
 
-            def expectedModel = loadModel(getClass().getResource(expected).openStream(), expected)
+            url = getClass().getResource(expected)
+            assertNotNull(url)
+            
+            def expectedModel = loadModel(url.openStream(), expected)
             def actualModel = loadModel(file.newInputStream(), file.name)
 
             assertModelEquals(expectedModel, actualModel)

@@ -56,6 +56,8 @@ public class PolyglotTranslatorCli
         File input = new File(args[0]).getCanonicalFile();
         File output = new File(args[1]).getCanonicalFile();
 
+        System.out.println("Translating " + input + " -> " + output);
+
         translate(input, output);
 
         return 0;
@@ -71,8 +73,6 @@ public class PolyglotTranslatorCli
     public void translate(final URL input, final URL output) throws IOException {
         assert input != null;
         assert output != null;
-
-        System.out.println("Translating " + input + " -> " + output);
 
         translator.translate(input, output);
     }
