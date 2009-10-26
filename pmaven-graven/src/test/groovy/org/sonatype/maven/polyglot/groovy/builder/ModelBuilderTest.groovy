@@ -109,11 +109,34 @@ public class ModelBuilderTest
     void testBuildWithProperties() {
         def model = builder.project {
             properties {
-                foo 'a'
+                foo {
+                    bar {
+                        a "b"
+                    }
+                }
+
+                'foo.bar.c' "d"
+
+                ick(poo: "blah") {
+                    grr "barf"
+                }
+
+                v "x"
+
+                x = "y"
             }
         }
 
         assertNotNull(model)
+        def p = model?.properties
+
+        assertNotNull(p)
+        assertEquals("b", p.getProperty("foo.bar.a"))
+        assertEquals("d", p.getProperty("foo.bar.c"))
+        assertEquals("blah", p.getProperty("ick.poo"))
+        assertEquals("barf", p.getProperty("ick.grr"))
+        assertEquals("x", p.getProperty("v"))
+        assertEquals("y", p.getProperty("x"))
     }
 
     @Test

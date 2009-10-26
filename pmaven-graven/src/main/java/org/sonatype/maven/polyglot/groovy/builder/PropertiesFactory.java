@@ -29,6 +29,7 @@ import org.codehaus.plexus.util.xml.Xpp3Dom;
 import java.util.Map;
 import java.util.ArrayList;
 import java.util.Properties;
+import java.util.List;
 
 /**
  * Builds properties nodes.
@@ -57,19 +58,54 @@ public class PropertiesFactory
     }
 
     @Override
-    public boolean onNodeChildren(FactoryBuilderSupport builder, Object node, Closure childContent) {
-        //
-        // FIXME:
-        //
+    public boolean onNodeChildren(FactoryBuilderSupport builder, Object node, Closure content) {
+        Properties props = (Properties)node;
 
-        NodeBuilder b = new NodeBuilder();
-        childContent.setDelegate(b);
-        childContent.setResolveStrategy(Closure.DELEGATE_FIRST);
+        NodeBuilder nodes = new NodeBuilder() {
+            @Override
+            protected void setClosureDelegate(final Closure c, final Object o) {
+                c.setDelegate(this);
+                c.setResolveStrategy(Closure.DELEGATE_FIRST);
+            }
 
-        Node root = (Node) b.invokeMethod(getName(), childContent);
+            @Override
+            public void setProperty(final String name, final Object value) {
+                this.invokeMethod(name, value);
+            }
+        };
+        
+        content.setDelegate(nodes);
+        content.setResolveStrategy(Closure.DELEGATE_FIRST);
+        Node root = (Node) nodes.invokeMethod(getName(), content);
 
-        System.out.println("Result: " + root);
+        for (Node child : (List<Node>)root.value()) {
+            merge(props, child, "");
+        }
 
         return false;
+    }
+
+    private void merge(Properties props, Node node, String prefix) {
+        assert props != null;
+        assert node != null;
+        assert prefix != null;
+
+        String name = prefix + node.name();
+
+        Object value = node.value();
+        if (value instanceof String) {
+            props.setProperty(name, String.valueOf(value));
+        }
+
+        Map attrs = node.attributes();
+        for (Object key : attrs.keySet()) {
+            props.setProperty(name + "." + key, String.valueOf(attrs.get(key)));
+        }
+
+        for (Object child : node.children()) {
+            if (child instanceof Node) {
+                merge(props, (Node)child, name + ".");
+            }
+        }
     }
 }
