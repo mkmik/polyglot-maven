@@ -45,23 +45,37 @@ public class GoalsFactory
 
     @Override
     public Object newInstance(FactoryBuilderSupport builder, Object name, Object value, Map attribs) throws InstantiationException, IllegalAccessException {
-        List node = new ArrayList();
+        List node;
 
         if (value != null) {
-            if (value instanceof String) {
-                node.add(value);
-                return node;
-            }
-            else if (value instanceof List) {
-                for (Object item : (List)value) {
-                    node.add(String.valueOf(item));
-                }
-                return node;
-            }
+            node = parse(value);
 
-            throw new NodeValueParseException(this, value);
+            if (node == null) {
+                throw new NodeValueParseException(this, value);
+            }
+        }
+        else {
+            node = new ArrayList();
         }
 
         return node;
+    }
+
+    public static List parse(final Object value) {
+        assert value != null;
+
+        List node = new ArrayList();
+        if (value instanceof String) {
+            node.add(value);
+            return node;
+        }
+        else if (value instanceof List) {
+            for (Object item : (List)value) {
+                node.add(String.valueOf(item));
+            }
+            return node;
+        }
+
+        return null;
     }
 }

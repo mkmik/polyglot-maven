@@ -43,23 +43,37 @@ public class ParentFactory
     }
 
     public Object newInstance(FactoryBuilderSupport builder, Object name, Object value, Map attribs) throws InstantiationException, IllegalAccessException {
-        Parent node = new Parent();
+        Parent node;
 
         if (value != null) {
-            if (value instanceof String) {
-                String[] items = ((String)value).split(":");
-                switch (items.length) {
-                    case 3:
-                        node.setGroupId(items[0]);
-                        node.setArtifactId(items[1]);
-                        node.setVersion(items[2]);
-                        return node;
-                }
-            }
+            node = parse(value);
 
-            throw new NodeValueParseException(this, value);
+            if (node == null) {
+                throw new NodeValueParseException(this, value);
+            }
+        }
+        else {
+            node = new Parent();
         }
 
         return node;
+    }
+
+    public static Parent parse(final Object value) {
+        assert value != null;
+
+        if (value instanceof String) {
+            Parent node = new Parent();
+            String[] items = ((String)value).split(":");
+            switch (items.length) {
+                case 3:
+                    node.setGroupId(items[0]);
+                    node.setArtifactId(items[1]);
+                    node.setVersion(items[2]);
+                    return node;
+            }
+        }
+
+        return null;
     }
 }

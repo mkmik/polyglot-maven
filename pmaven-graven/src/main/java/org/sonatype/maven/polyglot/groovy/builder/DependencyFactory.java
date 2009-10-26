@@ -44,35 +44,49 @@ public class DependencyFactory
     }
 
     public Object newInstance(FactoryBuilderSupport builder, Object name, Object value, Map attribs) throws InstantiationException, IllegalAccessException {
-        Dependency node = new Dependency();
+        Dependency node;
 
         if (value != null) {
-            if (value instanceof String) {
-                String[] items = ((String)value).split(":");
-                switch (items.length) {
-                    case 4:
-                        node.setGroupId(items[0]);
-                        node.setArtifactId(items[1]);
-                        node.setVersion(items[2]);
-                        node.setScope(items[3]);
-                        return node;
+            node = parse(value);
 
-                    case 3:
-                        node.setGroupId(items[0]);
-                        node.setArtifactId(items[1]);
-                        node.setVersion(items[2]);
-                        return node;
-
-                    case 2:
-                        node.setGroupId(items[0]);
-                        node.setArtifactId(items[1]);
-                        return node;
-                }
+            if (node == null) {
+                throw new NodeValueParseException(this, value);
             }
-
-            throw new NodeValueParseException(this, value);
+        }
+        else {
+            node = new Dependency();
         }
 
         return node;
+    }
+
+    public static Dependency parse(final Object value) {
+        assert value != null;
+
+        if (value instanceof String) {
+            Dependency node = new Dependency();
+            String[] items = ((String)value).split(":");
+            switch (items.length) {
+                case 4:
+                    node.setGroupId(items[0]);
+                    node.setArtifactId(items[1]);
+                    node.setVersion(items[2]);
+                    node.setScope(items[3]);
+                    return node;
+
+                case 3:
+                    node.setGroupId(items[0]);
+                    node.setArtifactId(items[1]);
+                    node.setVersion(items[2]);
+                    return node;
+
+                case 2:
+                    node.setGroupId(items[0]);
+                    node.setArtifactId(items[1]);
+                    return node;
+            }
+        }
+
+        return null;
     }
 }

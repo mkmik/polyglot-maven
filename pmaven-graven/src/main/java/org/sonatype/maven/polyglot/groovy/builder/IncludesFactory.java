@@ -49,7 +49,10 @@ public class IncludesFactory
 
         if (value != null) {
             node = parse(value);
-            throw new NodeValueParseException(this, value);
+
+            if (node == null) {
+                throw new NodeValueParseException(this, value);
+            }
         }
         else {
             node = new ArrayList();
@@ -59,6 +62,8 @@ public class IncludesFactory
     }
 
     public static List parse(final Object value) {
+        assert value != null;
+
         List node = new ArrayList();
 
         if (value instanceof String) {
