@@ -2,6 +2,7 @@ package org.sonatype.maven.polyglot.groovy;
 
 import groovy.lang.Script;
 import groovy.lang.GroovyShell;
+import groovy.lang.Closure;
 import groovy.xml.MarkupBuilder;
 import org.apache.maven.model.Model;
 import org.apache.maven.model.building.ModelProcessor;
@@ -12,6 +13,7 @@ import org.codehaus.plexus.component.annotations.Component;
 import org.codehaus.plexus.util.IOUtil;
 import org.sonatype.maven.polyglot.io.ModelReaderSupport;
 import org.sonatype.maven.polyglot.groovy.builder.ModelBuilder;
+import org.sonatype.maven.graven.ModelLoader;
 
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
@@ -19,7 +21,9 @@ import java.io.InputStream;
 import java.io.Reader;
 import java.io.StringReader;
 import java.io.StringWriter;
+import java.io.File;
 import java.util.Map;
+import java.net.URL;
 
 /**
  * Reads a <tt>pom.groovy</tt> and transforms into a Maven {@link Model}.
@@ -42,19 +46,14 @@ public class GravenModelReader
         assert input != null;
 
         ModelBuilder builder = new ModelBuilder();
+        GroovyShell shell = new GroovyShell();
 
         String location = null;
         if (options == null) {
             location = String.valueOf(options.get(ModelProcessor.LOCATION));
         }
 
-        GroovyShell shell = new GroovyShell();
-        Script script = location != null ? shell.parse(input, location) : shell.parse(input);
-
-        //
-        // TODO: Re-introduce $include && Macros
-        //
-
-        return (Model) builder.build(script);
+        ModelLoader loader = new ModelLoader(builder, shell);
+        return loader.load(input, options);
     }
 }
