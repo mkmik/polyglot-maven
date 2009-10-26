@@ -156,6 +156,20 @@ public class ModelBuilderTest
     }
 
     @Test
+    void testBuildParseModules() {
+        def model = builder.project {
+            modules('a', 'b', 'c')
+        }
+
+        assertNotNull(model)
+
+        def m = model?.modules
+        assertNotNull(m)
+        assertEquals(3, m.size())
+        assertEquals([ 'a', 'b', 'c' ], m)
+    }
+
+    @Test
     void testBuildParseGoals1() {
         def model = builder.project {
             build {

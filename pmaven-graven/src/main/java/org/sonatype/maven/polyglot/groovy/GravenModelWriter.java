@@ -1,4 +1,4 @@
-package org.sonatype.maven.graven;
+package org.sonatype.maven.polyglot.groovy;
 
 import groovy.util.IndentPrinter;
 import org.apache.maven.model.Model;

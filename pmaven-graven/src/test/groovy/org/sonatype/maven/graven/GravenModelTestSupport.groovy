@@ -4,10 +4,11 @@ import javax.xml.parsers.DocumentBuilder
 import javax.xml.parsers.DocumentBuilderFactory
 import org.apache.maven.model.Model
 import org.apache.maven.model.io.DefaultModelWriter
-import org.sonatype.maven.graven.Dom2Groovy
+import org.sonatype.maven.polyglot.groovy.Dom2Groovy
 import org.w3c.dom.Document
 import org.xml.sax.InputSource
 import static org.junit.Assert.*
+import org.sonatype.maven.polyglot.groovy.Dom2Groovy
 
 /**
  * Support for model tests.

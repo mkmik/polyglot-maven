@@ -6,10 +6,9 @@ import org.apache.maven.model.io.ModelWriter
 import org.codehaus.plexus.PlexusTestCase
 import org.junit.Before
 import org.junit.Test
-import org.sonatype.maven.graven.GravenModelWriter
+import org.sonatype.maven.polyglot.groovy.GravenModelWriter
 import org.sonatype.maven.polyglot.PolyglotModelManager
 import org.sonatype.maven.polyglot.cli.PolyglotTranslatorCli
-
 
 /**
  * Tests for {@link PolyglotTranslatorCli}.

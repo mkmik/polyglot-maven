@@ -28,6 +28,7 @@ import org.codehaus.plexus.util.xml.Xpp3Dom;
 
 import java.util.Map;
 import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Builds object nodes.
@@ -56,19 +57,52 @@ public class ObjectFactory
     }
 
     @Override
-    public boolean onNodeChildren(FactoryBuilderSupport builder, Object node, Closure childContent) {
-        //
-        // FIXME:
-        //
+    public boolean onNodeChildren(FactoryBuilderSupport builder, Object node, Closure content) {
+        Xpp3Dom dom = (Xpp3Dom)node;
 
-        NodeBuilder b = new NodeBuilder();
-        childContent.setDelegate(b);
-        childContent.setResolveStrategy(Closure.DELEGATE_FIRST);
-        
-        Node root = (Node) b.invokeMethod(getName(), childContent);
+        NodeBuilder nodes = new NodeBuilder() {
+            @Override
+            protected void setClosureDelegate(final Closure c, final Object o) {
+                c.setDelegate(this);
+                c.setResolveStrategy(Closure.DELEGATE_FIRST);
+            }
 
-        System.out.println("Result: " + root);
-        
+            @Override
+            public void setProperty(final String name, final Object value) {
+                this.invokeMethod(name, value);
+            }
+        };
+
+        content.setDelegate(nodes);
+        content.setResolveStrategy(Closure.DELEGATE_FIRST);
+        Node root = (Node) nodes.invokeMethod(getName(), content);
+
+        for (Node child : (List<Node>) root.children()) {
+            dom.addChild(nodeToXpp3(child));
+        }
+
         return false;
+    }
+
+    private Xpp3Dom nodeToXpp3(final Node node) {
+        Xpp3Dom dom = new Xpp3Dom((String)node.name());
+
+        Object value = node.value();
+        if (value instanceof String) {
+            dom.setValue(String.valueOf(value));
+        }
+
+        Map attrs = node.attributes();
+        for (Object key : attrs.keySet()) {
+            dom.setAttribute(String.valueOf(key), String.valueOf(attrs.get(key)));
+        }
+
+        for (Object child : node.children()) {
+            if (child instanceof Node) {
+                dom.addChild(nodeToXpp3((Node)child));
+            }
+        }
+
+        return dom;
     }
 }
