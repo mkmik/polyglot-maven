@@ -21,9 +21,7 @@ package org.sonatype.maven.polyglot.execute;
  *
  * @author <a href="mailto:jason@planet57.com">Jason Dillon</a>
  */
-public interface ExecuteContainer
+public interface ExecuteContext
 {
-    String getPhase();
-
-    void execute(ExecuteContext context) throws Exception;
+    // TODO:
 }

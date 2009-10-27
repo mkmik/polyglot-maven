@@ -20,6 +20,7 @@ import groovy.lang.Closure;
 import groovy.util.FactoryBuilderSupport;
 import org.apache.maven.model.Build;
 import org.sonatype.maven.polyglot.execute.ExecuteContainer;
+import org.sonatype.maven.polyglot.execute.ExecuteContext;
 
 import java.util.Map;
 
@@ -107,7 +108,7 @@ public class ExecuteFactory
             this.closure = closure;
         }
 
-        public void execute() throws Exception {
+        public void execute(final ExecuteContext context) throws Exception {
             // TODO:
         }
     }
