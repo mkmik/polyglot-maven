@@ -1,6 +1,5 @@
-package org.sonatype.maven.polyglot.cli;
+package org.apache.maven.cli;
 
-import org.apache.maven.cli.MavenCli;
 import org.apache.maven.model.building.ModelProcessor;
 import org.codehaus.plexus.PlexusContainer;
 import org.codehaus.plexus.classworlds.ClassWorld;
@@ -15,14 +14,6 @@ import org.codehaus.plexus.component.repository.ComponentDescriptor;
 public class PolyglotMavenCli
     extends MavenCli
 {
-    public PolyglotMavenCli(final ClassWorld classWorld) {
-        super(classWorld);
-    }
-    
-    public PolyglotMavenCli() {
-        super();
-    }
-    
     @Override
     protected void customizeContainer(final PlexusContainer container) {
         assert container != null;
@@ -48,7 +39,7 @@ public class PolyglotMavenCli
 
     public static int main(final String[] args, final ClassWorld classWorld) {
         assert classWorld != null;
-        PolyglotMavenCli cli = new PolyglotMavenCli(classWorld);
-        return cli.doMain(args, null, System.out, System.err);
+        PolyglotMavenCli cli = new PolyglotMavenCli();
+        return cli.doMain(new CliRequest(args, classWorld));
     }
 }
