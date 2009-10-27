@@ -35,6 +35,11 @@ import org.apache.maven.model.Parent;
 import groovy.util.FactoryBuilderSupport;
 import groovy.util.Factory;
 import groovy.lang.Closure;
+import org.codehaus.plexus.component.annotations.Component;
+import org.codehaus.plexus.component.annotations.Requirement;
+import org.codehaus.plexus.personality.plexus.lifecycle.phase.Initializable;
+import org.codehaus.plexus.personality.plexus.lifecycle.phase.InitializationException;
+import org.sonatype.maven.polyglot.execute.ExecuteManager;
 
 import java.lang.reflect.Method;
 import java.lang.reflect.Modifier;
@@ -50,14 +55,19 @@ import java.util.HashSet;
  *
  * @since 1.0
  */
+@Component(role=ModelBuilder.class)
 public class ModelBuilder
     extends FactoryBuilderSupport
+    implements Initializable
 {
     private final Set<String> factoryNames = new HashSet<String>();
 
     private final Set<Class> factoryTypes = new HashSet<Class>();
 
-    public ModelBuilder() {
+    @Requirement
+    private ExecuteManager executeManager;
+    
+    public void initialize() throws InitializationException {
         registerFactories();
     }
 
@@ -101,7 +111,7 @@ public class ModelBuilder
         registerChildFactory("profile", Profile.class);
         registerChildFactory("pluginRepository", Repository.class);
         registerChildFactory("repository", Repository.class);
-        registerFactory(new ExecuteFactory());
+        registerFactory(new ExecuteFactory(executeManager));
     }
 
     @Override

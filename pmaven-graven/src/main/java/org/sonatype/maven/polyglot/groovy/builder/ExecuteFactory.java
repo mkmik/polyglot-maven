@@ -19,8 +19,7 @@ package org.sonatype.maven.polyglot.groovy.builder;
 import groovy.lang.Closure;
 import groovy.util.FactoryBuilderSupport;
 import org.apache.maven.model.Build;
-import org.sonatype.maven.polyglot.execute.ExecuteContainer;
-import org.sonatype.maven.polyglot.execute.ExecuteContext;
+import org.sonatype.maven.polyglot.execute.ExecuteManager;
 import org.sonatype.maven.polyglot.groovy.execute.GroovyExecuteContainer;
 
 import java.util.Map;
@@ -33,8 +32,12 @@ import java.util.Map;
 public class ExecuteFactory
     extends NamedFactory
 {
-    public ExecuteFactory() {
+    private final ExecuteManager executeManager;
+
+    public ExecuteFactory(final ExecuteManager executeManager) {
         super("$execute");
+        assert executeManager != null;
+        this.executeManager = executeManager;
     }
 
     @Override
@@ -54,8 +57,8 @@ public class ExecuteFactory
     @Override
     public void setParent(FactoryBuilderSupport builder, Object parent, Object child) {
         if (parent instanceof Build) {
-            Build build = (Build)parent;
-            // TODO: Attach
+            // FIXME: May want to use Plugin and allow for special muck when we are pluginManagement.plugin
+            executeManager.add((GroovyExecuteContainer)child);
         }
         else {
             throw new IllegalStateException("The " + getName() + " element must only be defined under 'build'");

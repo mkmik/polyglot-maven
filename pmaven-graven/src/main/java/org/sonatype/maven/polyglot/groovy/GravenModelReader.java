@@ -6,6 +6,7 @@ import org.apache.maven.model.building.ModelProcessor;
 import org.apache.maven.model.io.ModelParseException;
 import org.apache.maven.model.io.ModelReader;
 import org.codehaus.plexus.component.annotations.Component;
+import org.codehaus.plexus.component.annotations.Requirement;
 import org.codehaus.plexus.util.IOUtil;
 import org.sonatype.maven.polyglot.groovy.builder.ModelBuilder;
 import org.sonatype.maven.polyglot.io.ModelReaderSupport;
@@ -27,6 +28,9 @@ import java.util.Map;
 public class GravenModelReader
     extends ModelReaderSupport
 {
+    @Requirement
+    private ModelBuilder builder;
+
     public Model read(final Reader input, final Map<String,?> options) throws IOException, ModelParseException {
         assert input != null;
         
@@ -38,9 +42,8 @@ public class GravenModelReader
     public Model read(final InputStream input, final Map<String,?> options) throws IOException, ModelParseException {
         assert input != null;
 
-        ModelBuilder builder = new ModelBuilder();
         GroovyShell shell = new GroovyShell();
-
+        assert builder != null;
         ModelLoader loader = new ModelLoader(builder, shell);
         return loader.load(input, options);
     }

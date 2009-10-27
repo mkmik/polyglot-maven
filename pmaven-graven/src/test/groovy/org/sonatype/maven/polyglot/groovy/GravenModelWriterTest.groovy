@@ -6,6 +6,7 @@ import org.junit.Before
 import org.junit.Test
 
 import static org.junit.Assert.*
+import org.apache.maven.model.io.ModelWriter
 
 /**
  * Tests for {@link org.sonatype.maven.polyglot.groovy.GravenModelWriter}.
@@ -19,7 +20,7 @@ public class GravenModelWriterTest
 
     @Before
     void setUp() {
-        writer = new GravenModelWriter()
+        writer = lookup(ModelWriter.class, "graven")
     }
 
     @Test

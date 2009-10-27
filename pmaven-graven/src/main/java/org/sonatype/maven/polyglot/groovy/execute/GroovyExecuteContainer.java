@@ -68,6 +68,6 @@ public class GroovyExecuteContainer
     }
 
     public void execute(final ExecuteContext context) throws Exception {
-        // TODO:
+        System.out.println("Execute w/context: " + context);
     }
 }

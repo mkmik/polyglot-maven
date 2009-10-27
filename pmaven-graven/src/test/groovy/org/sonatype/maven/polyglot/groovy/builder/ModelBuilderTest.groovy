@@ -17,7 +17,7 @@ public class ModelBuilderTest
 
     @Before
     void setUp() {
-        builder = new ModelBuilder()
+        builder = lookup(ModelBuilder.class)
     }
 
     @Test

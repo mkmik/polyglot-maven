@@ -5,6 +5,7 @@ import org.junit.Before
 import org.junit.Test
 
 import static org.junit.Assert.*
+import org.apache.maven.model.io.ModelReader
 
 /**
  * Tests for {@link GravenModelReader}.
@@ -18,7 +19,7 @@ public class GravenModelReaderTest
 
     @Before
     void setUp() {
-        reader = new GravenModelReader()
+        reader = lookup(ModelReader.class, "graven")
     }
 
     @Test

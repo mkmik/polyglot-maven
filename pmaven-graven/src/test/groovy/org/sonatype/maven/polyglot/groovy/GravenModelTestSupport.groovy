@@ -9,6 +9,7 @@ import org.w3c.dom.Document
 import org.xml.sax.InputSource
 import static org.junit.Assert.*
 import org.sonatype.maven.polyglot.groovy.Dom2Groovy
+import org.codehaus.plexus.PlexusTestCase
 
 /**
  * Support for model tests.
@@ -16,6 +17,7 @@ import org.sonatype.maven.polyglot.groovy.Dom2Groovy
  * @author <a href="mailto:jason@planet57.com">Jason Dillon</a>
  */
 public class GravenModelTestSupport
+    extends PlexusTestCase
 {
     protected String load(final String name) {
         assertNotNull(name)
