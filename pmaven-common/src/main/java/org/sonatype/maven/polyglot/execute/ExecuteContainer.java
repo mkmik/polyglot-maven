@@ -25,5 +25,7 @@ public interface ExecuteContainer
 {
     String getPhase();
 
+    // Probably need to give some context here...
+    
     void execute() throws Exception;
 }
