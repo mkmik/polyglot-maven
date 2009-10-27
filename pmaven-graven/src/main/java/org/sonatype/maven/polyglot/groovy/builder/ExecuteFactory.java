@@ -21,6 +21,7 @@ import groovy.util.FactoryBuilderSupport;
 import org.apache.maven.model.Build;
 import org.sonatype.maven.polyglot.execute.ExecuteContainer;
 import org.sonatype.maven.polyglot.execute.ExecuteContext;
+import org.sonatype.maven.polyglot.groovy.execute.GroovyExecuteContainer;
 
 import java.util.Map;
 
@@ -66,50 +67,5 @@ public class ExecuteFactory
         GroovyExecuteContainer container = (GroovyExecuteContainer)node;
         container.setClosure(content);
         return false;
-    }
-
-    private static class GroovyExecuteContainer
-        implements ExecuteContainer
-    {
-        private final Object value;
-
-        private final Map attrs;
-
-        private String phase;
-
-        private Closure closure;
-
-        private GroovyExecuteContainer(final Object value, final Map attrs) {
-            this.value = value;
-            this.attrs = attrs;
-        }
-
-        public Object getValue() {
-            return value;
-        }
-
-        public Map getAttributes() {
-            return attrs;
-        }
-
-        public String getPhase() {
-            return phase;
-        }
-
-        public void setPhase(final String phase) {
-            this.phase = phase;
-        }
-
-        public Closure getClosure() {
-            return closure;
-        }
-
-        public void setClosure(final Closure closure) {
-            this.closure = closure;
-        }
-
-        public void execute(final ExecuteContext context) throws Exception {
-            // TODO:
-        }
     }
 }
