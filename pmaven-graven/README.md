@@ -18,7 +18,6 @@ Custom Element Value Parsing
 
 #### Example
     parent('foo:bar:1.0')
-    parent('foo', 'bar', '1.0')
 
 ##### Result
     parent {
@@ -31,7 +30,6 @@ Custom Element Value Parsing
 
 #### Example
     dependency('foo:bar')
-    dependency('foo', 'bar')
 
 #####  Result
     dependency {
@@ -41,7 +39,6 @@ Custom Element Value Parsing
 
 #### Example
     dependency('foo:bar:1.0')
-    dependency('foo', 'bar', '1.0')
 
 #####  Result
     dependency {
@@ -52,7 +49,6 @@ Custom Element Value Parsing
 
 #### Example
     dependency('foo:bar:1.0:test')
-    dependency('foo', 'bar', '1.0', 'test')
 
 #####  Result
     dependency {
@@ -66,7 +62,6 @@ Custom Element Value Parsing
 
 #### Example
     exclusion('foo:bar')
-    exclusion('foo', 'bar')
 
 ##### Result
     exclusion {
@@ -111,17 +106,6 @@ Custom Element Value Parsing
     modules {
         goal 'a'
         goal 'b'
-    }
-
-### configuration
-
-#### Example
-    configuration(foo: '1', bar: '2')
-
-##### Result
-    configuration {
-        foo '1'
-        bar '2'
     }
 
 ### includes
@@ -197,4 +181,14 @@ Examples list all supported syntax and result shows what each would produce in t
     type 'jar'
     classifier 'bin'
 
+### $configuration
+
+#### Example
+    $configuration(foo: '1', bar: '2')
+
+##### Result
+    configuration {
+        foo '1'
+        bar '2'
+    }
 
