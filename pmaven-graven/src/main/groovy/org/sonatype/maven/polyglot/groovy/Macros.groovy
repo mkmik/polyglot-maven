@@ -1,4 +1,4 @@
-package org.sonatype.maven.graven
+package org.sonatype.maven.polyglot.groovy
 
 /**
  * Default pom macros.
@@ -7,10 +7,6 @@ package org.sonatype.maven.graven
  */
 
 def vars = binding.properties.variables
-
-//
-// FIXME: Create parse helper to share spome of this, need to accept objects not strings
-//
 
 parseArtifact = {String... items ->
     assert items != null && items.size() != 0

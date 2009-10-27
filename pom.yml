@@ -22,16 +22,16 @@ build:
     inherited: true
     version: 2.0.2
   - artifactId: gmaven-plugin
-    configuration: {providerSelection: '1.6'}
+    configuration: {providerSelection: '1.7'}
     executions:
     - goals: [generateStubs, compile, generateTestStubs, testCompile]
       id: default
       inherited: true
       priority: 0
     extensions: false
-    groupId: org.codehaus.groovy.maven
+    groupId: org.codehaus.gmaven
     inherited: true
-    version: '1.0'
+    version: 1.1-SNAPSHOT
   - artifactId: plexus-component-metadata
     executions:
     - goals: [generate-metadata, generate-test-metadata]
@@ -65,7 +65,7 @@ dependencyManagement:
     groupId: org.codehaus.groovy
     optional: false
     type: jar
-    version: 1.6.5
+    version: 1.7-beta-2
   - {artifactId: pmaven-common, groupId: org.sonatype.pmaven, optional: false, type: jar,
     version: 1.0-SNAPSHOT}
   - {artifactId: pmaven-cli, groupId: org.sonatype.pmaven, optional: false, type: jar,

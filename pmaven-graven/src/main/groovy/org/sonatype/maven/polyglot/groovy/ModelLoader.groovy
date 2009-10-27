@@ -1,6 +1,5 @@
-package org.sonatype.maven.graven
+package org.sonatype.maven.polyglot.groovy
 
-import org.sonatype.maven.polyglot.groovy.builder.ModelBuilder
 import org.apache.maven.model.Model
 import org.apache.maven.model.building.ModelProcessor
 
@@ -8,8 +7,9 @@ import org.apache.maven.model.building.ModelProcessor
  * Model loader.
  *
  * @author <a href="mailto:jason@planet57.com">Jason Dillon</a>
+ *
+ * @since 1.0
  */
-
 class ModelLoader
 {
     final org.sonatype.maven.polyglot.groovy.builder.ModelBuilder builder
@@ -22,7 +22,7 @@ class ModelLoader
     }
 
     Model load(final InputStream input, final Map<?,?> options) {
-        String location = options?.get(ModelProcessor.LOCATION)
+        String location = (String)options?.get(ModelProcessor.LOCATION)
         Script script = location != null ? shell.parse(input, location) : shell.parse(input);
         def binding = shell.context
         
@@ -37,10 +37,10 @@ class ModelLoader
                 include = source.newInstance()
             }
             else if (source instanceof File) {
-                include = shell.parse(source)
+                include = shell.parse((File)source)
             }
             else if (source instanceof URL) {
-                include = shell.parse(source.openStream())
+                include = shell.parse(((URL)source).openStream())
             }
             else {
                 throw new IllegalArgumentException("Invalid include source: $source")

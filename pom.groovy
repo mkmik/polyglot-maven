@@ -35,9 +35,9 @@ project {
                 }
             }
             plugin {
-                groupId 'org.codehaus.groovy.maven'
+                groupId 'org.codehaus.gmaven'
                 artifactId 'gmaven-plugin'
-                version '1.0'
+                version '1.1-SNAPSHOT'
                 executions {
                     execution {
                         goals {
@@ -49,7 +49,7 @@ project {
                     }
                 }
                 configuration {
-                    providerSelection '1.6'
+                    providerSelection '1.7'
                 }
             }
             plugin {
@@ -113,7 +113,7 @@ project {
             dependency {
                 groupId 'org.codehaus.groovy'
                 artifactId 'groovy'
-                version '1.6.5'
+                version '1.7-beta-2'
                 exclusions {
                     exclusion {
                         artifactId 'jline'

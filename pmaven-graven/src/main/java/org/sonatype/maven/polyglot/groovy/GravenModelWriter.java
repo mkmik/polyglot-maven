@@ -27,6 +27,8 @@ import java.util.Map;
  * Writes a Maven {@link org.apache.maven.model.Model} to a <tt>pom.groovy</tt>.
  *
  * @author <a href="mailto:jason@planet57.com">Jason Dillon</a>
+ *
+ * @since 1.0
  */
 @Component(role=ModelWriter.class, hint="graven")
 public class GravenModelWriter

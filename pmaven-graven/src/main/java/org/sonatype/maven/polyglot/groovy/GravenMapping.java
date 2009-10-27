@@ -8,6 +8,8 @@ import org.sonatype.maven.polyglot.mapping.MappingSupport;
  * Graven model mapping.
  *
  * @author <a href="mailto:jason@planet57.com">Jason Dillon</a>
+ *
+ * @since 1.0
  */
 @Component(role=Mapping.class, hint="graven")
 public class GravenMapping
