@@ -19,7 +19,8 @@ package org.sonatype.maven.polyglot.execute;
 import org.apache.maven.plugin.AbstractMojo;
 import org.apache.maven.plugin.MojoExecutionException;
 import org.apache.maven.plugin.MojoFailureException;
-import org.codehaus.plexus.component.annotations.Requirement;
+
+import java.util.List;
 
 /**
  * ???
@@ -32,11 +33,24 @@ public class ExecuteMojo
     extends AbstractMojo
 {
     /**
-     * @component
+     * @component role="org.sonatype.maven.polyglot.execute.ExecuteManager"
      */
     private ExecuteManager manager;
 
     public void execute() throws MojoExecutionException, MojoFailureException {
-        //To change body of implemented methods use File | Settings | File Templates.
+        System.out.println("EXEUTING; w/manager: " + manager);
+        System.out.println("containers: " + manager.getContainers());
+        
+        List<ExecuteContainer> containers = manager.getContainers();
+
+        for (ExecuteContainer container : containers) {
+            try {
+                container.execute(null);
+            }
+            catch (Exception e) {
+                // HACK: Blah
+                e.printStackTrace();
+            }
+        }
     }
 }

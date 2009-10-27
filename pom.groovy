@@ -6,6 +6,10 @@ project {
     packaging 'pom'
     name 'Polyglot Maven'
     build {
+        $execute(phase: 'validate') {
+            throw new Throwable("TEST")
+        }
+        
         defaultGoal 'install'
         plugins {
             plugin {

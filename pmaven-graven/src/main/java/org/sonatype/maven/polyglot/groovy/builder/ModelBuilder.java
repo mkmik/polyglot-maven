@@ -66,7 +66,7 @@ public class ModelBuilder
 
     @Requirement
     private ExecuteManager executeManager;
-    
+
     public void initialize() throws InitializationException {
         registerFactories();
     }

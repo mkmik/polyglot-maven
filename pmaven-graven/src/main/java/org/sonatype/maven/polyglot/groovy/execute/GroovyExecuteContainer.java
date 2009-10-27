@@ -69,5 +69,8 @@ public class GroovyExecuteContainer
 
     public void execute(final ExecuteContext context) throws Exception {
         System.out.println("Execute w/context: " + context);
+
+        // HACK:
+        closure.call();
     }
 }

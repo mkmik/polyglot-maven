@@ -16,6 +16,8 @@
 
 package org.sonatype.maven.polyglot.execute;
 
+import java.util.List;
+
 /**
  * ???
  *
@@ -23,7 +25,7 @@ package org.sonatype.maven.polyglot.execute;
  */
 public interface ExecuteManager
 {
-    // TODO:
-
     void add(ExecuteContainer container);
+
+    List<ExecuteContainer> getContainers();
 }

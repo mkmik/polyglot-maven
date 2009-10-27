@@ -18,17 +18,27 @@ package org.sonatype.maven.polyglot.execute;
 
 import org.codehaus.plexus.component.annotations.Component;
 
+import java.util.ArrayList;
+import java.util.List;
+
 /**
  * ???
  *
  * @author <a href="mailto:jason@planet57.com">Jason Dillon</a>
  */
-@Component(role=ExecuteManager.class)
+@Component(role=ExecuteManager.class, instantiationStrategy="singleton")
 public class ExecuteManagerImpl
     implements ExecuteManager
 {
+    private List<ExecuteContainer> containers = new ArrayList<ExecuteContainer>();
+
     public void add(final ExecuteContainer execute) {
         assert execute != null;
-        System.out.println("Adding: " + execute);
+        System.out.println("Adding: " + execute + ", to: " + this);
+        containers.add(execute);
+    }
+
+    public List<ExecuteContainer> getContainers() {
+        return containers;
     }
 }

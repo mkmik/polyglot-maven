@@ -1,13 +1,19 @@
 package org.sonatype.maven.polyglot.groovy;
 
 import groovy.lang.GroovyShell;
+import org.apache.maven.model.Build;
 import org.apache.maven.model.Model;
+import org.apache.maven.model.Plugin;
+import org.apache.maven.model.PluginExecution;
 import org.apache.maven.model.building.ModelProcessor;
 import org.apache.maven.model.io.ModelParseException;
 import org.apache.maven.model.io.ModelReader;
+import org.apache.maven.plugin.lifecycle.Execution;
 import org.codehaus.plexus.component.annotations.Component;
 import org.codehaus.plexus.component.annotations.Requirement;
 import org.codehaus.plexus.util.IOUtil;
+import org.sonatype.maven.polyglot.execute.ExecuteContainer;
+import org.sonatype.maven.polyglot.execute.ExecuteManager;
 import org.sonatype.maven.polyglot.groovy.builder.ModelBuilder;
 import org.sonatype.maven.polyglot.io.ModelReaderSupport;
 
@@ -15,6 +21,7 @@ import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.Reader;
+import java.util.Collections;
 import java.util.Map;
 
 /**
@@ -31,6 +38,9 @@ public class GravenModelReader
     @Requirement
     private ModelBuilder builder;
 
+    @Requirement
+    private ExecuteManager executeManager;
+
     public Model read(final Reader input, final Map<String,?> options) throws IOException, ModelParseException {
         assert input != null;
         
@@ -45,6 +55,28 @@ public class GravenModelReader
         GroovyShell shell = new GroovyShell();
         assert builder != null;
         ModelLoader loader = new ModelLoader(builder, shell);
-        return loader.load(input, options);
+        Model model = loader.load(input, options);
+
+        assert executeManager != null;
+        for (ExecuteContainer execute : executeManager.getContainers()) {
+            if (model.getBuild() == null) {
+                model.setBuild(new Build());
+            }
+
+            Plugin plugin = new Plugin();
+            plugin.setGroupId("org.sonatype.pmaven");
+            plugin.setArtifactId("pmaven-execute-plugin");
+            plugin.setVersion("1.0-SNAPSHOT");
+            model.getBuild().addPlugin(plugin);
+
+            PluginExecution execution = new PluginExecution();
+            execution.setGoals(Collections.singletonList("execute"));
+            execution.setPhase(execute.getPhase());
+            // execution.setConfiguration();
+
+            plugin.addExecution(execution);
+        }
+
+        return model;
     }
 }
