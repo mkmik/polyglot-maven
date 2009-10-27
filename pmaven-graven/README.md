@@ -11,6 +11,141 @@ Example POM
         version '1.0'
     }
 
+Custom Element Value Parsing
+----------------------------
+
+### parent
+
+#### Example
+    parent('foo:bar:1.0')
+    parent('foo', 'bar', '1.0')
+
+##### Result
+    parent {
+        groupId 'foo'
+        artifactId 'bar'
+        version: '1.0'
+    }
+
+### dependency
+
+#### Example
+    dependency('foo:bar')
+    dependency('foo', 'bar')
+
+#####  Result
+    dependency {
+        groupId 'foo'
+        artifactId 'bar'
+    }
+
+#### Example
+    dependency('foo:bar:1.0')
+    dependency('foo', 'bar', '1.0')
+
+#####  Result
+    dependency {
+        groupId 'foo'
+        artifactId 'bar'
+        version '1.0'
+    }
+
+#### Example
+    dependency('foo:bar:1.0:test')
+    dependency('foo', 'bar', '1.0', 'test')
+
+#####  Result
+    dependency {
+        groupId 'foo'
+        artifactId 'bar'
+        version '1.0'
+        scope 'test'
+    }
+
+### exclusion
+
+#### Example
+    exclusion('foo:bar')
+    exclusion('foo', 'bar')
+
+##### Result
+    exclusion {
+        groupId 'foo'
+        artifactId 'bar'
+    }
+
+### exclusions
+
+#### Example
+    exclusions('foo:bar', 'a:b')
+
+##### Result
+    exclusions {
+        exclusion {
+            groupId 'foo'
+            artifactId 'bar'
+        }
+        exclusion {
+            groupId 'a'
+            artifactId 'b'
+        }
+    }
+
+### goals
+
+#### Example
+    goals('compile', 'execute')
+
+##### Result
+    goals {
+        goal 'compile'
+        goal 'execute'
+    }
+
+### modules
+
+#### Example
+    modules('a', 'b')
+
+##### Result
+    modules {
+        goal 'a'
+        goal 'b'
+    }
+
+### configuration
+
+#### Example
+    configuration(foo: '1', bar: '2')
+
+##### Result
+    configuration {
+        foo '1'
+        bar '2'
+    }
+
+### includes
+
+#### Example
+    includes('*.bat', '*.sh')
+
+##### Result
+    includes {
+        include '*.bat'
+        include '*.sh'
+    }
+
+### excludes
+
+#### Example
+    excludes('*.bat', '*.sh')
+
+##### Result
+    excludes {
+        exclude '*.bat'
+        exclude '*.sh'
+    }
+
 Macros
 ------
 
@@ -62,135 +197,4 @@ Examples list all supported syntax and result shows what each would produce in t
     type 'jar'
     classifier 'bin'
 
-### $parent
-
-#### Example
-    $parent('foo:bar:1.0')
-    $parent('foo', 'bar', '1.0')
-
-##### Result
-    parent {
-        groupId 'foo'
-        artifactId 'bar'
-        version: '1.0'
-    }
-
-### $dependency
-
-#### Example
-    $dependency('foo:bar')
-    $dependency('foo', 'bar')
-
-#####  Result
-    dependency {
-        groupId 'foo' 
-        artifactId 'bar'
-    }
-
-#### Example
-    $dependency('foo:bar:1.0')
-    $dependency('foo', 'bar', '1.0')
-
-#####  Result
-    dependency {
-        groupId 'foo' 
-        artifactId 'bar' 
-        version '1.0' 
-    }
-
-#### Example
-    $dependency('foo:bar:1.0:test')
-    $dependency('foo', 'bar', '1.0', 'test')
-
-#####  Result
-    dependency {
-        groupId 'foo' 
-        artifactId 'bar' 
-        version '1.0' 
-        scope 'test' 
-    } 
-
-### $exclusion
-
-#### Example
-    $exclusion('foo:bar')
-    $exclusion('foo', 'bar')
-
-##### Result
-    exclusion {
-        groupId 'foo' 
-        artifactId 'bar' 
-    } 
-
-### $exclusions
-
-#### Example
-    $exclusions('foo:bar', 'a:b')
-
-##### Result
-    exclusions { 
-        exclusion { 
-            groupId 'foo' 
-            artifactId 'bar' 
-        } 
-        exclusion {
-            groupId 'a' 
-            artifactId 'b' 
-        } 
-    } 
-
-### $goals
-
-#### Example
-    $goals('compile', 'execute')
-
-##### Result
-    goals {
-        goal 'compile' 
-        goal 'execute' 
-    } 
-
-### $modules
-
-#### Example
-    $modules('a', 'b')
-
-##### Result
-    modules {
-        goal 'a'
-        goal 'b'
-    } 
-
-### $configuration
-
-#### Example
-    $configuration(foo: '1', bar: '2')
-
-##### Result
-    configuration {
-        foo '1'
-        bar '2'
-    }
-
-### $includes
-
-#### Example
-    $includes('*.bat', '*.sh')
-
-##### Result
-    includes {
-        include '*.bat'
-        include '*.sh'
-    }
-
-### $excludes
-
-#### Example
-    $excludes('*.bat', '*.sh')
-
-##### Result
-    excludes {
-        exclude '*.bat'
-        exclude '*.sh'
-    }
 
