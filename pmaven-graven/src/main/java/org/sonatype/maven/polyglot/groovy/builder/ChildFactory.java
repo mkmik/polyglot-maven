@@ -45,7 +45,7 @@ public class ChildFactory
         return false;
     }
 
-    public Object newInstance(FactoryBuilderSupport builder, Object name, Object value, Map attribs) throws InstantiationException, IllegalAccessException {
+    public Object newInstance(FactoryBuilderSupport builder, Object name, Object value, Map attrs) throws InstantiationException, IllegalAccessException {
         return type.newInstance();
     }
 }

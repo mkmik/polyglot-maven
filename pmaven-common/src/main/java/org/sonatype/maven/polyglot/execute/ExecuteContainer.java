@@ -14,32 +14,16 @@
  * limitations under the License.
  */
 
-package org.sonatype.maven.polyglot.groovy.builder;
-
-import groovy.util.AbstractFactory;
-import groovy.util.FactoryBuilderSupport;
-import org.codehaus.groovy.runtime.InvokerHelper;
-
-import java.util.Map;
+package org.sonatype.maven.polyglot.execute;
 
 /**
- * Builds string nodes.
+ * ???
  *
  * @author <a href="mailto:jason@planet57.com">Jason Dillon</a>
  */
-public class StringFactory
-    extends NamedFactory
+public interface ExecuteContainer
 {
-    public StringFactory(final String name) {
-        super(name);
-    }
+    String getPhase();
 
-    @Override
-    public boolean isLeaf() {
-        return true;
-    }
-
-    public Object newInstance(FactoryBuilderSupport builder, Object name, Object value, Map attrs) {
-        return String.valueOf(value);
-    }
+    void execute() throws Exception;
 }

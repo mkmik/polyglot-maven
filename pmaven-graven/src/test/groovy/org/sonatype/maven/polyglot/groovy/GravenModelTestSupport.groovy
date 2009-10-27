@@ -1,4 +1,4 @@
-package org.sonatype.maven.graven
+package org.sonatype.maven.polyglot.groovy
 
 import javax.xml.parsers.DocumentBuilder
 import javax.xml.parsers.DocumentBuilderFactory

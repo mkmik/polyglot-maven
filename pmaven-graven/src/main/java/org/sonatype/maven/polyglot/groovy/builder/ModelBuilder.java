@@ -101,6 +101,7 @@ public class ModelBuilder
         registerChildFactory("profile", Profile.class);
         registerChildFactory("pluginRepository", Repository.class);
         registerChildFactory("repository", Repository.class);
+        registerFactory(new ExecuteFactory());
     }
 
     @Override

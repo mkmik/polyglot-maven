@@ -41,11 +41,6 @@ public class GravenModelReader
         ModelBuilder builder = new ModelBuilder();
         GroovyShell shell = new GroovyShell();
 
-        String location = null;
-        if (options == null) {
-            location = String.valueOf(options.get(ModelProcessor.LOCATION));
-        }
-
         ModelLoader loader = new ModelLoader(builder, shell);
         return loader.load(input, options);
     }

@@ -1,12 +1,10 @@
-package org.sonatype.maven.graven
+package org.sonatype.maven.polyglot.groovy
 
 import org.apache.maven.model.building.ModelProcessor
 import org.junit.Before
 import org.junit.Test
-import org.sonatype.maven.polyglot.groovy.GravenModelReader
-import org.sonatype.maven.graven.GravenModelTestSupport
+
 import static org.junit.Assert.*
-import org.sonatype.maven.polyglot.groovy.GravenModelReader
 
 /**
  * Tests for {@link GravenModelReader}.
@@ -42,5 +40,18 @@ public class GravenModelReaderTest
         assertEquals("b", parent.artifactId)
         assertEquals("c", parent.version)
         assertEquals("../pom.xml", parent.relativePath)
+    }
+
+    @Test
+    void testExecute() {
+        def input = getClass().getResource("execute1.groovy")
+        assertNotNull(input)
+
+        def options = [:]
+        options.put(ModelProcessor.LOCATION, input)
+        def model = reader.read(input.openStream(), options)
+        assertNotNull(model)
+
+        dump(model)
     }
 }

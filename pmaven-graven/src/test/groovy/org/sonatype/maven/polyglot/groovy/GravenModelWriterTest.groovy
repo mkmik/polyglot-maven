@@ -1,11 +1,10 @@
-package org.sonatype.maven.graven
+package org.sonatype.maven.polyglot.groovy
 
 import org.apache.maven.model.Model
 import org.apache.maven.model.Parent
 import org.junit.Before
 import org.junit.Test
-import org.sonatype.maven.graven.GravenModelTestSupport
-import org.sonatype.maven.polyglot.groovy.GravenModelWriter
+
 import static org.junit.Assert.*
 
 /**

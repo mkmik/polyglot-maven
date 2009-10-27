@@ -22,7 +22,7 @@ class ModelLoader
     }
 
     Model load(final InputStream input, final Map<?,?> options) {
-        String location = (String)options?.get(ModelProcessor.LOCATION)
+        String location = getLocation(options)
         Script script = location != null ? shell.parse(input, location) : shell.parse(input);
         def binding = shell.context
         
@@ -61,5 +61,9 @@ class ModelLoader
         binding.setProperty('$include', include)
         
         return (Model) builder.build(script);
+    }
+
+    private String getLocation(final Map<?, ?> options) {
+        return options.containsKey(ModelProcessor.LOCATION) ? String.valueOf(options?.get(ModelProcessor.LOCATION)) : null
     }
 }

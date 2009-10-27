@@ -43,7 +43,7 @@ public class DependencyFactory
         return false;
     }
 
-    public Object newInstance(FactoryBuilderSupport builder, Object name, Object value, Map attribs) throws InstantiationException, IllegalAccessException {
+    public Object newInstance(FactoryBuilderSupport builder, Object name, Object value, Map attrs) throws InstantiationException, IllegalAccessException {
         Dependency node;
 
         if (value != null) {
