@@ -57,9 +57,9 @@ public class GoalsFactory
     public static List parse(final Object value) {
         assert value != null;
 
-        List node = new ArrayList();
+        List<String> node = new ArrayList<String>();
         if (value instanceof String) {
-            node.add(value);
+            node.add((String)value);
             return node;
         }
         else if (value instanceof List) {
