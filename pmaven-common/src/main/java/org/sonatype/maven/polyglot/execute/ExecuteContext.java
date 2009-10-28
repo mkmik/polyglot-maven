@@ -16,6 +16,8 @@
 
 package org.sonatype.maven.polyglot.execute;
 
+import org.apache.maven.project.MavenProject;
+
 /**
  * ???
  *
@@ -23,5 +25,5 @@ package org.sonatype.maven.polyglot.execute;
  */
 public interface ExecuteContext
 {
-    // TODO:
+    MavenProject getProject();
 }

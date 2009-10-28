@@ -61,8 +61,11 @@ public class ExecuteMojo
         assert manager != null;
         List<ExecuteTask> tasks = manager.getTasks(model);
 
-        ExecuteContext ctx = new ExecuteContext() {
-            // TODO:
+        ExecuteContext ctx = new ExecuteContext()
+        {
+            public MavenProject getProject() {
+                return project;
+            }
         };
 
         for (ExecuteTask task : tasks) {
