@@ -9,6 +9,7 @@ import org.apache.maven.model.building.ModelProcessor;
 import org.apache.maven.model.io.ModelParseException;
 import org.apache.maven.model.io.ModelReader;
 import org.apache.maven.plugin.lifecycle.Execution;
+import org.codehaus.groovy.runtime.StackTraceUtils;
 import org.codehaus.plexus.component.annotations.Component;
 import org.codehaus.plexus.component.annotations.Requirement;
 import org.codehaus.plexus.util.IOUtil;
@@ -41,7 +42,7 @@ public class GravenModelReader
     @Requirement
     private ExecuteManager executeManager;
 
-    public Model read(final Reader input, final Map<String,?> options) throws IOException, ModelParseException {
+    public Model read(final Reader input, final Map<String,?> options) throws IOException {
         assert input != null;
         
         // GroovyShell does not support parsing readers, so convert to ByteArrayInputStream
@@ -49,7 +50,30 @@ public class GravenModelReader
     }
 
     @Override
-    public Model read(final InputStream input, final Map<String,?> options) throws IOException, ModelParseException {
+    public Model read(final InputStream input, final Map<String,?> options) throws IOException {
+        assert input != null;
+
+        try {
+            return doRead(input, options);
+        }
+        catch (Throwable t) {
+            t = StackTraceUtils.sanitize(t);
+
+            if (t instanceof IOException) {
+                throw (IOException)t;
+            }
+            if (t instanceof RuntimeException) {
+                throw (RuntimeException)t;
+            }
+            if (t instanceof Error) {
+                throw (Error)t;
+            }
+            
+            throw new IOException(t);
+        }
+    }
+
+    private Model doRead(final InputStream input, final Map<String,?> options) throws IOException {
         assert input != null;
 
         GroovyShell shell = new GroovyShell();
