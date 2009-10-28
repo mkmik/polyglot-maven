@@ -1,7 +1,7 @@
 package org.sonatype.maven.polyglot.groovy
 
 import org.apache.maven.model.Model
-import org.apache.maven.model.building.ModelProcessor
+import org.sonatype.maven.polyglot.PolyglotModelUtil
 
 /**
  * Model loader.
@@ -12,6 +12,10 @@ import org.apache.maven.model.building.ModelProcessor
  */
 class ModelLoader
 {
+    //
+    // TODO: Do away with this Groovy class
+    //
+
     final org.sonatype.maven.polyglot.groovy.builder.ModelBuilder builder
 
     final GroovyShell shell
@@ -22,7 +26,10 @@ class ModelLoader
     }
 
     Model load(final InputStream input, final Map<?,?> options) {
-        String location = getLocation(options)
+        String location = PolyglotModelUtil.getLocation(options)
+
+        println "Loading model: $location"
+
         Script script = location != null ? shell.parse(input, location) : shell.parse(input);
         def binding = shell.context
         
@@ -61,9 +68,5 @@ class ModelLoader
         binding.setProperty('$include', include)
         
         return (Model) builder.build(script);
-    }
-
-    private String getLocation(final Map<?, ?> options) {
-        return options.containsKey(ModelProcessor.LOCATION) ? String.valueOf(options?.get(ModelProcessor.LOCATION)) : null
     }
 }
