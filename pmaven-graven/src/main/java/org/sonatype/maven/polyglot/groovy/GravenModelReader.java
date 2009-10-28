@@ -8,10 +8,10 @@ import org.apache.maven.model.Model;
 import org.apache.maven.model.Plugin;
 import org.apache.maven.model.PluginExecution;
 import org.apache.maven.model.io.ModelReader;
-import org.codehaus.groovy.runtime.DefaultGroovyMethods;
 import org.codehaus.groovy.runtime.StackTraceUtils;
 import org.codehaus.plexus.component.annotations.Component;
 import org.codehaus.plexus.component.annotations.Requirement;
+import org.codehaus.plexus.util.IOUtil;
 import org.codehaus.plexus.util.xml.Xpp3Dom;
 import org.sonatype.maven.polyglot.PolyglotModelUtil;
 import org.sonatype.maven.polyglot.execute.ExecuteManager;
@@ -77,7 +77,7 @@ public class GravenModelReader
         assert input != null;
 
         GroovyShell shell = new GroovyShell();
-        String text = DefaultGroovyMethods.getText(input);
+        String text = IOUtil.toString(input);
         String location = PolyglotModelUtil.getLocation(options);
         Script script = shell.parse(new GroovyCodeSource(text, location, location));
 
