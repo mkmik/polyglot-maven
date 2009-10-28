@@ -95,69 +95,63 @@ public class ModelBuilder
     }
 
     public void registerFactories() {
+        registerStringFactory("module");
+        registerStringFactory("filter");
+        registerStringFactory("include");
+        registerStringFactory("exclude");
+        registerStringFactory("goal");
+        registerStringFactory("role");
+        registerStringFactory("otherArchive");
+
+        registerFactory(new ModulesFactory());
+        registerFactory(new ExclusionsFactory());
+        registerFactory(new IncludesFactory());
+        registerFactory(new ExcludesFactory());
+        registerFactory(new GoalsFactory());
+        registerFactory(new ExecuteFactory());
+
         registerFactory(new ModelFactory());
         registerFactoriesFor(Model.class);
 
-        registerFactory(new ModulesFactory());
-        registerStringFactory("module");
-
         registerChildFactory("dependency", Dependency.class);
-
-        registerFactory(new ExclusionsFactory());
         registerChildFactory("exclusion", Exclusion.class);
-
         registerChildFactory("extension", Extension.class);
-
-        registerStringFactory("filter");
         registerChildFactory("resource", Resource.class);
         registerChildFactory("testResource", Resource.class);
-
-        registerFactory(new IncludesFactory());
-        registerStringFactory("include");
-
-        registerFactory(new ExcludesFactory());
-        registerStringFactory("exclude");
-
         registerChildFactory("plugin", Plugin.class);
         registerChildFactory("execution", PluginExecution.class);
-
-        registerFactory(new GoalsFactory());
-        registerStringFactory("goal");
-
         registerChildFactory("notifier", Notifier.class);
         registerChildFactory("contributor", Contributor.class);
-        registerStringFactory("role");
         registerChildFactory("developer", Developer.class);
         registerChildFactory("license", License.class);
         registerChildFactory("mailingList", MailingList.class);
-        registerStringFactory("otherArchive");
-
         registerChildFactory("profile", Profile.class);
-        registerChildFactory("pluginRepository", Repository.class);
         registerChildFactory("repository", Repository.class);
-
-        registerFactory(new ExecuteFactory());
+        registerChildFactory("pluginRepository", Repository.class);
     }
 
     @Override
     public void registerBeanFactory(final String name, final Class type) {
         super.registerBeanFactory(name, type);
-        registerFactoriesFor(Model.class);
+        registerFactoriesFor(type);
     }
 
     @Override
     public void registerFactory(final String name, final String groupName, final Factory factory) {
-        // System.out.println("Factory: " + name);
+//        System.out.println("Registered factory: " + name);
+//        if (factoryNames.contains(name)) {
+//            System.out.println("Duplicate factory: " + name + ", replacing with: " + factory);
+//        }
         factoryNames.add(name);
         super.registerFactory(name, groupName, factory);
     }
 
-    public void registerFactory(final NamedFactory factory) {
+    private void registerFactory(final NamedFactory factory) {
         assert factory != null;
-        registerFactory(factory.getName(), factory);
+        registerFactory(factory.getName(), null, factory);
     }
 
-    public void registerChildFactory(final String name, final Class type) {
+    private void registerChildFactory(final String name, final Class type) {
         registerFactory(createChildFactory(name, type));
         registerFactoriesFor(type);
     }
@@ -179,21 +173,19 @@ public class ModelBuilder
         return new ChildFactory(name, type);
     }
 
-    public void registerStringFactory(final String... names) {
-        for (String name : names) {
-            registerFactory(new StringFactory(name));
-        }
+    private void registerStringFactory(final String name) {
+        registerFactory(new StringFactory(name));
     }
 
-    public void registerListFactory(final String name) {
+    private void registerListFactory(final String name) {
         registerFactory(new ListFactory(name));
     }
 
-    public void registerPropertiesFactory(final String name) {
+    private void registerPropertiesFactory(final String name) {
         registerFactory(new PropertiesFactory(name));
     }
 
-    public void registerObjectFactory(final String name) {
+    private void registerObjectFactory(final String name) {
         registerFactory(new ObjectFactory(name));
     }
 
@@ -206,7 +198,7 @@ public class ModelBuilder
         factoryTypes.add(type);
 
         // System.out.println("Registering factories for type: " + type);
-        
+
         Method[] methods = type.getMethods();
         for (Method method : methods) {
             if (isSetter(method) ){
@@ -244,7 +236,7 @@ public class ModelBuilder
         if (!method.getName().startsWith("set")) {
             return false;
         }
-        
+
         if (method.getParameterTypes().length > 1) {
             return false;
 
@@ -266,7 +258,7 @@ public class ModelBuilder
 
         String name = method.getName();
         name = name.substring(3, name.length());
-        
+
         return new StringBuffer(name.length())
                 .append(Character.toLowerCase(name.charAt(0)))
                 .append(name.substring(1))

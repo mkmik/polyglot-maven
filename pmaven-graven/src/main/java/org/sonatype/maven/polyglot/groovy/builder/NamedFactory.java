@@ -60,4 +60,11 @@ public abstract class NamedFactory
             super("Unable to parse " + factory.getName() + " for: " + value + " (" + value.getClass() + ")");
         }
     }
+
+    @Override
+    public String toString() {
+        return getClass().getSimpleName() + "{" +
+            "name='" + name + '\'' +
+            '}';
+    }
 }
