@@ -29,17 +29,14 @@ import java.util.Map;
  * Builds object nodes.
  *
  * @author <a href="mailto:jason@planet57.com">Jason Dillon</a>
+ *
+ * @since 1.0
  */
 public class ObjectFactory
     extends NamedFactory
 {
     public ObjectFactory(final String name) {
         super(name);
-    }
-
-    @Override
-    public boolean isLeaf() {
-        return false;
     }
 
     @Override

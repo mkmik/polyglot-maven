@@ -26,20 +26,17 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * ???
+ * Builds {@link GroovyExecuteTask}s.
  *
  * @author <a href="mailto:jason@planet57.com">Jason Dillon</a>
+ *
+ * @since 1.0
  */
 public class ExecuteFactory
     extends NamedFactory
 {
     public ExecuteFactory() {
         super("$execute");
-    }
-
-    @Override
-    public boolean isLeaf() {
-        return false;
     }
 
     @Override

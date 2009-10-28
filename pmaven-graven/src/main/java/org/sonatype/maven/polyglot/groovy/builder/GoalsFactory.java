@@ -26,17 +26,14 @@ import java.util.Map;
  * Builds goals nodes.
  *
  * @author <a href="mailto:jason@planet57.com">Jason Dillon</a>
+ *
+ * @since 1.0
  */
 public class GoalsFactory
     extends ListFactory
 {
     public GoalsFactory() {
         super("goals");
-    }
-
-    @Override
-    public boolean isLeaf() {
-        return false;
     }
 
     @Override

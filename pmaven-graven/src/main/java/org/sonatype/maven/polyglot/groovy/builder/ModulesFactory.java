@@ -26,17 +26,14 @@ import java.util.Map;
  * Builds modules nodes.
  *
  * @author <a href="mailto:jason@planet57.com">Jason Dillon</a>
+ *
+ * @since 1.0
  */
 public class ModulesFactory
     extends ListFactory
 {
     public ModulesFactory() {
         super("modules");
-    }
-
-    @Override
-    public boolean isLeaf() {
-        return false;
     }
 
     @Override

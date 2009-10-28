@@ -74,12 +74,11 @@ public class ExecuteMojo
 
                 try {
                     task.execute(ctx);
+                    return;
                 }
                 catch (Exception e) {
                     throw new MojoExecutionException(e.getMessage(), e);
                 }
-
-                return;
             }
         }
 

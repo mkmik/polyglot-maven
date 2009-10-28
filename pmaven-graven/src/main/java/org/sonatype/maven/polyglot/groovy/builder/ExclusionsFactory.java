@@ -27,17 +27,14 @@ import java.util.Map;
  * Builds exclusions nodes.
  *
  * @author <a href="mailto:jason@planet57.com">Jason Dillon</a>
+ *
+ * @since 1.0
  */
 public class ExclusionsFactory
     extends ListFactory
 {
     public ExclusionsFactory() {
         super("exclusions");
-    }
-
-    @Override
-    public boolean isLeaf() {
-        return false;
     }
 
     @Override

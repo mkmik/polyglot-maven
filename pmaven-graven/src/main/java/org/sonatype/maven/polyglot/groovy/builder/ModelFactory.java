@@ -25,9 +25,11 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * ???
+ * Builds {@link Model} elements and handles registration of any {@link ExecuteTask}s.
  *
  * @author <a href="mailto:jason@planet57.com">Jason Dillon</a>
+ *
+ * @since 1.0
  */
 public class ModelFactory
     extends NamedFactory

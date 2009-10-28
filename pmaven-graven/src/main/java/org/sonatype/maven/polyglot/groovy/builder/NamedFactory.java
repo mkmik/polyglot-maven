@@ -26,6 +26,8 @@ import java.util.List;
  * Support for named factories.
  *
  * @author <a href="mailto:jason@planet57.com">Jason Dillon</a>
+ *
+ * @since 1.0
  */
 public abstract class NamedFactory
     extends AbstractFactory
@@ -40,6 +42,7 @@ public abstract class NamedFactory
         return name;
     }
 
+    @SuppressWarnings({"unchecked"})
     @Override
     public void setParent(FactoryBuilderSupport builder, Object parent, Object child) {
         if (parent instanceof List) {

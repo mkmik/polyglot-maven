@@ -26,17 +26,14 @@ import java.util.Map;
  * Builds excludes nodes.
  *
  * @author <a href="mailto:jason@planet57.com">Jason Dillon</a>
+ *
+ * @since 1.0
  */
 public class ExcludesFactory
     extends ListFactory
 {
     public ExcludesFactory() {
         super("excludes");
-    }
-
-    @Override
-    public boolean isLeaf() {
-        return false;
     }
 
     @Override

@@ -25,17 +25,14 @@ import java.util.Map;
  * Builds list nodes.
  *
  * @author <a href="mailto:jason@planet57.com">Jason Dillon</a>
+ *
+ * @since 1.0
  */
 public class ListFactory
     extends NamedFactory
 {
     public ListFactory(final String name) {
         super(name);
-    }
-
-    @Override
-    public boolean isLeaf() {
-        return false;
     }
 
     public Object newInstance(FactoryBuilderSupport builder, Object name, Object value, Map attrs) throws InstantiationException, IllegalAccessException {

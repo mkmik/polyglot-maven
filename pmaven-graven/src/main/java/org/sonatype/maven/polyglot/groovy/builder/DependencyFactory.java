@@ -25,17 +25,14 @@ import java.util.Map;
  * Builds {@link org.apache.maven.model.Dependency} nodes.
  *
  * @author <a href="mailto:jason@planet57.com">Jason Dillon</a>
+ *
+ * @since 1.0
  */
 public class DependencyFactory
     extends NamedFactory
 {
     public DependencyFactory() {
         super("dependency");
-    }
-
-    @Override
-    public boolean isLeaf() {
-        return false;
     }
 
     public Object newInstance(FactoryBuilderSupport builder, Object name, Object value, Map attrs) throws InstantiationException, IllegalAccessException {

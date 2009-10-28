@@ -1,24 +1,25 @@
 package org.sonatype.maven.polyglot.groovy;
 
+import groovy.lang.GroovyCodeSource;
 import groovy.lang.GroovyShell;
+import groovy.lang.Script;
 import org.apache.maven.model.Build;
 import org.apache.maven.model.Model;
 import org.apache.maven.model.Plugin;
 import org.apache.maven.model.PluginExecution;
 import org.apache.maven.model.io.ModelReader;
+import org.codehaus.groovy.runtime.DefaultGroovyMethods;
 import org.codehaus.groovy.runtime.StackTraceUtils;
 import org.codehaus.plexus.component.annotations.Component;
 import org.codehaus.plexus.component.annotations.Requirement;
-import org.codehaus.plexus.util.IOUtil;
 import org.codehaus.plexus.util.xml.Xpp3Dom;
+import org.sonatype.maven.polyglot.PolyglotModelUtil;
 import org.sonatype.maven.polyglot.execute.ExecuteManager;
 import org.sonatype.maven.polyglot.execute.ExecuteTask;
 import org.sonatype.maven.polyglot.groovy.builder.ModelBuilder;
 import org.sonatype.maven.polyglot.io.ModelReaderSupport;
 
-import java.io.ByteArrayInputStream;
 import java.io.IOException;
-import java.io.InputStream;
 import java.io.Reader;
 import java.util.Collections;
 import java.util.List;
@@ -43,14 +44,6 @@ public class GravenModelReader
 
     public Model read(final Reader input, final Map<String,?> options) throws IOException {
         assert input != null;
-        
-        // GroovyShell does not support parsing readers, so convert to ByteArrayInputStream
-        return read(new ByteArrayInputStream(IOUtil.toByteArray(input)), options);
-    }
-
-    @Override
-    public Model read(final InputStream input, final Map<String,?> options) throws IOException {
-        assert input != null;
 
         Model model;
 
@@ -70,7 +63,7 @@ public class GravenModelReader
                 throw (Error)t;
             }
             
-            throw new IOException(t);
+            throw new RuntimeException(t);
         }
 
         // FIXME: Looks like there are cases where the model is loaded more than once
@@ -80,14 +73,59 @@ public class GravenModelReader
         return model;
     }
 
-    private Model doRead(final InputStream input, final Map<String,?> options) throws IOException {
+    private Model doRead(final Reader input, final Map<String,?> options) throws IOException {
         assert input != null;
 
         GroovyShell shell = new GroovyShell();
+        String text = DefaultGroovyMethods.getText(input);
+        String location = PolyglotModelUtil.getLocation(options);
+        Script script = shell.parse(new GroovyCodeSource(text, location, location));
+
+        /*
+        FIXME: Bring this back as pure java
+        
+        def include = {source ->
+            assert source != null
+
+            def include
+
+            // TODO: Support String, support loading from resource
+
+            if (source instanceof Class) {
+                include = source.newInstance()
+            }
+            else if (source instanceof File) {
+                include = shell.parse((File)source)
+            }
+            else if (source instanceof URL) {
+                include = shell.parse(((URL)source).openStream())
+            }
+            else {
+                throw new IllegalArgumentException("Invalid include source: $source")
+            }
+
+            include.run()
+
+            // Include each closure variable which starts with '$' and curry in the builder
+            include.binding.properties.variables.each {
+                if (it.value instanceof Closure && it.key.startsWith('$')) {
+                    binding.setVariable(it.key, it.value.curry(builder))
+                }
+            }
+        }
+
+        include(Macros)
+
+        binding.setProperty('$include', include)
+        */
+
         assert builder != null;
-        ModelLoader loader = new ModelLoader(builder, shell);
-        return loader.load(input, options);
+        return (Model) builder.build(script);
     }
+
+    //
+    // FIXME: This should probably be in a util class or handled by the manager directly.
+    //
 
     private void registerExecuteTasks(final Model model) {
         assert model != null;

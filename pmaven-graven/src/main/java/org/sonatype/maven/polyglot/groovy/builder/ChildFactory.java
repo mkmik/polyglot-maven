@@ -24,6 +24,8 @@ import java.util.Map;
  * Builds child nodes.
  *
  * @author <a href="mailto:jason@planet57.com">Jason Dillon</a>
+ *
+ * @since 1.0
  */
 public class ChildFactory
     extends NamedFactory
@@ -33,11 +35,6 @@ public class ChildFactory
     public ChildFactory(final String name, final Class type) {
         super(name);
         this.type = type;
-    }
-
-    @Override
-    public boolean isLeaf() {
-        return false;
     }
 
     public Object newInstance(FactoryBuilderSupport builder, Object name, Object value, Map attrs) throws InstantiationException, IllegalAccessException {

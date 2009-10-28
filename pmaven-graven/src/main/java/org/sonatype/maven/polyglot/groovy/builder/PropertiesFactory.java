@@ -29,17 +29,14 @@ import java.util.Properties;
  * Builds properties nodes.
  *
  * @author <a href="mailto:jason@planet57.com">Jason Dillon</a>
+ *
+ * @since 1.0
  */
 public class PropertiesFactory
     extends NamedFactory
 {
     public PropertiesFactory(final String name) {
         super(name);
-    }
-
-    @Override
-    public boolean isLeaf() {
-        return false;
     }
 
     @Override
