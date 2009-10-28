@@ -13,7 +13,7 @@ import org.sonatype.maven.polyglot.PolyglotModelUtil
 class ModelLoader
 {
     //
-    // TODO: Do away with this Groovy class
+    // TODO: Do away with this Groovy class,its onlt here due to thie $include macro atm
     //
 
     final org.sonatype.maven.polyglot.groovy.builder.ModelBuilder builder
@@ -28,7 +28,8 @@ class ModelLoader
     Model load(final InputStream input, final Map<?,?> options) {
         String location = PolyglotModelUtil.getLocation(options)
 
-        println "Loading model: $location"
+        // println "Loading model: $location"
+        // new Throwable().printStackTrace(System.out)
 
         Script script = location != null ? shell.parse(input, location) : shell.parse(input);
         def binding = shell.context

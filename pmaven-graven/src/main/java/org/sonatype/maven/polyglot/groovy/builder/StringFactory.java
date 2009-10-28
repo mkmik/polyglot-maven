@@ -16,9 +16,7 @@
 
 package org.sonatype.maven.polyglot.groovy.builder;
 
-import groovy.util.AbstractFactory;
 import groovy.util.FactoryBuilderSupport;
-import org.codehaus.groovy.runtime.InvokerHelper;
 
 import java.util.Map;
 

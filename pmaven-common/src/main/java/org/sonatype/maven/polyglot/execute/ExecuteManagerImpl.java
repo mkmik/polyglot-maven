@@ -16,13 +16,17 @@
 
 package org.sonatype.maven.polyglot.execute;
 
+import org.apache.maven.model.Model;
 import org.codehaus.plexus.component.annotations.Component;
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
- * ???
+ * Default implementation of the {@link ExecuteManager} component.
  *
  * @author <a href="mailto:jason@planet57.com">Jason Dillon</a>
  */
@@ -30,15 +34,31 @@ import java.util.List;
 public class ExecuteManagerImpl
     implements ExecuteManager
 {
-    private List<ExecuteContainer> containers = new ArrayList<ExecuteContainer>();
+    private final Map<String,List<ExecuteTask>> modelTasks = new HashMap<String,List<ExecuteTask>>();
 
-    public void add(final ExecuteContainer execute) {
-        assert execute != null;
-        System.out.println("Adding: " + execute + ", to: " + this);
-        containers.add(execute);
+    public void register(final Model model, final List<ExecuteTask> tasks) {
+        assert model != null;
+        assert tasks != null;
+
+        // Need to copy the contents to avoid the elements
+        List<ExecuteTask> copy = new ArrayList<ExecuteTask>(tasks.size());
+        copy.addAll(tasks);
+        modelTasks.put(model.getId(), Collections.unmodifiableList(copy));
+
+        // System.out.println("Registered tasks for: " + model.getId() + "=" + tasks);
     }
 
-    public List<ExecuteContainer> getContainers() {
-        return containers;
+    public List<ExecuteTask> getTasks(final Model model) {
+        assert model != null;
+
+        // System.out.println("Getting tasks for: " + model.getId());
+        // System.out.println("All tasks: " + modelTasks);
+
+        List<ExecuteTask> tasks = modelTasks.get(model.getId());
+        if (tasks == null) {
+            return Collections.emptyList();
+        }
+
+        return tasks;
     }
 }

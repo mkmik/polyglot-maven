@@ -5,16 +5,14 @@ import org.apache.maven.model.Build;
 import org.apache.maven.model.Model;
 import org.apache.maven.model.Plugin;
 import org.apache.maven.model.PluginExecution;
-import org.apache.maven.model.building.ModelProcessor;
-import org.apache.maven.model.io.ModelParseException;
 import org.apache.maven.model.io.ModelReader;
-import org.apache.maven.plugin.lifecycle.Execution;
 import org.codehaus.groovy.runtime.StackTraceUtils;
 import org.codehaus.plexus.component.annotations.Component;
 import org.codehaus.plexus.component.annotations.Requirement;
 import org.codehaus.plexus.util.IOUtil;
-import org.sonatype.maven.polyglot.execute.ExecuteContainer;
+import org.codehaus.plexus.util.xml.Xpp3Dom;
 import org.sonatype.maven.polyglot.execute.ExecuteManager;
+import org.sonatype.maven.polyglot.execute.ExecuteTask;
 import org.sonatype.maven.polyglot.groovy.builder.ModelBuilder;
 import org.sonatype.maven.polyglot.io.ModelReaderSupport;
 
@@ -23,6 +21,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.Reader;
 import java.util.Collections;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -53,8 +52,10 @@ public class GravenModelReader
     public Model read(final InputStream input, final Map<String,?> options) throws IOException {
         assert input != null;
 
+        Model model;
+
         try {
-            return doRead(input, options);
+            model = doRead(input, options);
         }
         catch (Throwable t) {
             t = StackTraceUtils.sanitize(t);
@@ -71,6 +72,12 @@ public class GravenModelReader
             
             throw new IOException(t);
         }
+
+        // FIXME: Looks like there are cases where the model is loaded more than once
+
+        registerExecuteTasks(model);
+
+        return model;
     }
 
     private Model doRead(final InputStream input, final Map<String,?> options) throws IOException {
@@ -79,28 +86,51 @@ public class GravenModelReader
         GroovyShell shell = new GroovyShell();
         assert builder != null;
         ModelLoader loader = new ModelLoader(builder, shell);
-        Model model = loader.load(input, options);
+        return loader.load(input, options);
+    }
+
+    private void registerExecuteTasks(final Model model) {
+        assert model != null;
 
         assert executeManager != null;
-        for (ExecuteContainer execute : executeManager.getContainers()) {
-            if (model.getBuild() == null) {
-                model.setBuild(new Build());
-            }
+        List<ExecuteTask> tasks = executeManager.getTasks(model);
+        if (tasks.isEmpty()) {
+            return;
+        }
 
-            Plugin plugin = new Plugin();
-            plugin.setGroupId("org.sonatype.pmaven");
-            plugin.setArtifactId("pmaven-execute-plugin");
-            plugin.setVersion("1.0-SNAPSHOT");
-            model.getBuild().addPlugin(plugin);
+        // System.out.println("Registering tasks for: " + model.getId());
+
+        if (model.getBuild() == null) {
+            model.setBuild(new Build());
+        }
+
+        // FIMXE: Should not need to hard-code the version here
+        Plugin plugin = new Plugin();
+        plugin.setGroupId("org.sonatype.pmaven");
+        plugin.setArtifactId("pmaven-execute-plugin");
+        plugin.setVersion("1.0-SNAPSHOT");
+        model.getBuild().addPlugin(plugin);
+
+        List<String> goals = Collections.singletonList("execute");
+
+        for (ExecuteTask task : executeManager.getTasks(model)) {
+            // System.out.println("Registering task: " + task);
+
+            String id = task.getId();
 
             PluginExecution execution = new PluginExecution();
-            execution.setGoals(Collections.singletonList("execute"));
-            execution.setPhase(execute.getPhase());
-            // execution.setConfiguration();
+            execution.setId(id);
+            execution.setPhase(task.getPhase());
+            execution.setGoals(goals);
+            
+            Xpp3Dom config = new Xpp3Dom("configuration");
+            execution.setConfiguration(config);
+
+            Xpp3Dom child = new Xpp3Dom("taskId");
+            child.setValue(id);
+            config.addChild(child);
 
             plugin.addExecution(execution);
         }
-
-        return model;
     }
 }

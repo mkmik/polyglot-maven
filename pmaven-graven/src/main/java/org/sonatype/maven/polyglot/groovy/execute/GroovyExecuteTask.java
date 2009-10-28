@@ -17,28 +17,31 @@
 package org.sonatype.maven.polyglot.groovy.execute;
 
 import groovy.lang.Closure;
-import org.sonatype.maven.polyglot.execute.ExecuteContainer;
+import org.codehaus.groovy.runtime.StackTraceUtils;
 import org.sonatype.maven.polyglot.execute.ExecuteContext;
+import org.sonatype.maven.polyglot.execute.ExecuteTask;
 
 import java.util.Map;
 
 /**
- * ???
+ * Encapsulates a Groovy {@link ExecuteTask}.
  *
  * @author <a href="mailto:jason@planet57.com">Jason Dillon</a>
  */
-public class GroovyExecuteContainer
-    implements ExecuteContainer
+public class GroovyExecuteTask
+    implements ExecuteTask
 {
     private final Object value;
 
     private final Map attrs;
 
+    private String id;
+
     private String phase;
 
     private Closure closure;
 
-    public GroovyExecuteContainer(final Object value, final Map attrs) {
+    public GroovyExecuteTask(final Object value, final Map attrs) {
         this.value = value;
         this.attrs = attrs;
     }
@@ -49,6 +52,14 @@ public class GroovyExecuteContainer
 
     public Map getAttributes() {
         return attrs;
+    }
+
+    public String getId() {
+        return id;
+    }
+
+    public void setId(final String id) {
+        this.id = id;
     }
 
     public String getPhase() {
@@ -68,9 +79,34 @@ public class GroovyExecuteContainer
     }
 
     public void execute(final ExecuteContext context) throws Exception {
-        System.out.println("Execute w/context: " + context);
+        try {
+            getClosure().call();
+        }
+        catch (Throwable t) {
+            t = StackTraceUtils.sanitize(t);
 
-        // HACK:
-        closure.call();
+            if (t instanceof RuntimeException) {
+                throw (RuntimeException)t;
+            }
+            if (t instanceof Exception) {
+                throw (Exception)t;
+            }
+            if (t instanceof Error) {
+                throw (Error)t;
+            }
+
+            throw new RuntimeException(t);
+        }
+    }
+
+    @Override
+    public String toString() {
+        return "GroovyExecuteTask{" +
+            "id='" + id + '\'' +
+            ", phase='" + phase + '\'' +
+            ", value=" + value +
+            ", attrs=" + attrs +
+            ", closure=" + closure +
+            '}';
     }
 }

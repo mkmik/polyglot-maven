@@ -16,37 +16,39 @@
 
 package org.sonatype.maven.polyglot.groovy.builder;
 
-import org.codehaus.groovy.runtime.InvokerHelper;
-import org.apache.maven.model.Model;
-import org.apache.maven.model.Dependency;
-import org.apache.maven.model.Extension;
-import org.apache.maven.model.Resource;
-import org.apache.maven.model.Plugin;
-import org.apache.maven.model.Notifier;
+import groovy.lang.Closure;
+import groovy.util.Factory;
+import groovy.util.FactoryBuilderSupport;
 import org.apache.maven.model.Contributor;
+import org.apache.maven.model.Dependency;
 import org.apache.maven.model.Developer;
+import org.apache.maven.model.Exclusion;
+import org.apache.maven.model.Extension;
 import org.apache.maven.model.License;
 import org.apache.maven.model.MailingList;
+import org.apache.maven.model.Model;
+import org.apache.maven.model.Notifier;
+import org.apache.maven.model.Parent;
+import org.apache.maven.model.Plugin;
+import org.apache.maven.model.PluginExecution;
 import org.apache.maven.model.Profile;
 import org.apache.maven.model.Repository;
-import org.apache.maven.model.Exclusion;
-import org.apache.maven.model.PluginExecution;
-import org.apache.maven.model.Parent;
-import groovy.util.FactoryBuilderSupport;
-import groovy.util.Factory;
-import groovy.lang.Closure;
+import org.apache.maven.model.Resource;
+import org.codehaus.groovy.runtime.InvokerHelper;
 import org.codehaus.plexus.component.annotations.Component;
 import org.codehaus.plexus.component.annotations.Requirement;
 import org.codehaus.plexus.personality.plexus.lifecycle.phase.Initializable;
 import org.codehaus.plexus.personality.plexus.lifecycle.phase.InitializationException;
 import org.sonatype.maven.polyglot.execute.ExecuteManager;
+import org.sonatype.maven.polyglot.execute.ExecuteTask;
 
 import java.lang.reflect.Method;
 import java.lang.reflect.Modifier;
+import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Properties;
 import java.util.Set;
-import java.util.HashSet;
 
 /**
  * Builds Maven {@link Model} instances.
@@ -63,6 +65,8 @@ public class ModelBuilder
     private final Set<String> factoryNames = new HashSet<String>();
 
     private final Set<Class> factoryTypes = new HashSet<Class>();
+
+    private final List<ExecuteTask> tasks = new ArrayList<ExecuteTask>();
 
     @Requirement
     private ExecuteManager executeManager;
@@ -82,25 +86,44 @@ public class ModelBuilder
         InvokerHelper.setProperty(getCurrent(), name, value);
     }
 
+    public ExecuteManager getExecuteManager() {
+        return executeManager;
+    }
+
+    public List<ExecuteTask> getTasks() {
+        return tasks;
+    }
+
     public void registerFactories() {
-        registerBeanFactory("project", Model.class);
-        registerStringFactory("module");
+        registerFactory(new ModelFactory());
+        registerFactoriesFor(Model.class);
+
         registerFactory(new ModulesFactory());
+        registerStringFactory("module");
+
         registerChildFactory("dependency", Dependency.class);
-        registerChildFactory("exclusion", Exclusion.class);
+
         registerFactory(new ExclusionsFactory());
+        registerChildFactory("exclusion", Exclusion.class);
+
         registerChildFactory("extension", Extension.class);
+
         registerStringFactory("filter");
         registerChildFactory("resource", Resource.class);
         registerChildFactory("testResource", Resource.class);
+
         registerFactory(new IncludesFactory());
         registerStringFactory("include");
+
         registerFactory(new ExcludesFactory());
         registerStringFactory("exclude");
+
         registerChildFactory("plugin", Plugin.class);
         registerChildFactory("execution", PluginExecution.class);
+
         registerFactory(new GoalsFactory());
         registerStringFactory("goal");
+
         registerChildFactory("notifier", Notifier.class);
         registerChildFactory("contributor", Contributor.class);
         registerStringFactory("role");
@@ -108,10 +131,12 @@ public class ModelBuilder
         registerChildFactory("license", License.class);
         registerChildFactory("mailingList", MailingList.class);
         registerStringFactory("otherArchive");
+
         registerChildFactory("profile", Profile.class);
         registerChildFactory("pluginRepository", Repository.class);
         registerChildFactory("repository", Repository.class);
-        registerFactory(new ExecuteFactory(executeManager));
+
+        registerFactory(new ExecuteFactory());
     }
 
     @Override

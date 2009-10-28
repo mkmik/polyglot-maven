@@ -16,20 +16,14 @@
 
 package org.sonatype.maven.polyglot.groovy.builder;
 
-import groovy.util.AbstractFactory;
-import groovy.util.FactoryBuilderSupport;
-import groovy.util.NodeBuilder;
-import groovy.util.Node;
 import groovy.lang.Closure;
-import org.apache.maven.model.Model;
-import org.apache.maven.model.Parent;
-import org.codehaus.groovy.runtime.InvokerHelper;
-import org.codehaus.plexus.util.xml.Xpp3Dom;
+import groovy.util.FactoryBuilderSupport;
+import groovy.util.Node;
+import groovy.util.NodeBuilder;
 
-import java.util.Map;
-import java.util.ArrayList;
-import java.util.Properties;
 import java.util.List;
+import java.util.Map;
+import java.util.Properties;
 
 /**
  * Builds properties nodes.

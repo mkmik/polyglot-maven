@@ -6,8 +6,12 @@ project {
     packaging 'pom'
     name 'Polyglot Maven'
     build {
-        $execute(phase: 'validate') {
-            throw new Throwable("TEST")
+        $execute(id: 'test1', phase: 'validate') {
+            println "\nHi\n"
+        }
+        
+        $execute(id: 'test2', phase: 'compile') {
+            println "\nThere\n"
         }
         
         defaultGoal 'install'

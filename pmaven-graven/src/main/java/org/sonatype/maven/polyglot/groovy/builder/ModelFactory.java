@@ -17,61 +17,40 @@
 package org.sonatype.maven.polyglot.groovy.builder;
 
 import groovy.util.FactoryBuilderSupport;
+import org.apache.maven.model.Model;
+import org.sonatype.maven.polyglot.execute.ExecuteManager;
+import org.sonatype.maven.polyglot.execute.ExecuteTask;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
 /**
- * Builds goals nodes.
+ * ???
  *
  * @author <a href="mailto:jason@planet57.com">Jason Dillon</a>
  */
-public class GoalsFactory
-    extends ListFactory
+public class ModelFactory
+    extends NamedFactory
 {
-    public GoalsFactory() {
-        super("goals");
+    public ModelFactory() {
+        super("project");
     }
 
-    @Override
-    public boolean isLeaf() {
-        return false;
-    }
-
-    @Override
     public Object newInstance(FactoryBuilderSupport builder, Object name, Object value, Map attrs) throws InstantiationException, IllegalAccessException {
-        List node;
-
-        if (value != null) {
-            node = parse(value);
-
-            if (node == null) {
-                throw new NodeValueParseException(this, value);
-            }
-        }
-        else {
-            node = new ArrayList();
-        }
-
-        return node;
+        return new Model();
     }
 
-    public static List parse(final Object value) {
-        assert value != null;
+    @Override
+    public void onNodeCompleted(FactoryBuilderSupport builder, Object parent, Object node) {
+        Model model = (Model)node;
+        ExecuteManager manager = ((ModelBuilder)builder).getExecuteManager();
+        List<ExecuteTask> tasks = ((ModelBuilder) builder).getTasks();
 
-        List node = new ArrayList();
-        if (value instanceof String) {
-            node.add(value);
-            return node;
-        }
-        else if (value instanceof List) {
-            for (Object item : (List)value) {
-                node.add(String.valueOf(item));
-            }
-            return node;
-        }
+        // System.out.println("Adding execute tasks for model: " + model.getId() + " (" + this + ")");
 
-        return null;
+        manager.register(model, tasks);
+        
+        // Reset the tasks list for sanity
+        tasks.clear();
     }
 }

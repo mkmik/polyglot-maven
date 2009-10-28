@@ -16,15 +16,10 @@
 
 package org.sonatype.maven.polyglot.groovy.builder;
 
-import groovy.util.AbstractFactory;
 import groovy.util.FactoryBuilderSupport;
-import org.apache.maven.model.Model;
-import org.apache.maven.model.Parent;
 import org.apache.maven.model.Exclusion;
-import org.codehaus.groovy.runtime.InvokerHelper;
 
 import java.util.Map;
-import java.util.List;
 
 /**
  * Builds {@link org.apache.maven.model.Exclusion} nodes.

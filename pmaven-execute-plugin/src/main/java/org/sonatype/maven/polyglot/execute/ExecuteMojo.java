@@ -16,14 +16,17 @@
 
 package org.sonatype.maven.polyglot.execute;
 
+import org.apache.maven.model.Model;
 import org.apache.maven.plugin.AbstractMojo;
 import org.apache.maven.plugin.MojoExecutionException;
 import org.apache.maven.plugin.MojoFailureException;
+import org.apache.maven.plugin.logging.Log;
+import org.apache.maven.project.MavenProject;
 
 import java.util.List;
 
 /**
- * ???
+ * Executes registered {@link ExecuteTask}s.
  *
  * @goal execute
  *
@@ -37,20 +40,44 @@ public class ExecuteMojo
      */
     private ExecuteManager manager;
 
-    public void execute() throws MojoExecutionException, MojoFailureException {
-        System.out.println("EXEUTING; w/manager: " + manager);
-        System.out.println("containers: " + manager.getContainers());
-        
-        List<ExecuteContainer> containers = manager.getContainers();
+    /**
+     * @parameter expression="${project}"
+     * @required
+     * @readonly
+     */
+    private MavenProject project;
 
-        for (ExecuteContainer container : containers) {
-            try {
-                container.execute(null);
-            }
-            catch (Exception e) {
-                // HACK: Blah
-                e.printStackTrace();
+    /**
+     * @parameter expression="${taskId}"
+     * @required
+     */
+    private String taskId;
+
+    public void execute() throws MojoExecutionException, MojoFailureException {
+        Log log = getLog();
+        Model model = project.getModel();
+        log.debug("Executing task '" + taskId + "' for model: " + model.getId());
+
+        assert manager != null;
+        List<ExecuteTask> tasks = manager.getTasks(model);
+
+        ExecuteContext ctx = null; // FIXME:
+
+        for (ExecuteTask task : tasks) {
+            if (taskId.equals(task.getId())) {
+                log.debug("Executing task: " + task);
+
+                try {
+                    task.execute(ctx);
+                }
+                catch (Exception e) {
+                    throw new MojoExecutionException(e.getMessage(), e);
+                }
+
+                return;
             }
         }
+
+        throw new MojoFailureException("Unable to find task for id: " + taskId);
     }
 }

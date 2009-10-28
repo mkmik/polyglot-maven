@@ -20,7 +20,6 @@ import groovy.util.AbstractFactory;
 import groovy.util.FactoryBuilderSupport;
 import org.codehaus.groovy.runtime.InvokerHelper;
 
-import java.util.Map;
 import java.util.List;
 
 /**

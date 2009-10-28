@@ -16,6 +16,8 @@
 
 package org.sonatype.maven.polyglot.execute;
 
+import org.apache.maven.model.Model;
+
 import java.util.List;
 
 /**
@@ -25,7 +27,7 @@ import java.util.List;
  */
 public interface ExecuteManager
 {
-    void add(ExecuteContainer container);
+    void register(Model model, List<ExecuteTask> tasks);
 
-    List<ExecuteContainer> getContainers();
+    List<ExecuteTask> getTasks(Model model);
 }

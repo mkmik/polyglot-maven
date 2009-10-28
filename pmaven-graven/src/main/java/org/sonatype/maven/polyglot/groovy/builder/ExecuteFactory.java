@@ -19,9 +19,10 @@ package org.sonatype.maven.polyglot.groovy.builder;
 import groovy.lang.Closure;
 import groovy.util.FactoryBuilderSupport;
 import org.apache.maven.model.Build;
-import org.sonatype.maven.polyglot.execute.ExecuteManager;
-import org.sonatype.maven.polyglot.groovy.execute.GroovyExecuteContainer;
+import org.sonatype.maven.polyglot.execute.ExecuteTask;
+import org.sonatype.maven.polyglot.groovy.execute.GroovyExecuteTask;
 
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -32,12 +33,8 @@ import java.util.Map;
 public class ExecuteFactory
     extends NamedFactory
 {
-    private final ExecuteManager executeManager;
-
-    public ExecuteFactory(final ExecuteManager executeManager) {
+    public ExecuteFactory() {
         super("$execute");
-        assert executeManager != null;
-        this.executeManager = executeManager;
     }
 
     @Override
@@ -51,14 +48,18 @@ public class ExecuteFactory
     }
 
     public Object newInstance(FactoryBuilderSupport builder, Object name, Object value, Map attrs) throws InstantiationException, IllegalAccessException {
-        return new GroovyExecuteContainer(value, attrs);
+        return new GroovyExecuteTask(value, attrs);
     }
 
     @Override
     public void setParent(FactoryBuilderSupport builder, Object parent, Object child) {
         if (parent instanceof Build) {
-            // FIXME: May want to use Plugin and allow for special muck when we are pluginManagement.plugin
-            executeManager.add((GroovyExecuteContainer)child);
+            GroovyExecuteTask task = (GroovyExecuteTask) child;
+            List<ExecuteTask> tasks = ((ModelBuilder) builder).getTasks();
+
+            // System.out.println("Adding task: " + task + " (" + this + ")");
+
+            tasks.add(task);
         }
         else {
             throw new IllegalStateException("The " + getName() + " element must only be defined under 'build'");
@@ -67,8 +68,19 @@ public class ExecuteFactory
 
     @Override
     public boolean onNodeChildren(FactoryBuilderSupport builder, Object node, Closure content) {
-        GroovyExecuteContainer container = (GroovyExecuteContainer)node;
-        container.setClosure(content);
+        GroovyExecuteTask task = (GroovyExecuteTask) node;
+        task.setClosure(content);
         return false;
+    }
+
+    @Override
+    public void onNodeCompleted(FactoryBuilderSupport builder, Object parent, Object node) {
+        GroovyExecuteTask task = (GroovyExecuteTask) node;
+        if (task.getId() == null) {
+            throw new IllegalStateException("Execute task is missing attribute 'id'");
+        }
+        if (task.getPhase() == null) {
+            throw new IllegalStateException("Execute task is missing attribute 'phase'");
+        }
     }
 }
