@@ -61,7 +61,9 @@ public class ExecuteMojo
         assert manager != null;
         List<ExecuteTask> tasks = manager.getTasks(model);
 
-        ExecuteContext ctx = null; // FIXME:
+        ExecuteContext ctx = new ExecuteContext() {
+            // TODO:
+        };
 
         for (ExecuteTask task : tasks) {
             if (taskId.equals(task.getId())) {
