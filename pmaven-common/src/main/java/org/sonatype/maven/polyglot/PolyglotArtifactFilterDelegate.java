@@ -22,7 +22,7 @@ import org.codehaus.plexus.component.annotations.Component;
 import java.util.Set;
 
 /**
- * Additional filter required for using {@link org.sonatype.maven/polyglot.execute} bits from plugins.
+ * Additional filter required for using {@link org.sonatype.maven.polyglot.execute} bits from plugins.
  *
  * @author <a href="mailto:jason@planet57.com">Jason Dillon</a>
  */

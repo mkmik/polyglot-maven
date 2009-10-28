@@ -1,6 +1,6 @@
 project {
     build {
-        $execute(phase: 'compile') {
+        $execute(id: 'test1', phase: 'compile') {
             println 'hi'
         }
     }

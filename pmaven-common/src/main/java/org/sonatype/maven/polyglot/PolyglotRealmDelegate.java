@@ -21,7 +21,7 @@ import org.codehaus.plexus.classworlds.realm.ClassRealm;
 import org.codehaus.plexus.component.annotations.Component;
 
 /**
- * Additional class realm setup required for using {@link org.sonatype.maven/polyglot.execute} bits from plugins.
+ * Additional class realm setup required for using {@link org.sonatype.maven.polyglot.execute} bits from plugins.
  *
  * @author <a href="mailto:jason@planet57.com">Jason Dillon</a>
  */
@@ -31,7 +31,6 @@ public class PolyglotRealmDelegate
 {
     public void setupRealm(final ClassRealm realm) {
         assert realm != null;
-
         realm.importFromParent("org.sonatype.maven.polyglot.execute");
     }
 }
