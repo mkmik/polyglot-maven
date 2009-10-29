@@ -29,6 +29,8 @@ import java.util.Map;
  * Default implementation of the {@link ExecuteManager} component.
  *
  * @author <a href="mailto:jason@planet57.com">Jason Dillon</a>
+ *
+ * @since 1.0
  */
 @Component(role=ExecuteManager.class, instantiationStrategy="singleton")
 public class ExecuteManagerImpl

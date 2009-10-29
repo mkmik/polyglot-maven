@@ -17,6 +17,8 @@ import java.util.Set;
  * Manages the mapping for polyglot model support.
  *
  * @author <a href="mailto:jason@planet57.com">Jason Dillon</a>
+ *
+ * @since 1.0
  */
 @Component(role=PolyglotModelManager.class)
 public class PolyglotModelManager

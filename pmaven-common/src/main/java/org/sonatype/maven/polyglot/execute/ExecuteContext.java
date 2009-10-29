@@ -22,6 +22,8 @@ import org.apache.maven.project.MavenProject;
  * Provides context for {@link ExecuteTask}s.
  *
  * @author <a href="mailto:jason@planet57.com">Jason Dillon</a>
+ *
+ * @since 1.0
  */
 public interface ExecuteContext
 {

@@ -21,6 +21,8 @@ import java.util.Map;
  * Polyglot model processor.
  *
  * @author <a href="mailto:jason@planet57.com">Jason Dillon</a>
+ *
+ * @since 1.0
  */
 @Component(role=ModelProcessor.class, hint="polyglot")
 public class PolyglotModelProcessor

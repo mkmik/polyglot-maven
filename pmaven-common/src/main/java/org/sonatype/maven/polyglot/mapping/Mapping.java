@@ -10,6 +10,8 @@ import java.util.Map;
  * Provides a mapping to polyglot specific models.
  *
  * @author <a href="mailto:jason@planet57.com">Jason Dillon</a>
+ *
+ * @since 1.0
  */
 public interface Mapping
 {

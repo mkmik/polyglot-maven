@@ -24,6 +24,8 @@ import org.codehaus.plexus.component.annotations.Component;
  * Additional class realm setup required for using {@link org.sonatype.maven.polyglot.execute} bits from plugins.
  *
  * @author <a href="mailto:jason@planet57.com">Jason Dillon</a>
+ *
+ * @since 1.0
  */
 @Component(role=ClassRealmManagerDelegate.class, hint="polyglot")
 public class PolyglotRealmDelegate

@@ -24,9 +24,11 @@ import org.codehaus.plexus.component.annotations.Component;
 import java.util.Map;
 
 /**
- * ???
+ * Support for models.
  *
  * @author <a href="mailto:jason@planet57.com">Jason Dillon</a>
+ *
+ * @since 1.0
  */
 public class PolyglotModelUtil
 {
