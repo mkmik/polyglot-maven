@@ -25,10 +25,10 @@ import org.apache.maven.model.Site;
 import org.apache.maven.model.io.ModelWriter;
 import org.codehaus.plexus.util.xml.Xpp3Dom;
 import org.junit.Test;
-import org.sonatype.maven.polyglot.yaml.RavenModelReader;
-import org.sonatype.maven.polyglot.yaml.RavenModelWriter;
+import org.sonatype.maven.polyglot.yaml.YamlModelReader;
+import org.sonatype.maven.polyglot.yaml.YamlModelWriter;
 
-public class RavenModelReaderTest
+public class YamlModelReaderTest
 {
     @Test
     public void testModelCloning()
@@ -38,7 +38,7 @@ public class RavenModelReaderTest
     }
 
     @Test
-    public void testRavenModelReader()
+    public void testModelReader()
         throws Exception
     {
         Model model = getModel();
@@ -147,11 +147,11 @@ public class RavenModelReaderTest
     }
 
     @Test
-    public void testRavenWriter()
+    public void testModelWriter()
         throws Exception
     {
         StringWriter sw = new StringWriter();
-        ModelWriter writer = new RavenModelWriter();
+        ModelWriter writer = new YamlModelWriter();
         Model model = getModel();
         Properties p = new Properties();
         p.setProperty( "FOO", "BAR" );
@@ -163,7 +163,7 @@ public class RavenModelReaderTest
     protected Model getModel()
         throws Exception
     {
-        RavenModelReader modelReader = new RavenModelReader();
+        YamlModelReader modelReader = new YamlModelReader();
         URL url = getClass().getResource("test.yml");
         assertNotNull(url);
         InputStream reader = url.openStream();

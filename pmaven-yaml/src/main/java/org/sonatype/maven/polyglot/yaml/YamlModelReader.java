@@ -15,13 +15,13 @@ import org.yaml.snakeyaml.nodes.NodeId;
 import org.yaml.snakeyaml.resolver.Resolver;
 import org.sonatype.maven.polyglot.io.ModelReaderSupport;
 
-@Component(role = ModelReader.class, hint = "raven")
-public class RavenModelReader
+@Component(role = ModelReader.class, hint = "yaml")
+public class YamlModelReader
     extends ModelReaderSupport
 {
     private Yaml yaml;
 
-    public RavenModelReader()
+    public YamlModelReader()
     {
         ModelConstructor constructor = new ModelConstructor();
         Loader loader = new Loader( constructor );              

@@ -5,18 +5,18 @@ import org.sonatype.maven.polyglot.mapping.Mapping;
 import org.sonatype.maven.polyglot.mapping.MappingSupport;
 
 /**
- * Raven model mapping.
+ * YAML model mapping.
  *
  * @author <a href="mailto:jason@planet57.com">Jason Dillon</a>
  */
-@Component(role=Mapping.class, hint="raven")
-public class RavenMapping
+@Component(role=Mapping.class, hint="yaml")
+public class YamlMapping
     extends MappingSupport
 {
-    public RavenMapping() {
-        super("raven");
+    public YamlMapping() {
+        super("yaml");
         setPomNames("pom.yml");
         setAcceptLocationExtentions(".yml");
-        setAcceptOptionKeys("raven:4.0.0");
+        setAcceptOptionKeys("yaml:4.0.0");
     }
 }

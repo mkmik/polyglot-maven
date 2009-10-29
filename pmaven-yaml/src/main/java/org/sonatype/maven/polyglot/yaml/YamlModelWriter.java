@@ -15,8 +15,8 @@ import org.yaml.snakeyaml.representer.Representer;
 import org.codehaus.plexus.component.annotations.Component;
 import org.sonatype.maven.polyglot.io.ModelWriterSupport;
 
-@Component(role = ModelWriter.class, hint = "raven")
-public class RavenModelWriter
+@Component(role = ModelWriter.class, hint = "yaml")
+public class YamlModelWriter
     extends ModelWriterSupport
 {
     public void write( Writer output, Map<String, Object> o, Model model )
