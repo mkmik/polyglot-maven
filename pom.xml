@@ -100,7 +100,7 @@
 
             <dependency>
                 <groupId>org.sonatype.pmaven</groupId>
-                <artifactId>pmaven-raven</artifactId>
+                <artifactId>pmaven-yaml</artifactId>
                 <version>1.0-SNAPSHOT</version>
             </dependency>
         </dependencies>
@@ -125,7 +125,7 @@
         <module>pmaven-common</module>
         <module>pmaven-execute-plugin</module>
         <module>pmaven-graven</module>
-        <module>pmaven-raven</module>
+        <module>pmaven-yaml</module>
         <module>pmaven-cli</module>
     </modules>
     
