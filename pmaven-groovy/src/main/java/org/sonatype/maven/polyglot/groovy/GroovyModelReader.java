@@ -7,6 +7,7 @@ import org.apache.maven.model.Build;
 import org.apache.maven.model.Model;
 import org.apache.maven.model.Plugin;
 import org.apache.maven.model.PluginExecution;
+import org.apache.maven.model.io.DefaultModelWriter;
 import org.apache.maven.model.io.ModelReader;
 import org.codehaus.groovy.runtime.StackTraceUtils;
 import org.codehaus.plexus.component.annotations.Component;
@@ -21,6 +22,7 @@ import org.sonatype.maven.polyglot.io.ModelReaderSupport;
 
 import java.io.IOException;
 import java.io.Reader;
+import java.io.StringWriter;
 import java.util.Collections;
 import java.util.List;
 import java.util.Map;
@@ -69,6 +71,12 @@ public class GroovyModelReader
         // FIXME: Looks like there are cases where the model is loaded more than once
 
         registerExecuteTasks(model);
+
+//        DefaultModelWriter writer = new DefaultModelWriter();
+//        StringWriter buff = new StringWriter();
+//        writer.write(buff, null, model);
+//
+//        System.out.println("Read groovy model: \n" + buff);
 
         return model;
     }

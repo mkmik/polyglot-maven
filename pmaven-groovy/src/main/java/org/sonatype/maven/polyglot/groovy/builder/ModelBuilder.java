@@ -110,6 +110,9 @@ public class ModelBuilder
         registerFactory(new GoalsFactory());
         registerFactory(new ExecuteFactory());
 
+        registerFactory(new PluginFactory());
+        registerFactoriesFor(Plugin.class);
+        
         registerFactory(new ModelFactory());
         registerFactoriesFor(Model.class);
 
@@ -118,7 +121,6 @@ public class ModelBuilder
         registerChildFactory("extension", Extension.class);
         registerChildFactory("resource", Resource.class);
         registerChildFactory("testResource", Resource.class);
-        registerChildFactory("plugin", Plugin.class);
         registerChildFactory("execution", PluginExecution.class);
         registerChildFactory("notifier", Notifier.class);
         registerChildFactory("contributor", Contributor.class);
