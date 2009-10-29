@@ -47,13 +47,13 @@ public class YamlModelReader
     {
         public ModelResolver()
         {            
-            System.out.println( "HI!");
+            // System.out.println( "HI!");
         }
         
         @Override
         public String resolve( NodeId kind, String value, boolean implicit )
         {
-            System.out.println( ">>>>> " + value );
+            // System.out.println( ">>>>> " + value );
             
             String tag = super.resolve( kind, value, implicit );
 
