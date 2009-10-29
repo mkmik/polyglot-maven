@@ -17,7 +17,7 @@
 package org.sonatype.maven.polyglot.execute;
 
 /**
- * ???
+ * Represents a language specific task to be executed.
  *
  * @author <a href="mailto:jason@planet57.com">Jason Dillon</a>
  */

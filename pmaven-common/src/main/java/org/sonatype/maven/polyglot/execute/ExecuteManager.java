@@ -21,7 +21,7 @@ import org.apache.maven.model.Model;
 import java.util.List;
 
 /**
- * ???
+ * Manages {@link ExecuteTask}s for a project.
  *
  * @author <a href="mailto:jason@planet57.com">Jason Dillon</a>
  */

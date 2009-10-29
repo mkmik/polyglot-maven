@@ -19,7 +19,7 @@ package org.sonatype.maven.polyglot.execute;
 import org.apache.maven.project.MavenProject;
 
 /**
- * ???
+ * Provides context for {@link ExecuteTask}s.
  *
  * @author <a href="mailto:jason@planet57.com">Jason Dillon</a>
  */

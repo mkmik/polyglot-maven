@@ -43,18 +43,6 @@
                             <gems>builder</gems>
                         </configuration>
                     </execution>
-                    <!--
-                    <execution>
-                        <id>rake</id>
-                        <phase>compile</phase>
-                        <goals>
-                            <goal>rake</goal>
-                        </goals>
-                        <configuration>
-                            <rakefile>Rakefile</rakefile>
-                        </configuration>
-                    </execution>
-                    -->
                 </executions>
             </plugin>
         </plugins>
