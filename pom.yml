@@ -56,6 +56,8 @@ dependencyManagement:
     version: '${mavenVersion}'}
   - {artifactId: maven-compat, groupId: org.apache.maven, optional: false, type: jar,
     version: '${mavenVersion}'}
+  - {artifactId: maven-plugin-api, groupId: org.apache.maven, optional: false, type: jar,
+    version: '${mavenVersion}'}
   - artifactId: groovy
     exclusions:
     - {artifactId: jline, groupId: jline}
@@ -70,13 +72,18 @@ dependencyManagement:
     version: 1.0-SNAPSHOT}
   - {artifactId: pmaven-cli, groupId: org.sonatype.pmaven, optional: false, type: jar,
     version: 1.0-SNAPSHOT}
-  - {artifactId: pmaven-graven, groupId: org.sonatype.pmaven, optional: false, type: jar,
+  - {artifactId: pmaven-maven-plugin, groupId: org.sonatype.pmaven, optional: false,
+    type: jar, version: 1.0-SNAPSHOT}
+  - {artifactId: pmaven-groovy, groupId: org.sonatype.pmaven, optional: false, type: jar,
     version: 1.0-SNAPSHOT}
-  - {artifactId: pmaven-raven, groupId: org.sonatype.pmaven, optional: false, type: jar,
+  - {artifactId: pmaven-yaml, groupId: org.sonatype.pmaven, optional: false, type: jar,
+    version: 1.0-SNAPSHOT}
+  - {artifactId: pmaven-jruby, groupId: org.sonatype.pmaven, optional: false, type: jar,
     version: 1.0-SNAPSHOT}
 groupId: org.sonatype.pmaven
 modelVersion: 4.0.0
-modules: [pmaven-common, pmaven-cli, pmaven-graven, pmaven-raven]
+modules: [pmaven-common, pmaven-maven-plugin, pmaven-groovy, pmaven-yaml, pmaven-jruby,
+  pmaven-cli]
 name: Polyglot Maven
 packaging: pom
 properties: {mavenVersion: 3.0-SNAPSHOT, project.build.sourceEncoding: UTF-8}
