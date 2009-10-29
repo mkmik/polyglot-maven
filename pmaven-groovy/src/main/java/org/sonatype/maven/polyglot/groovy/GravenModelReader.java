@@ -145,7 +145,7 @@ public class GravenModelReader
         // FIMXE: Should not need to hard-code the version here
         Plugin plugin = new Plugin();
         plugin.setGroupId("org.sonatype.pmaven");
-        plugin.setArtifactId("pmaven-execute-plugin");
+        plugin.setArtifactId("pmaven-maven-plugin");
         plugin.setVersion("1.0-SNAPSHOT");
         model.getBuild().addPlugin(plugin);
 

@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package org.sonatype.maven.polyglot.execute;
+package org.sonatype.maven.polyglot.plugin;
 
 import org.apache.maven.model.Model;
 import org.apache.maven.plugin.AbstractMojo;
@@ -22,11 +22,14 @@ import org.apache.maven.plugin.MojoExecutionException;
 import org.apache.maven.plugin.MojoFailureException;
 import org.apache.maven.plugin.logging.Log;
 import org.apache.maven.project.MavenProject;
+import org.sonatype.maven.polyglot.execute.ExecuteContext;
+import org.sonatype.maven.polyglot.execute.ExecuteManager;
+import org.sonatype.maven.polyglot.execute.ExecuteTask;
 
 import java.util.List;
 
 /**
- * Executes registered {@link ExecuteTask}s.
+ * Executes registered {@link org.sonatype.maven.polyglot.execute.ExecuteTask}s.
  *
  * @goal execute
  *

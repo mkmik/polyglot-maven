@@ -88,7 +88,7 @@
 
             <dependency>
                 <groupId>org.sonatype.pmaven</groupId>
-                <artifactId>pmaven-execute-plugin</artifactId>
+                <artifactId>pmaven-maven-plugin</artifactId>
                 <version>1.0-SNAPSHOT</version>
             </dependency>
 
@@ -129,7 +129,7 @@
 
     <modules>
         <module>pmaven-common</module>
-        <module>pmaven-execute-plugin</module>
+        <module>pmaven-maven-plugin</module>
         <module>pmaven-groovy</module>
         <module>pmaven-yaml</module>
         <module>pmaven-jruby</module>

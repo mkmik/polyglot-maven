@@ -26,8 +26,8 @@
         <version>1.0-SNAPSHOT</version>
     </parent>
 
-    <artifactId>pmaven-execute-plugin</artifactId>
-    <name>Polyglot Maven :: Execute Plugin</name>
+    <artifactId>pmaven-maven-plugin</artifactId>
+    <name>Polyglot Maven :: Maven Plugin</name>
     <packaging>maven-plugin</packaging>
     
     <dependencies>
