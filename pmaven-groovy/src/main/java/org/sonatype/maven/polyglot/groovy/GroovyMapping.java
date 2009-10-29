@@ -5,20 +5,20 @@ import org.sonatype.maven.polyglot.mapping.Mapping;
 import org.sonatype.maven.polyglot.mapping.MappingSupport;
 
 /**
- * Graven model mapping.
+ * Groovy model mapping.
  *
  * @author <a href="mailto:jason@planet57.com">Jason Dillon</a>
  *
  * @since 1.0
  */
-@Component(role=Mapping.class, hint="graven")
-public class GravenMapping
+@Component(role=Mapping.class, hint="groovy")
+public class GroovyMapping
     extends MappingSupport
 {
-    public GravenMapping() {
-        super("graven");
+    public GroovyMapping() {
+        super("groovy");
         setPomNames("pom.groovy", "pom.gy");
         setAcceptLocationExtentions(".groovy", ".gy");
-        setAcceptOptionKeys("graven:4.0.0");
+        setAcceptOptionKeys("groovy:4.0.0");
     }
 }

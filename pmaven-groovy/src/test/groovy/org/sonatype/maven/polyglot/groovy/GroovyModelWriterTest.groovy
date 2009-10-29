@@ -5,22 +5,21 @@ import org.apache.maven.model.Parent
 import org.junit.Before
 import org.junit.Test
 
-import static org.junit.Assert.*
 import org.apache.maven.model.io.ModelWriter
 
 /**
- * Tests for {@link org.sonatype.maven.polyglot.groovy.GravenModelWriter}.
+ * Tests for {@link org.sonatype.maven.polyglot.groovy.GroovyModelWriter}.
  *
  * @author <a href="mailto:jason@planet57.com">Jason Dillon</a>
  */
-public class GravenModelWriterTest
-    extends GravenModelTestSupport
+public class GroovyModelWriterTest
+    extends GroovyModelTestSupport
 {
-    private GravenModelWriter writer
+    private GroovyModelWriter writer
 
     @Before
     void setUp() {
-        writer = lookup(ModelWriter.class, "graven")
+        writer = lookup(ModelWriter.class, "groovy")
     }
 
     @Test

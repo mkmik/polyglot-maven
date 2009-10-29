@@ -3,7 +3,7 @@ package org.sonatype.maven.polyglot.groovy.builder
 import org.junit.Before
 import org.junit.Test
 import static org.junit.Assert.*
-import org.sonatype.maven.polyglot.groovy.GravenModelTestSupport
+import org.sonatype.maven.polyglot.groovy.GroovyModelTestSupport
 
 /**
  * Tests for {@link ModelBuilder}.
@@ -11,7 +11,7 @@ import org.sonatype.maven.polyglot.groovy.GravenModelTestSupport
  * @author <a href="mailto:jason@planet57.com">Jason Dillon</a>
  */
 public class ModelBuilderTest
-    extends GravenModelTestSupport
+    extends GroovyModelTestSupport
 {
     private ModelBuilder builder
 

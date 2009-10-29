@@ -32,8 +32,8 @@ import java.util.Map;
  *
  * @since 1.0
  */
-@Component(role=ModelReader.class, hint="graven")
-public class GravenModelReader
+@Component(role=ModelReader.class, hint="groovy")
+public class GroovyModelReader
     extends ModelReaderSupport
 {
     @Requirement

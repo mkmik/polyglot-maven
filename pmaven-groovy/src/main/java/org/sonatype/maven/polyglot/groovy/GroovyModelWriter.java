@@ -30,8 +30,8 @@ import java.util.Map;
  *
  * @since 1.0
  */
-@Component(role=ModelWriter.class, hint="graven")
-public class GravenModelWriter
+@Component(role=ModelWriter.class, hint="groovy")
+public class GroovyModelWriter
     extends ModelWriterSupport
 {
     public void write(final Writer output, final Map<String,Object> options, final Model model) throws IOException {

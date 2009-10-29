@@ -1,7 +1,7 @@
 Description
 -----------
 
-Graven; Provides Polgyglot Maven the ability to understand Groovy POM files.
+Provides Polgyglot Maven the ability to understand Groovy POM files.
 
 Example POM
 ------------------

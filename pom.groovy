@@ -6,14 +6,6 @@ project {
     packaging 'pom'
     name 'Polyglot Maven'
     build {
-        $execute(id: 'test1', phase: 'validate') {
-            println "\nHi\n"
-        }
-        
-        $execute(id: 'test2', phase: 'compile') {
-            println "\nThere\n"
-        }
-        
         defaultGoal 'install'
         plugins {
             plugin {
@@ -77,9 +69,11 @@ project {
     }
     modules {
         module 'pmaven-common'
+        module 'pmaven-maven-plugin'
+        module 'pmaven-groovy'
+        module 'pmaven-yaml'
+        module 'pmaven-jruby'
         module 'pmaven-cli'
-        module 'pmaven-graven'
-        module 'pmaven-raven'
     }
     dependencies {
         dependency {
@@ -119,6 +113,11 @@ project {
                 version '${mavenVersion}'
             }
             dependency {
+                groupId 'org.apache.maven'
+                artifactId 'maven-plugin-api'
+                version '${mavenVersion}'
+            }
+            dependency {
                 groupId 'org.codehaus.groovy'
                 artifactId 'groovy'
                 version '1.7-beta-2'
@@ -153,12 +152,22 @@ project {
             }
             dependency {
                 groupId 'org.sonatype.pmaven'
-                artifactId 'pmaven-graven'
+                artifactId 'pmaven-maven-plugin'
                 version '1.0-SNAPSHOT'
             }
             dependency {
                 groupId 'org.sonatype.pmaven'
-                artifactId 'pmaven-raven'
+                artifactId 'pmaven-groovy'
+                version '1.0-SNAPSHOT'
+            }
+            dependency {
+                groupId 'org.sonatype.pmaven'
+                artifactId 'pmaven-yaml'
+                version '1.0-SNAPSHOT'
+            }
+            dependency {
+                groupId 'org.sonatype.pmaven'
+                artifactId 'pmaven-jruby'
                 version '1.0-SNAPSHOT'
             }
         }

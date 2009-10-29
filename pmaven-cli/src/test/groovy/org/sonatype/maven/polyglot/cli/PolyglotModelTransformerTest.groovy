@@ -6,9 +6,8 @@ import org.apache.maven.model.io.ModelWriter
 import org.codehaus.plexus.PlexusTestCase
 import org.junit.Before
 import org.junit.Test
-import org.sonatype.maven.polyglot.groovy.GravenModelWriter
+import org.sonatype.maven.polyglot.groovy.GroovyModelWriter
 import org.sonatype.maven.polyglot.PolyglotModelManager
-import org.sonatype.maven.polyglot.cli.PolyglotTranslatorCli
 
 /**
  * Tests for {@link PolyglotTranslatorCli}.
@@ -22,8 +21,8 @@ public class PolyglotTranslatorCliTest
 
     private PolyglotTranslatorCli translator;
 
-    // NOTE: Using Graven, as XML seems to put in encoding sometimes that messes up the tests
-    private ModelWriter writer = new GravenModelWriter()
+    // NOTE: Using Groovy, as XML seems to put in encoding sometimes that messes up the tests
+    private ModelWriter writer = new GroovyModelWriter()
 
     @Before
     void setUp() {

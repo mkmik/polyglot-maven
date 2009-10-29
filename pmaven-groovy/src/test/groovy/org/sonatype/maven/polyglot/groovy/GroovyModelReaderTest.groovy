@@ -4,22 +4,21 @@ import org.apache.maven.model.building.ModelProcessor
 import org.junit.Before
 import org.junit.Test
 
-import static org.junit.Assert.*
 import org.apache.maven.model.io.ModelReader
 
 /**
- * Tests for {@link GravenModelReader}.
+ * Tests for {@link GroovyModelReader}.
  *
  * @author <a href="mailto:jason@planet57.com">Jason Dillon</a>
  */
-public class GravenModelReaderTest
-    extends GravenModelTestSupport
+public class GroovyModelReaderTest
+    extends GroovyModelTestSupport
 {
-    private GravenModelReader reader
+    private GroovyModelReader reader
 
     @Before
     void setUp() {
-        reader = lookup(ModelReader.class, "graven")
+        reader = lookup(ModelReader.class, "groovy")
     }
 
     @Test
