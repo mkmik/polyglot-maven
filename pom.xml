@@ -94,7 +94,7 @@
 
             <dependency>
                 <groupId>org.sonatype.pmaven</groupId>
-                <artifactId>pmaven-graven</artifactId>
+                <artifactId>pmaven-groovy</artifactId>
                 <version>1.0-SNAPSHOT</version>
             </dependency>
 
@@ -130,7 +130,7 @@
     <modules>
         <module>pmaven-common</module>
         <module>pmaven-execute-plugin</module>
-        <module>pmaven-graven</module>
+        <module>pmaven-groovy</module>
         <module>pmaven-yaml</module>
         <module>pmaven-jruby</module>
         <module>pmaven-cli</module>

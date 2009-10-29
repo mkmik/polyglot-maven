@@ -21,7 +21,7 @@
 
         <dependency>
             <groupId>org.sonatype.pmaven</groupId>
-            <artifactId>pmaven-graven</artifactId>
+            <artifactId>pmaven-groovy</artifactId>
         </dependency>
 
         <dependency>
