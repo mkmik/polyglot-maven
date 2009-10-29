@@ -20,6 +20,7 @@ import groovy.lang.Closure;
 import org.codehaus.groovy.runtime.StackTraceUtils;
 import org.sonatype.maven.polyglot.execute.ExecuteContext;
 import org.sonatype.maven.polyglot.execute.ExecuteTask;
+import org.sonatype.maven.polyglot.execute.ExecuteTaskSupport;
 
 import java.util.Map;
 
@@ -31,15 +32,11 @@ import java.util.Map;
  * @since 1.0
  */
 public class GroovyExecuteTask
-    implements ExecuteTask
+    extends ExecuteTaskSupport
 {
     private final Object value;
 
     private final Map attrs;
-
-    private String id;
-
-    private String phase;
 
     private Closure closure;
 
@@ -54,22 +51,6 @@ public class GroovyExecuteTask
 
     public Map getAttributes() {
         return attrs;
-    }
-
-    public String getId() {
-        return id;
-    }
-
-    public void setId(final String id) {
-        this.id = id;
-    }
-
-    public String getPhase() {
-        return phase;
-    }
-
-    public void setPhase(final String phase) {
-        this.phase = phase;
     }
 
     public Closure getClosure() {
@@ -103,9 +84,9 @@ public class GroovyExecuteTask
 
     @Override
     public String toString() {
-        return "GroovyExecuteTask{" +
-            "id='" + id + '\'' +
-            ", phase='" + phase + '\'' +
+        return getClass().getSimpleName() + "{" +
+            "id='" + getId() + '\'' +
+            ", phase='" + getPhase() + '\'' +
             ", value=" + value +
             ", attrs=" + attrs +
             ", closure=" + closure +
