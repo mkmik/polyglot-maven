@@ -18,6 +18,12 @@
             <groupId>org.sonatype.pmaven</groupId>
             <artifactId>pmaven-common</artifactId>
         </dependency>
+        
+        <dependency>
+            <groupId>org.jruby</groupId>
+            <artifactId>jruby-complete</artifactId>
+            <version>1.4.0RC1</version>
+        </dependency>
     </dependencies>
     
     <build>
@@ -26,6 +32,30 @@
                 <groupId>org.jruby.plugins</groupId>
                 <artifactId>jruby-rake-plugin</artifactId>
                 <version>1.4.0RC1</version>
+                <executions>
+                    <execution>
+                        <id>install-gems</id>
+                        <phase>generate-resources</phase>
+                        <goals>
+                            <goal>install-gems</goal>
+                        </goals>
+                        <configuration>
+                            <gems>builder</gems>
+                        </configuration>
+                    </execution>
+                    <!--
+                    <execution>
+                        <id>rake</id>
+                        <phase>compile</phase>
+                        <goals>
+                            <goal>rake</goal>
+                        </goals>
+                        <configuration>
+                            <rakefile>Rakefile</rakefile>
+                        </configuration>
+                    </execution>
+                    -->
+                </executions>
             </plugin>
         </plugins>
     </build>
