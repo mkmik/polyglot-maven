@@ -1,4 +1,4 @@
-package org.sonatype.raven;
+package org.sonatype.maven.polyglot.yaml;
 
 import java.io.IOException;
 import java.io.Reader;

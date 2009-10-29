@@ -1,4 +1,4 @@
-package org.sonatype.raven;
+package org.sonatype.maven.polyglot.yaml;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
@@ -25,6 +25,8 @@ import org.apache.maven.model.Site;
 import org.apache.maven.model.io.ModelWriter;
 import org.codehaus.plexus.util.xml.Xpp3Dom;
 import org.junit.Test;
+import org.sonatype.maven.polyglot.yaml.RavenModelReader;
+import org.sonatype.maven.polyglot.yaml.RavenModelWriter;
 
 public class RavenModelReaderTest
 {

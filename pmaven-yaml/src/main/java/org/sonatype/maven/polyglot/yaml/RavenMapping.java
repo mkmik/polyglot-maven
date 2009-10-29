@@ -1,4 +1,4 @@
-package org.sonatype.raven;
+package org.sonatype.maven.polyglot.yaml;
 
 import org.codehaus.plexus.component.annotations.Component;
 import org.sonatype.maven.polyglot.mapping.Mapping;

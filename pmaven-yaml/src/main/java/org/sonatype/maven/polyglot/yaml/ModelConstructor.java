@@ -1,4 +1,4 @@
-package org.sonatype.raven;
+package org.sonatype.maven.polyglot.yaml;
 
 import java.util.LinkedHashMap;
 import java.util.Map;
