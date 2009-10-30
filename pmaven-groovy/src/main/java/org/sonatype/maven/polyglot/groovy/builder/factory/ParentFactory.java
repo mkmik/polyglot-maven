@@ -14,29 +14,29 @@
  * limitations under the License.
  */
 
-package org.sonatype.maven.polyglot.groovy.builder;
+package org.sonatype.maven.polyglot.groovy.builder.factory;
 
 import groovy.util.FactoryBuilderSupport;
-import org.apache.maven.model.Plugin;
+import org.apache.maven.model.Parent;
 
 import java.util.Map;
 
 /**
- * Builds {@link org.apache.maven.model.Plugin} nodes.
+ * Builds {@link Parent} nodes.
  *
  * @author <a href="mailto:jason@planet57.com">Jason Dillon</a>
  *
  * @since 1.0
  */
-public class PluginFactory
+public class ParentFactory
     extends NamedFactory
 {
-    public PluginFactory() {
-        super("plugin");
+    public ParentFactory() {
+        super("parent");
     }
 
     public Object newInstance(FactoryBuilderSupport builder, Object name, Object value, Map attrs) throws InstantiationException, IllegalAccessException {
-        Plugin node;
+        Parent node;
 
         if (value != null) {
             node = parse(value);
@@ -46,28 +46,23 @@ public class PluginFactory
             }
         }
         else {
-            node = new Plugin();
+            node = new Parent();
         }
 
         return node;
     }
 
-    public static Plugin parse(final Object value) {
+    public static Parent parse(final Object value) {
         assert value != null;
 
         if (value instanceof String) {
-            Plugin node = new Plugin();
+            Parent node = new Parent();
             String[] items = ((String)value).split(":");
             switch (items.length) {
                 case 3:
                     node.setGroupId(items[0]);
                     node.setArtifactId(items[1]);
                     node.setVersion(items[2]);
-                    return node;
-
-                case 2:
-                    node.setGroupId(items[0]);
-                    node.setArtifactId(items[1]);
                     return node;
             }
         }

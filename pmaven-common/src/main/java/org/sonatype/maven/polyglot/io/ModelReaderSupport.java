@@ -3,6 +3,8 @@ package org.sonatype.maven.polyglot.io;
 import org.apache.maven.model.Model;
 import org.apache.maven.model.io.ModelParseException;
 import org.apache.maven.model.io.ModelReader;
+import org.codehaus.plexus.component.annotations.Requirement;
+import org.codehaus.plexus.logging.Logger;
 import org.codehaus.plexus.util.IOUtil;
 
 import java.io.BufferedReader;

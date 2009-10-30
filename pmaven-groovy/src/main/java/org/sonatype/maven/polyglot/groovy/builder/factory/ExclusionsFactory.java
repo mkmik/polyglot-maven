@@ -14,55 +14,68 @@
  * limitations under the License.
  */
 
-package org.sonatype.maven.polyglot.groovy.builder;
+package org.sonatype.maven.polyglot.groovy.builder.factory;
 
 import groovy.util.FactoryBuilderSupport;
 import org.apache.maven.model.Exclusion;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Map;
 
 /**
- * Builds {@link org.apache.maven.model.Exclusion} nodes.
+ * Builds exclusions nodes.
  *
  * @author <a href="mailto:jason@planet57.com">Jason Dillon</a>
  *
  * @since 1.0
  */
-public class ExclusionFactory
-    extends NamedFactory
+public class ExclusionsFactory
+    extends ListFactory
 {
-    public ExclusionFactory() {
-        super("exclusion");
+    public ExclusionsFactory() {
+        super("exclusions");
     }
 
+    @Override
     public Object newInstance(FactoryBuilderSupport builder, Object name, Object value, Map attrs) throws InstantiationException, IllegalAccessException {
-        Exclusion node;
+        List node;
 
         if (value != null) {
             node = parse(value);
+
             if (node == null) {
                 throw new NodeValueParseException(this, value);
             }
         }
         else {
-            node = new Exclusion();
+            node = new ArrayList();
         }
 
         return node;
     }
 
-    public static Exclusion parse(final Object value) {
+    public static List parse(final Object value) {
         assert value != null;
 
         if (value instanceof String) {
-            Exclusion node = new Exclusion();
-            String[] items = ((String)value).split(":");
-            switch (items.length) {
-                case 2:
-                    node.setGroupId(items[0]);
-                    node.setArtifactId(items[1]);
-                    return node;
+            Exclusion child = ExclusionFactory.parse(value);
+            if (child != null) {
+                List node = new ArrayList();
+                node.add(child);
+                return node;
             }
+        }
+        else if (value instanceof List) {
+            List node = new ArrayList();
+            for (Object item : (List)value) {
+                Exclusion child = ExclusionFactory.parse(item);
+                if (child == null) {
+                    return null;
+                }
+                node.add(child);
+            }
+            return node;
         }
 
         return null;

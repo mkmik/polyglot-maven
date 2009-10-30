@@ -14,31 +14,29 @@
  * limitations under the License.
  */
 
-package org.sonatype.maven.polyglot.groovy.builder;
+package org.sonatype.maven.polyglot.groovy.builder.factory;
 
 import groovy.util.FactoryBuilderSupport;
+import org.apache.maven.model.Plugin;
 
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Map;
 
 /**
- * Builds excludes nodes.
+ * Builds {@link org.apache.maven.model.Plugin} nodes.
  *
  * @author <a href="mailto:jason@planet57.com">Jason Dillon</a>
  *
  * @since 1.0
  */
-public class ExcludesFactory
-    extends ListFactory
+public class PluginFactory
+    extends NamedFactory
 {
-    public ExcludesFactory() {
-        super("excludes");
+    public PluginFactory() {
+        super("plugin");
     }
 
-    @Override
     public Object newInstance(FactoryBuilderSupport builder, Object name, Object value, Map attrs) throws InstantiationException, IllegalAccessException {
-        List node;
+        Plugin node;
 
         if (value != null) {
             node = parse(value);
@@ -48,26 +46,30 @@ public class ExcludesFactory
             }
         }
         else {
-            node = new ArrayList();
+            node = new Plugin();
         }
 
         return node;
     }
 
-    public static List parse(final Object value) {
+    public static Plugin parse(final Object value) {
         assert value != null;
 
-        List node = new ArrayList();
-
         if (value instanceof String) {
-            node.add(value);
-            return node;
-        }
-        else if (value instanceof List) {
-            for (Object item : (List)value) {
-                node.add(String.valueOf(item));
+            Plugin node = new Plugin();
+            String[] items = ((String)value).split(":");
+            switch (items.length) {
+                case 3:
+                    node.setGroupId(items[0]);
+                    node.setArtifactId(items[1]);
+                    node.setVersion(items[2]);
+                    return node;
+
+                case 2:
+                    node.setGroupId(items[0]);
+                    node.setArtifactId(items[1]);
+                    return node;
             }
-            return node;
         }
 
         return null;

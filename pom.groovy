@@ -56,6 +56,13 @@ project {
 
     build {
         defaultGoal 'install'
+        
+        /*
+        $execute(id:'hello', phase:'validate') {
+            println 'Hello!'
+        }
+        */
+        
         plugins {
             plugin('org.apache.maven.plugins:maven-surefire-plugin:2.4.3') {
                 configuration {

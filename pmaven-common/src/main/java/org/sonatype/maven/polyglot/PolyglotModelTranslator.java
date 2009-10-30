@@ -7,6 +7,7 @@ import org.apache.maven.model.io.ModelReader;
 import org.apache.maven.model.io.ModelWriter;
 import org.codehaus.plexus.component.annotations.Component;
 import org.codehaus.plexus.component.annotations.Requirement;
+import org.codehaus.plexus.logging.Logger;
 
 import java.io.BufferedOutputStream;
 import java.io.File;
@@ -30,6 +31,9 @@ import java.util.Map;
 @Component(role=PolyglotModelTranslator.class)
 public class PolyglotModelTranslator
 {
+    @Requirement
+    protected Logger log;
+    
     @Requirement
     private PolyglotModelManager manager;
 

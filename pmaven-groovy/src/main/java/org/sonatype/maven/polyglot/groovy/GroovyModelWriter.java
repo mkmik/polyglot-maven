@@ -5,6 +5,8 @@ import org.apache.maven.model.Model;
 import org.apache.maven.model.io.DefaultModelWriter;
 import org.apache.maven.model.io.ModelWriter;
 import org.codehaus.plexus.component.annotations.Component;
+import org.codehaus.plexus.component.annotations.Requirement;
+import org.codehaus.plexus.logging.Logger;
 import org.sonatype.maven.polyglot.io.ModelWriterSupport;
 import org.w3c.dom.Attr;
 import org.w3c.dom.Document;
@@ -34,6 +36,9 @@ import java.util.Map;
 public class GroovyModelWriter
     extends ModelWriterSupport
 {
+    @Requirement
+    protected Logger log;
+    
     public void write(final Writer output, final Map<String,Object> options, final Model model) throws IOException {
         assert output != null;
         assert model != null;

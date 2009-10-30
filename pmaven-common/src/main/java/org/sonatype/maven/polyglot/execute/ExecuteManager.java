@@ -32,4 +32,6 @@ public interface ExecuteManager
     void register(Model model, List<ExecuteTask> tasks);
 
     List<ExecuteTask> getTasks(Model model);
+
+    void install(Model model);
 }

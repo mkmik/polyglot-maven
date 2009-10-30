@@ -14,28 +14,28 @@
  * limitations under the License.
  */
 
-package org.sonatype.maven.polyglot.groovy.builder;
+package org.sonatype.maven.polyglot.groovy.builder.factory;
 
 import groovy.lang.Closure;
 import groovy.util.FactoryBuilderSupport;
 import groovy.util.Node;
 import groovy.util.NodeBuilder;
-import org.codehaus.plexus.util.xml.Xpp3Dom;
 
 import java.util.List;
 import java.util.Map;
+import java.util.Properties;
 
 /**
- * Builds object nodes.
+ * Builds properties nodes.
  *
  * @author <a href="mailto:jason@planet57.com">Jason Dillon</a>
  *
  * @since 1.0
  */
-public class ObjectFactory
+public class PropertiesFactory
     extends NamedFactory
 {
-    public ObjectFactory(final String name) {
+    public PropertiesFactory(final String name) {
         super(name);
     }
 
@@ -45,12 +45,12 @@ public class ObjectFactory
     }
 
     public Object newInstance(FactoryBuilderSupport builder, Object name, Object value, Map attrs) throws InstantiationException, IllegalAccessException {
-        return new Xpp3Dom(getName());
+        return new Properties();
     }
 
     @Override
     public boolean onNodeChildren(FactoryBuilderSupport builder, Object node, Closure content) {
-        Xpp3Dom dom = (Xpp3Dom)node;
+        Properties props = (Properties)node;
 
         NodeBuilder nodes = new NodeBuilder() {
             @Override
@@ -64,37 +64,39 @@ public class ObjectFactory
                 this.invokeMethod(name, value);
             }
         };
-
+        
         content.setDelegate(nodes);
         content.setResolveStrategy(Closure.DELEGATE_FIRST);
         Node root = (Node) nodes.invokeMethod(getName(), content);
 
-        for (Node child : (List<Node>) root.children()) {
-            dom.addChild(nodeToXpp3(child));
+        for (Node child : (List<Node>)root.value()) {
+            merge(props, child, "");
         }
 
         return false;
     }
 
-    private Xpp3Dom nodeToXpp3(final Node node) {
-        Xpp3Dom dom = new Xpp3Dom((String)node.name());
+    private void merge(Properties props, Node node, String prefix) {
+        assert props != null;
+        assert node != null;
+        assert prefix != null;
+
+        String name = prefix + node.name();
 
         Object value = node.value();
         if (value instanceof String) {
-            dom.setValue(String.valueOf(value));
+            props.setProperty(name, String.valueOf(value));
         }
 
         Map attrs = node.attributes();
         for (Object key : attrs.keySet()) {
-            dom.setAttribute(String.valueOf(key), String.valueOf(attrs.get(key)));
+            props.setProperty(name + "." + key, String.valueOf(attrs.get(key)));
         }
 
         for (Object child : node.children()) {
             if (child instanceof Node) {
-                dom.addChild(nodeToXpp3((Node)child));
+                merge(props, (Node)child, name + ".");
             }
         }
-
-        return dom;
     }
 }

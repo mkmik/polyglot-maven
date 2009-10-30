@@ -5,6 +5,7 @@ import org.apache.maven.model.io.ModelWriter;
 import org.apache.maven.model.locator.ModelLocator;
 import org.codehaus.plexus.component.annotations.Component;
 import org.codehaus.plexus.component.annotations.Requirement;
+import org.codehaus.plexus.logging.Logger;
 import org.sonatype.maven.polyglot.mapping.Mapping;
 
 import java.io.File;
@@ -24,6 +25,9 @@ import java.util.Set;
 public class PolyglotModelManager
     implements ModelLocator
 {
+    @Requirement
+    protected Logger log;
+    
     @Requirement(role=Mapping.class)
     private List<Mapping> mappings;
 

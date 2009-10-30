@@ -37,10 +37,29 @@ import org.apache.maven.model.Resource;
 import org.codehaus.groovy.runtime.InvokerHelper;
 import org.codehaus.plexus.component.annotations.Component;
 import org.codehaus.plexus.component.annotations.Requirement;
+import org.codehaus.plexus.logging.Logger;
 import org.codehaus.plexus.personality.plexus.lifecycle.phase.Initializable;
 import org.codehaus.plexus.personality.plexus.lifecycle.phase.InitializationException;
 import org.sonatype.maven.polyglot.execute.ExecuteManager;
 import org.sonatype.maven.polyglot.execute.ExecuteTask;
+import org.sonatype.maven.polyglot.groovy.builder.factory.ChildFactory;
+import org.sonatype.maven.polyglot.groovy.builder.factory.DependencyFactory;
+import org.sonatype.maven.polyglot.groovy.builder.factory.ExcludesFactory;
+import org.sonatype.maven.polyglot.groovy.builder.factory.ExclusionFactory;
+import org.sonatype.maven.polyglot.groovy.builder.factory.ExclusionsFactory;
+import org.sonatype.maven.polyglot.groovy.builder.factory.ExecuteFactory;
+import org.sonatype.maven.polyglot.groovy.builder.factory.ExecutionFactory;
+import org.sonatype.maven.polyglot.groovy.builder.factory.GoalsFactory;
+import org.sonatype.maven.polyglot.groovy.builder.factory.IncludesFactory;
+import org.sonatype.maven.polyglot.groovy.builder.factory.ListFactory;
+import org.sonatype.maven.polyglot.groovy.builder.factory.ModelFactory;
+import org.sonatype.maven.polyglot.groovy.builder.factory.ModulesFactory;
+import org.sonatype.maven.polyglot.groovy.builder.factory.NamedFactory;
+import org.sonatype.maven.polyglot.groovy.builder.factory.ObjectFactory;
+import org.sonatype.maven.polyglot.groovy.builder.factory.ParentFactory;
+import org.sonatype.maven.polyglot.groovy.builder.factory.PluginFactory;
+import org.sonatype.maven.polyglot.groovy.builder.factory.PropertiesFactory;
+import org.sonatype.maven.polyglot.groovy.builder.factory.StringFactory;
 
 import java.lang.reflect.Method;
 import java.lang.reflect.Modifier;
@@ -62,6 +81,9 @@ public class ModelBuilder
     extends FactoryBuilderSupport
     implements Initializable
 {
+    @Requirement
+    protected Logger log;
+    
     private final Set<String> factoryNames = new HashSet<String>();
 
     private final Set<Class> factoryTypes = new HashSet<Class>();

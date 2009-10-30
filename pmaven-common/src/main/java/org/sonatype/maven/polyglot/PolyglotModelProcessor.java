@@ -6,6 +6,7 @@ import org.apache.maven.model.io.ModelParseException;
 import org.apache.maven.model.io.ModelReader;
 import org.codehaus.plexus.component.annotations.Component;
 import org.codehaus.plexus.component.annotations.Requirement;
+import org.codehaus.plexus.logging.Logger;
 import org.codehaus.plexus.util.IOUtil;
 
 import java.io.BufferedReader;
@@ -28,6 +29,9 @@ import java.util.Map;
 public class PolyglotModelProcessor
     implements ModelProcessor
 {
+    @Requirement
+    protected Logger log;
+    
     @Requirement
     private PolyglotModelManager manager;
 

@@ -14,29 +14,29 @@
  * limitations under the License.
  */
 
-package org.sonatype.maven.polyglot.groovy.builder;
+package org.sonatype.maven.polyglot.groovy.builder.factory;
 
 import groovy.util.FactoryBuilderSupport;
-import org.apache.maven.model.Parent;
+import org.apache.maven.model.Dependency;
 
 import java.util.Map;
 
 /**
- * Builds {@link Parent} nodes.
+ * Builds {@link org.apache.maven.model.Dependency} nodes.
  *
  * @author <a href="mailto:jason@planet57.com">Jason Dillon</a>
  *
  * @since 1.0
  */
-public class ParentFactory
+public class DependencyFactory
     extends NamedFactory
 {
-    public ParentFactory() {
-        super("parent");
+    public DependencyFactory() {
+        super("dependency");
     }
 
     public Object newInstance(FactoryBuilderSupport builder, Object name, Object value, Map attrs) throws InstantiationException, IllegalAccessException {
-        Parent node;
+        Dependency node;
 
         if (value != null) {
             node = parse(value);
@@ -46,23 +46,35 @@ public class ParentFactory
             }
         }
         else {
-            node = new Parent();
+            node = new Dependency();
         }
 
         return node;
     }
 
-    public static Parent parse(final Object value) {
+    public static Dependency parse(final Object value) {
         assert value != null;
 
         if (value instanceof String) {
-            Parent node = new Parent();
+            Dependency node = new Dependency();
             String[] items = ((String)value).split(":");
             switch (items.length) {
+                case 4:
+                    node.setGroupId(items[0]);
+                    node.setArtifactId(items[1]);
+                    node.setVersion(items[2]);
+                    node.setScope(items[3]);
+                    return node;
+
                 case 3:
                     node.setGroupId(items[0]);
                     node.setArtifactId(items[1]);
                     node.setVersion(items[2]);
+                    return node;
+
+                case 2:
+                    node.setGroupId(items[0]);
+                    node.setArtifactId(items[1]);
                     return node;
             }
         }

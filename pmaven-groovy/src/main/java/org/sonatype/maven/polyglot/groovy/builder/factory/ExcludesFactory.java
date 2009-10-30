@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package org.sonatype.maven.polyglot.groovy.builder;
+package org.sonatype.maven.polyglot.groovy.builder.factory;
 
 import groovy.util.FactoryBuilderSupport;
 
@@ -23,17 +23,17 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * Builds goals nodes.
+ * Builds excludes nodes.
  *
  * @author <a href="mailto:jason@planet57.com">Jason Dillon</a>
  *
  * @since 1.0
  */
-public class GoalsFactory
+public class ExcludesFactory
     extends ListFactory
 {
-    public GoalsFactory() {
-        super("goals");
+    public ExcludesFactory() {
+        super("excludes");
     }
 
     @Override
@@ -57,9 +57,10 @@ public class GoalsFactory
     public static List parse(final Object value) {
         assert value != null;
 
-        List<String> node = new ArrayList<String>();
+        List node = new ArrayList();
+
         if (value instanceof String) {
-            node.add((String)value);
+            node.add(value);
             return node;
         }
         else if (value instanceof List) {

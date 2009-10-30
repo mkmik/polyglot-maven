@@ -3,28 +3,22 @@ package org.sonatype.maven.polyglot.groovy;
 import groovy.lang.GroovyCodeSource;
 import groovy.lang.GroovyShell;
 import groovy.lang.Script;
-import org.apache.maven.model.Build;
 import org.apache.maven.model.Model;
-import org.apache.maven.model.Plugin;
-import org.apache.maven.model.PluginExecution;
 import org.apache.maven.model.io.DefaultModelWriter;
 import org.apache.maven.model.io.ModelReader;
 import org.codehaus.groovy.runtime.StackTraceUtils;
 import org.codehaus.plexus.component.annotations.Component;
 import org.codehaus.plexus.component.annotations.Requirement;
+import org.codehaus.plexus.logging.Logger;
 import org.codehaus.plexus.util.IOUtil;
-import org.codehaus.plexus.util.xml.Xpp3Dom;
 import org.sonatype.maven.polyglot.PolyglotModelUtil;
 import org.sonatype.maven.polyglot.execute.ExecuteManager;
-import org.sonatype.maven.polyglot.execute.ExecuteTask;
 import org.sonatype.maven.polyglot.groovy.builder.ModelBuilder;
 import org.sonatype.maven.polyglot.io.ModelReaderSupport;
 
 import java.io.IOException;
 import java.io.Reader;
 import java.io.StringWriter;
-import java.util.Collections;
-import java.util.List;
 import java.util.Map;
 
 /**
@@ -38,6 +32,9 @@ import java.util.Map;
 public class GroovyModelReader
     extends ModelReaderSupport
 {
+    @Requirement
+    protected Logger log;
+
     @Requirement
     private ModelBuilder builder;
 
@@ -70,13 +67,14 @@ public class GroovyModelReader
 
         // FIXME: Looks like there are cases where the model is loaded more than once
 
-        registerExecuteTasks(model);
-//
-//        DefaultModelWriter writer = new DefaultModelWriter();
-//        StringWriter buff = new StringWriter();
-//        writer.write(buff, null, model);
-//
-//        System.out.println("Read groovy model: \n" + buff);
+        executeManager.install(model);
+
+        if (log.isDebugEnabled()) {
+            DefaultModelWriter writer = new DefaultModelWriter();
+            StringWriter buff = new StringWriter();
+            writer.write(buff, null, model);
+            log.debug("Read groovy model: \n" + buff);
+        }
 
         return model;
     }
@@ -129,54 +127,5 @@ public class GroovyModelReader
 
         assert builder != null;
         return (Model) builder.build(script);
-    }
-
-    //
-    // FIXME: This should probably be in a util class or handled by the manager directly.
-    //
-
-    private void registerExecuteTasks(final Model model) {
-        assert model != null;
-
-        assert executeManager != null;
-        List<ExecuteTask> tasks = executeManager.getTasks(model);
-        if (tasks.isEmpty()) {
-            return;
-        }
-
-        // System.out.println("Registering tasks for: " + model.getId());
-
-        if (model.getBuild() == null) {
-            model.setBuild(new Build());
-        }
-
-        // FIMXE: Should not need to hard-code the version here
-        Plugin plugin = new Plugin();
-        plugin.setGroupId("org.sonatype.pmaven");
-        plugin.setArtifactId("pmaven-maven-plugin");
-        plugin.setVersion("1.0-SNAPSHOT");
-        model.getBuild().addPlugin(plugin);
-
-        List<String> goals = Collections.singletonList("execute");
-
-        for (ExecuteTask task : executeManager.getTasks(model)) {
-            // System.out.println("Registering task: " + task);
-
-            String id = task.getId();
-
-            PluginExecution execution = new PluginExecution();
-            execution.setId(id);
-            execution.setPhase(task.getPhase());
-            execution.setGoals(goals);
-            
-            Xpp3Dom config = new Xpp3Dom("configuration");
-            execution.setConfiguration(config);
-
-            Xpp3Dom child = new Xpp3Dom("taskId");
-            child.setValue(id);
-            config.addChild(child);
-
-            plugin.addExecution(execution);
-        }
     }
 }

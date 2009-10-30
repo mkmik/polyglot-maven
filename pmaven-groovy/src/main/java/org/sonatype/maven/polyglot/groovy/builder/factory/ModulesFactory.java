@@ -14,27 +14,26 @@
  * limitations under the License.
  */
 
-package org.sonatype.maven.polyglot.groovy.builder;
+package org.sonatype.maven.polyglot.groovy.builder.factory;
 
 import groovy.util.FactoryBuilderSupport;
-import org.apache.maven.model.Exclusion;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
 /**
- * Builds exclusions nodes.
+ * Builds modules nodes.
  *
  * @author <a href="mailto:jason@planet57.com">Jason Dillon</a>
  *
  * @since 1.0
  */
-public class ExclusionsFactory
+public class ModulesFactory
     extends ListFactory
 {
-    public ExclusionsFactory() {
-        super("exclusions");
+    public ModulesFactory() {
+        super("modules");
     }
 
     @Override
@@ -57,23 +56,16 @@ public class ExclusionsFactory
 
     public static List parse(final Object value) {
         assert value != null;
+        
+        List node = new ArrayList();
 
         if (value instanceof String) {
-            Exclusion child = ExclusionFactory.parse(value);
-            if (child != null) {
-                List node = new ArrayList();
-                node.add(child);
-                return node;
-            }
+            node.add(value);
+            return node;
         }
         else if (value instanceof List) {
-            List node = new ArrayList();
             for (Object item : (List)value) {
-                Exclusion child = ExclusionFactory.parse(item);
-                if (child == null) {
-                    return null;
-                }
-                node.add(child);
+                node.add(String.valueOf(item));
             }
             return node;
         }

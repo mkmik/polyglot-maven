@@ -16,8 +16,14 @@
 
 package org.sonatype.maven.polyglot.execute;
 
+import org.apache.maven.model.Build;
 import org.apache.maven.model.Model;
+import org.apache.maven.model.Plugin;
+import org.apache.maven.model.PluginExecution;
 import org.codehaus.plexus.component.annotations.Component;
+import org.codehaus.plexus.component.annotations.Requirement;
+import org.codehaus.plexus.logging.Logger;
+import org.codehaus.plexus.util.xml.Xpp3Dom;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -36,6 +42,9 @@ import java.util.Map;
 public class ExecuteManagerImpl
     implements ExecuteManager
 {
+    @Requirement
+    protected Logger log;
+    
     private final Map<String,List<ExecuteTask>> modelTasks = new HashMap<String,List<ExecuteTask>>();
 
     public void register(final Model model, final List<ExecuteTask> tasks) {
@@ -62,5 +71,49 @@ public class ExecuteManagerImpl
         }
 
         return tasks;
+    }
+
+    public void install(final Model model) {
+        assert model != null;
+
+        List<ExecuteTask> tasks = getTasks(model);
+        if (tasks.isEmpty()) {
+            return;
+        }
+
+        // System.out.println("Registering tasks for: " + model.getId());
+
+        if (model.getBuild() == null) {
+            model.setBuild(new Build());
+        }
+
+        // FIMXE: Should not need to hard-code the version here
+        Plugin plugin = new Plugin();
+        plugin.setGroupId("org.sonatype.pmaven");
+        plugin.setArtifactId("pmaven-maven-plugin");
+        plugin.setVersion("1.0-SNAPSHOT");
+        model.getBuild().addPlugin(plugin);
+
+        List<String> goals = Collections.singletonList("execute");
+
+        for (ExecuteTask task : tasks) {
+            // System.out.println("Registering task: " + task);
+
+            String id = task.getId();
+
+            PluginExecution execution = new PluginExecution();
+            execution.setId(id);
+            execution.setPhase(task.getPhase());
+            execution.setGoals(goals);
+
+            Xpp3Dom config = new Xpp3Dom("configuration");
+            execution.setConfiguration(config);
+
+            Xpp3Dom child = new Xpp3Dom("taskId");
+            child.setValue(id);
+            config.addChild(child);
+
+            plugin.addExecution(execution);
+        }
     }
 }

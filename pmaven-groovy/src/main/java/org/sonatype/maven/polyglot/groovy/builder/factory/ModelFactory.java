@@ -14,12 +14,13 @@
  * limitations under the License.
  */
 
-package org.sonatype.maven.polyglot.groovy.builder;
+package org.sonatype.maven.polyglot.groovy.builder.factory;
 
 import groovy.util.FactoryBuilderSupport;
 import org.apache.maven.model.Model;
 import org.sonatype.maven.polyglot.execute.ExecuteManager;
 import org.sonatype.maven.polyglot.execute.ExecuteTask;
+import org.sonatype.maven.polyglot.groovy.builder.ModelBuilder;
 
 import java.util.List;
 import java.util.Map;
