@@ -56,14 +56,13 @@ public class ExecuteManagerImpl
         copy.addAll(tasks);
         modelTasks.put(model.getId(), Collections.unmodifiableList(copy));
 
-        // System.out.println("Registered tasks for: " + model.getId() + "=" + tasks);
+        if (log.isDebugEnabled()) {
+            log.debug("Registered tasks for: " + model.getId() + "=" + tasks);
+        }
     }
 
     public List<ExecuteTask> getTasks(final Model model) {
         assert model != null;
-
-        // System.out.println("Getting tasks for: " + model.getId());
-        // System.out.println("All tasks: " + modelTasks);
 
         List<ExecuteTask> tasks = modelTasks.get(model.getId());
         if (tasks == null) {
@@ -81,7 +80,9 @@ public class ExecuteManagerImpl
             return;
         }
 
-        // System.out.println("Registering tasks for: " + model.getId());
+        if (log.isDebugEnabled()) {
+            log.debug("Registering tasks for: " + model.getId());
+        }
 
         if (model.getBuild() == null) {
             model.setBuild(new Build());
@@ -97,7 +98,9 @@ public class ExecuteManagerImpl
         List<String> goals = Collections.singletonList("execute");
 
         for (ExecuteTask task : tasks) {
-            // System.out.println("Registering task: " + task);
+            if (log.isDebugEnabled()) {
+                log.debug("Registering task: " + task);
+            }
 
             String id = task.getId();
 

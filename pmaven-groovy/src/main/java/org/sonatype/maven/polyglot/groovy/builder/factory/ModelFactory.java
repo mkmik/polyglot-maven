@@ -48,9 +48,6 @@ public class ModelFactory
         Model model = (Model)node;
         ExecuteManager manager = ((ModelBuilder)builder).getExecuteManager();
         List<ExecuteTask> tasks = ((ModelBuilder) builder).getTasks();
-
-        // System.out.println("Adding execute tasks for model: " + model.getId() + " (" + this + ")");
-
         manager.register(model, tasks);
         
         // Reset the tasks list for sanity

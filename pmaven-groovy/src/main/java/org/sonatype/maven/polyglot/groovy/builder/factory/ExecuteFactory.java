@@ -54,9 +54,6 @@ public class ExecuteFactory
         if (parent instanceof Build) {
             GroovyExecuteTask task = (GroovyExecuteTask) child;
             List<ExecuteTask> tasks = ((ModelBuilder) builder).getTasks();
-
-            // System.out.println("Adding task: " + task + " (" + this + ")");
-
             tasks.add(task);
         }
         else {

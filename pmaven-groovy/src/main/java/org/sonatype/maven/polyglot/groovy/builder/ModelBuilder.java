@@ -164,10 +164,12 @@ public class ModelBuilder
 
     @Override
     public void registerFactory(final String name, final String groupName, final Factory factory) {
-//        System.out.println("Registered factory: " + name);
-//        if (factoryNames.contains(name)) {
-//            System.out.println("Duplicate factory: " + name + ", replacing with: " + factory);
-//        }
+        if (log.isDebugEnabled()) {
+            log.debug("Registering factory: " + name + ", factory: " + factory);
+            if (factoryNames.contains(name)) {
+                log.warn("Duplicate factory: " + name);
+            }
+        }
         factoryNames.add(name);
         super.registerFactory(name, groupName, factory);
     }
@@ -223,7 +225,9 @@ public class ModelBuilder
         }
         factoryTypes.add(type);
 
-        // System.out.println("Registering factories for type: " + type);
+        if (log.isDebugEnabled()) {
+            log.debug("Registering factories for type: " + type);
+        }
 
         Method[] methods = type.getMethods();
         for (Method method : methods) {
@@ -252,6 +256,9 @@ public class ModelBuilder
                 }
                 else {
                     // Skip setters with unsupported types (model will use string versions)
+                    if (log.isDebugEnabled()) {
+                        log.debug("Skipping setter with unsupported type: " + method);
+                    }
                 }
             }
         }
