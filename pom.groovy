@@ -92,7 +92,7 @@ project {
 
             plugin('org.codehaus.plexus:plexus-component-metadata:1.4.0-SNAPSHOT') {
                 executions {
-                    execution(goals: 'generate-metadata')
+                    execution(goals: ['generate-metadata','generate-test-metadata'])
                 }
             }
         }

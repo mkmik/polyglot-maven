@@ -17,7 +17,6 @@
 package org.sonatype.maven.polyglot.groovy.builder;
 
 import groovy.util.FactoryBuilderSupport;
-import org.apache.maven.model.Exclusion;
 import org.apache.maven.model.PluginExecution;
 
 import java.util.Collections;
