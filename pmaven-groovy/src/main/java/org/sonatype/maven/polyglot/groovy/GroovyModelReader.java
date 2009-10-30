@@ -71,7 +71,7 @@ public class GroovyModelReader
         // FIXME: Looks like there are cases where the model is loaded more than once
 
         registerExecuteTasks(model);
-
+//
 //        DefaultModelWriter writer = new DefaultModelWriter();
 //        StringWriter buff = new StringWriter();
 //        writer.write(buff, null, model);
