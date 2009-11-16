@@ -66,10 +66,10 @@ public class GroovyModelWriter
             output.flush();
         }
         catch (ParserConfigurationException e) {
-            throw new IOException(e);
+            throw (IOException) new IOException().initCause( e );
         }
         catch (SAXException e) {
-            throw new IOException(e);
+            throw (IOException) new IOException().initCause( e );
         }
     }
 }
