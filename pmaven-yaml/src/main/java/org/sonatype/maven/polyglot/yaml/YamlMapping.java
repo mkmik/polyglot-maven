@@ -16,7 +16,8 @@ public class YamlMapping
     public YamlMapping() {
         super("yaml");
         setPomNames("pom.yml");
-        setAcceptLocationExtentions(".yml");
+        setAcceptLocationExtentions(".yml", ".yaml");
         setAcceptOptionKeys("yaml:4.0.0");
+        setPriority( -2 );
     }
 }
