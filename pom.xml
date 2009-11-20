@@ -14,15 +14,15 @@
         <mavenVersion>3.0-SNAPSHOT</mavenVersion>
     </properties>
 
-    <repositories>
-        <repository>
+    <pluginRepositories>
+        <pluginRepository>
             <id>codehaus.org</id>
             <url>http://snapshots.repository.codehaus.org</url>
             <releases>
                 <enabled>false</enabled>
             </releases>
-        </repository>
-    </repositories>
+        </pluginRepository>
+    </pluginRepositories>
     
     <dependencyManagement>
         <dependencies>
