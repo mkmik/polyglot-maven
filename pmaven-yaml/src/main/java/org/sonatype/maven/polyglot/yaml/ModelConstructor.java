@@ -13,6 +13,7 @@ import org.apache.maven.model.Developer;
 import org.apache.maven.model.DistributionManagement;
 import org.apache.maven.model.Exclusion;
 import org.apache.maven.model.IssueManagement;
+import org.apache.maven.model.License;
 import org.apache.maven.model.Model;
 import org.apache.maven.model.ModelBase;
 import org.apache.maven.model.Organization;
@@ -53,6 +54,7 @@ public class ModelConstructor
         addTypeDescription( new TypeDescription( Parent.class ) );
         addTypeDescription( new TypeDescription( Organization.class ) );
 
+        modelDescription.putListPropertyType( "licenses", License.class );
         modelDescription.putListPropertyType( "developers", Developer.class );
         modelDescription.putListPropertyType( "contributors", Contributor.class );
 
