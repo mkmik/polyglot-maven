@@ -23,5 +23,7 @@ public interface Mapping
 
     ModelWriter getWriter();
 
+    float getPriority();
+
     // TODO: Add priority + compariable to support sorting and say picking XML first if there?
 }

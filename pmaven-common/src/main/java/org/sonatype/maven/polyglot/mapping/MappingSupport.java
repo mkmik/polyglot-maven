@@ -30,6 +30,8 @@ public abstract class MappingSupport
 
     private String[] acceptLocationExtentions = EMPTY;
 
+    private float priority;
+
     @Requirement
     private PlexusContainer container;
 
@@ -124,4 +126,15 @@ public abstract class MappingSupport
 
         return false;
     }
+
+    public float getPriority()
+    {
+        return priority;
+    }
+
+    protected void setPriority( float priority )
+    {
+        this.priority = priority;
+    }
+
 }

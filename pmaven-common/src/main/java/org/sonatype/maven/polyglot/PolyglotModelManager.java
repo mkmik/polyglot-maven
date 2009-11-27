@@ -9,10 +9,8 @@ import org.codehaus.plexus.logging.Logger;
 import org.sonatype.maven.polyglot.mapping.Mapping;
 
 import java.io.File;
-import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
 
 /**
  * Manages the mapping for polyglot model support.
@@ -59,22 +57,18 @@ public class PolyglotModelManager
     public File locatePom(final File dir) {
         assert dir != null;
 
-        Set<File> found = new HashSet<File>();
-        for (Mapping mapping : mappings) {
-            File file = mapping.locatePom(dir);
-            if (file != null) {
-                found.add(file);
+        File pomFile = null;
+        float mappingPriority = Float.MIN_VALUE;
+        for ( Mapping mapping : mappings )
+        {
+            File file = mapping.locatePom( dir );
+            if ( file != null && ( pomFile == null || mappingPriority < mapping.getPriority() ) )
+            {
+                pomFile = file;
+                mappingPriority = mapping.getPriority();
             }
         }
 
-        if (found.size() > 1) {
-            throw new RuntimeException("Found more than one matching pom file: " + found +
-                    "; Use --file option to select the desired pom to execute.");
-        }
-        else if (!found.isEmpty()) {
-            return found.iterator().next();
-        }
-
-        return null;
+        return pomFile;
     }
 }
