@@ -14,6 +14,7 @@ import org.apache.maven.model.DistributionManagement;
 import org.apache.maven.model.Exclusion;
 import org.apache.maven.model.IssueManagement;
 import org.apache.maven.model.License;
+import org.apache.maven.model.MailingList;
 import org.apache.maven.model.Model;
 import org.apache.maven.model.ModelBase;
 import org.apache.maven.model.Organization;
@@ -57,6 +58,8 @@ public class ModelConstructor
         modelDescription.putListPropertyType( "licenses", License.class );
         modelDescription.putListPropertyType( "developers", Developer.class );
         modelDescription.putListPropertyType( "contributors", Contributor.class );
+        modelDescription.putListPropertyType( "mailingLists", MailingList.class );
+
 
         TypeDescription dependencyManagement = new TypeDescription( DependencyManagement.class );
         dependencyManagement.putListPropertyType( "dependencies", Dependency.class );
@@ -76,6 +79,8 @@ public class ModelConstructor
         modelDescription.putListPropertyType( "profiles", Profile.class );
         modelDescription.putListPropertyType( "repositories", Repository.class );
         modelDescription.putListPropertyType( "pluginRepositories", Repository.class );
+
+        // TODO: Add reports
 
         addTypeDescription( new TypeDescription( DistributionManagement.class ) );
         addTypeDescription( new TypeDescription( Scm.class ) );
