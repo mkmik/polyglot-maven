@@ -32,6 +32,7 @@ import org.apache.maven.model.Parent;
 import org.apache.maven.model.Plugin;
 import org.apache.maven.model.PluginExecution;
 import org.apache.maven.model.Profile;
+import org.apache.maven.model.Reporting;
 import org.apache.maven.model.Repository;
 import org.apache.maven.model.Resource;
 import org.codehaus.groovy.runtime.InvokerHelper;
@@ -59,6 +60,7 @@ import org.sonatype.maven.polyglot.groovy.builder.factory.ObjectFactory;
 import org.sonatype.maven.polyglot.groovy.builder.factory.ParentFactory;
 import org.sonatype.maven.polyglot.groovy.builder.factory.PluginFactory;
 import org.sonatype.maven.polyglot.groovy.builder.factory.PropertiesFactory;
+import org.sonatype.maven.polyglot.groovy.builder.factory.ReportingFactory;
 import org.sonatype.maven.polyglot.groovy.builder.factory.StringFactory;
 
 import java.lang.reflect.Method;
@@ -66,6 +68,7 @@ import java.lang.reflect.Modifier;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Map;
 import java.util.Properties;
 import java.util.Set;
 
@@ -135,6 +138,9 @@ public class ModelBuilder
         registerFactory(new PluginFactory());
         registerFactoriesFor(Plugin.class);
 
+        registerFactory(new ReportingFactory());
+        registerFactoriesFor(Reporting.class);
+        
         registerFactory(new ExecutionFactory());
         registerFactoriesFor(PluginExecution.class);
 
@@ -296,5 +302,15 @@ public class ModelBuilder
                 .append(Character.toLowerCase(name.charAt(0)))
                 .append(name.substring(1))
                 .toString();
+    }
+
+    public Object findInContext(final String key) {
+        for (Map<String,Object> ctx : getContexts()) {
+            if (ctx.containsKey(key)) {
+                return ctx.get(key);
+            }
+        }
+
+        return null;
     }
 }
