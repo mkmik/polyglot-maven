@@ -16,7 +16,6 @@
 
 package org.sonatype.maven.polyglot.groovy.builder.factory;
 
-import groovy.util.Factory;
 import groovy.util.FactoryBuilderSupport;
 import org.apache.maven.model.Plugin;
 import org.apache.maven.model.ReportPlugin;
@@ -40,9 +39,10 @@ public class PluginFactory
     }
 
     public Object newInstance(FactoryBuilderSupport builder, Object name, Object value, Map attrs) throws InstantiationException, IllegalAccessException {
-        Object inReporting = ((ModelBuilder)builder).findInContext(Reporting.class.getName());
-
-        if (inReporting == null) {
+        if (((ModelBuilder)builder).findInContext(Reporting.class.getName()) != null) {
+            return new ReportPlugin();
+        }
+        else {
             Plugin node;
 
             if (value != null) {
@@ -57,9 +57,6 @@ public class PluginFactory
             }
 
             return node;
-        }
-        else {
-            return new ReportPlugin();
         }
     }
 

@@ -17,7 +17,6 @@
 package org.sonatype.maven.polyglot.groovy.builder.factory;
 
 import groovy.util.FactoryBuilderSupport;
-import org.apache.maven.model.Plugin;
 import org.apache.maven.model.Reporting;
 
 import java.util.Map;
