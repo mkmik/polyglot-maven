@@ -100,15 +100,42 @@ class ModelRepresenter
     }
 
     @Override
-    protected Node representMapping( String tag, Map<? extends Object, Object> mapping, Boolean flowStyle )
-    {
+    protected Node representMapping(String tag, Map<? extends Object, Object> mapping, Boolean flowStyle) {
         // TODO: skipping empty maps should likely be an option of the dumper (and probably default to true)
-        if ( mapping.isEmpty() )
-        {
+        if (mapping.isEmpty()) {
             return null;
         }
 
-        return super.representMapping( tag, mapping, flowStyle );
+        List<NodeTuple> value = new LinkedList<NodeTuple>();
+        MappingNode node = new MappingNode(tag, value, flowStyle);
+        representedObjects.put(objectToRepresent, node);
+        boolean bestStyle = true;
+        for (Object itemKey : mapping.keySet()) {
+            Object itemValue = mapping.get(itemKey);
+            Node nodeKey = representData(itemKey);
+            Node nodeValue = representData(itemValue);
+
+            // If the node value is null (see above) then skip
+            if (nodeValue == null) {
+                continue;
+            }
+            
+            if (!((nodeKey instanceof ScalarNode && ((ScalarNode) nodeKey).getStyle() == null))) {
+                bestStyle = false;
+            }
+            if (!((nodeValue instanceof ScalarNode && ((ScalarNode) nodeValue).getStyle() == null))) {
+                bestStyle = false;
+            }
+            value.add(new NodeTuple(nodeKey, nodeValue));
+        }
+        if (flowStyle == null) {
+            if (defaultFlowStyle != null) {
+                node.setFlowStyle(defaultFlowStyle);
+            } else {
+                node.setFlowStyle(bestStyle);
+            }
+        }
+        return node;
     }
 
     @Override

@@ -43,7 +43,8 @@ public class ModelConstructor
     public ModelConstructor()
     {
         super( Model.class );
-        this.yamlConstructors.put( Tags.MAP, new ConstructXpp3Dom() );
+
+        yamlConstructors.put( Tags.MAP, new ConstructXpp3Dom() );
 
         TypeDescription modelDescription = new TypeDescription( Model.class );
         addTypeDescription( modelDescription );
@@ -79,8 +80,6 @@ public class ModelConstructor
         modelDescription.putListPropertyType( "profiles", Profile.class );
         modelDescription.putListPropertyType( "repositories", Repository.class );
         modelDescription.putListPropertyType( "pluginRepositories", Repository.class );
-
-        // TODO: Add reports
 
         addTypeDescription( new TypeDescription( DistributionManagement.class ) );
         addTypeDescription( new TypeDescription( Scm.class ) );
