@@ -44,16 +44,6 @@
         <mavenVersion>3.0-alpha-5</mavenVersion>
     </properties>
 
-    <!--<pluginRepositories>-->
-        <!--<pluginRepository>-->
-            <!--<id>codehaus.org</id>-->
-            <!--<url>http://snapshots.repository.codehaus.org</url>-->
-            <!--<releases>-->
-                <!--<enabled>false</enabled>-->
-            <!--</releases>-->
-        <!--</pluginRepository>-->
-    <!--</pluginRepositories>-->
-    
     <dependencyManagement>
         <dependencies>
             <dependency>

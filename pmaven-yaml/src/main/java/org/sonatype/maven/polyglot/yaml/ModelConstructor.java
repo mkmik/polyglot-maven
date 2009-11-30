@@ -1,10 +1,23 @@
+/*
+ * Copyright (C) 2009 the original author or authors.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ * http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
 package org.sonatype.maven.polyglot.yaml;
 
-import java.util.LinkedHashMap;
-import java.util.Map;
-import java.util.Properties;
-
 import org.apache.maven.model.Build;
+import org.apache.maven.model.BuildBase;
 import org.apache.maven.model.CiManagement;
 import org.apache.maven.model.Contributor;
 import org.apache.maven.model.Dependency;
@@ -12,30 +25,36 @@ import org.apache.maven.model.DependencyManagement;
 import org.apache.maven.model.Developer;
 import org.apache.maven.model.DistributionManagement;
 import org.apache.maven.model.Exclusion;
+import org.apache.maven.model.Extension;
 import org.apache.maven.model.IssueManagement;
 import org.apache.maven.model.License;
 import org.apache.maven.model.MailingList;
 import org.apache.maven.model.Model;
-import org.apache.maven.model.ModelBase;
+import org.apache.maven.model.Notifier;
 import org.apache.maven.model.Organization;
 import org.apache.maven.model.Parent;
 import org.apache.maven.model.Plugin;
 import org.apache.maven.model.PluginExecution;
+import org.apache.maven.model.PluginManagement;
 import org.apache.maven.model.Profile;
+import org.apache.maven.model.ReportPlugin;
+import org.apache.maven.model.ReportSet;
+import org.apache.maven.model.Reporting;
 import org.apache.maven.model.Repository;
+import org.apache.maven.model.Resource;
 import org.apache.maven.model.Scm;
 import org.codehaus.plexus.util.xml.Xpp3Dom;
-import org.yaml.snakeyaml.Loader;
 import org.yaml.snakeyaml.TypeDescription;
 import org.yaml.snakeyaml.constructor.Construct;
 import org.yaml.snakeyaml.constructor.Constructor;
 import org.yaml.snakeyaml.error.YAMLException;
 import org.yaml.snakeyaml.nodes.MappingNode;
 import org.yaml.snakeyaml.nodes.Node;
-import org.yaml.snakeyaml.nodes.NodeId;
-import org.yaml.snakeyaml.nodes.ScalarNode;
 import org.yaml.snakeyaml.nodes.Tags;
-import org.yaml.snakeyaml.resolver.Resolver;
+
+import java.util.LinkedHashMap;
+import java.util.Map;
+import java.util.Properties;
 
 public class ModelConstructor
     extends Constructor
@@ -46,45 +65,89 @@ public class ModelConstructor
 
         yamlConstructors.put( Tags.MAP, new ConstructXpp3Dom() );
 
-        TypeDescription modelDescription = new TypeDescription( Model.class );
-        addTypeDescription( modelDescription );
+        TypeDescription desc;
 
-        TypeDescription dependencyDescription = new TypeDescription( Dependency.class );
-        dependencyDescription.putListPropertyType( "exclusions", Exclusion.class );
-        addTypeDescription( dependencyDescription );        
+        desc = new TypeDescription( Model.class );
+        desc.putListPropertyType( "licenses", License.class );
+        desc.putListPropertyType( "mailingLists", MailingList.class );
+        desc.putListPropertyType( "dependencies", Dependency.class );
+        desc.putListPropertyType( "modules", String.class );
+        desc.putListPropertyType( "profiles", Profile.class );
+        desc.putListPropertyType( "repositories", Repository.class );
+        desc.putListPropertyType( "pluginRepositories", Repository.class );
+        desc.putListPropertyType( "developers", Developer.class );
+        desc.putListPropertyType( "contributors", Contributor.class );
+        addTypeDescription( desc );
+
+        desc = new TypeDescription( Dependency.class );
+        desc.putListPropertyType( "exclusions", Exclusion.class );
+        addTypeDescription( desc );
+
+        desc = new TypeDescription( DependencyManagement.class );
+        desc.putListPropertyType( "dependencies", Dependency.class );
+        addTypeDescription( desc );
+
+        desc = new TypeDescription( Build.class );
+        desc.putListPropertyType( "extensions", Extension.class );
+        desc.putListPropertyType( "resources", Resource.class );
+        desc.putListPropertyType( "testResources", Resource.class );
+        desc.putListPropertyType( "filters", String.class );
+        desc.putListPropertyType( "plugins", Plugin.class );
+        addTypeDescription( desc );
+
+        desc = new TypeDescription( BuildBase.class );
+        desc.putListPropertyType( "resources", Resource.class );
+        desc.putListPropertyType( "testResources", Resource.class );
+        desc.putListPropertyType( "filters", String.class );
+        desc.putListPropertyType( "plugins", Plugin.class );
+        addTypeDescription( desc );
+
+        desc = new TypeDescription( PluginManagement.class );
+        desc.putListPropertyType( "plugins", Plugin.class );
+        addTypeDescription( desc );
         
-        addTypeDescription( new TypeDescription( Parent.class ) );
-        addTypeDescription( new TypeDescription( Organization.class ) );
+        desc = new TypeDescription( Plugin.class );
+        desc.putListPropertyType( "executions", PluginExecution.class );
+        addTypeDescription( desc );
 
-        modelDescription.putListPropertyType( "licenses", License.class );
-        modelDescription.putListPropertyType( "developers", Developer.class );
-        modelDescription.putListPropertyType( "contributors", Contributor.class );
-        modelDescription.putListPropertyType( "mailingLists", MailingList.class );
+        desc = new TypeDescription ( PluginExecution.class );
+        desc.putListPropertyType ( "goals" , String.class );
+        addTypeDescription( desc );
 
+        desc = new TypeDescription( Reporting.class );
+        desc.putListPropertyType( "plugins", ReportPlugin.class );
+        addTypeDescription( desc );
 
-        TypeDescription dependencyManagement = new TypeDescription( DependencyManagement.class );
-        dependencyManagement.putListPropertyType( "dependencies", Dependency.class );
-        addTypeDescription( dependencyManagement );
+        desc = new TypeDescription( ReportPlugin.class );
+        desc.putListPropertyType( "reportSets", ReportSet.class );
+        addTypeDescription( desc );
 
-        modelDescription.putListPropertyType( "dependencies", Dependency.class );
+        desc = new TypeDescription( ReportSet.class );
+        desc.putListPropertyType( "reports", String.class );
+        addTypeDescription( desc );
 
-        TypeDescription buildDescription = new TypeDescription( Build.class );
-        buildDescription.putListPropertyType( "plugins", Plugin.class );
-        addTypeDescription( buildDescription );
+        desc = new TypeDescription( CiManagement.class );
+        desc.putListPropertyType( "notifiers", Notifier.class );
+        addTypeDescription( desc );
 
-        TypeDescription pluginDescription = new TypeDescription( Plugin.class );
-        pluginDescription.putListPropertyType( "executions", PluginExecution.class );
-        addTypeDescription( pluginDescription );        
-        
-        modelDescription.putListPropertyType( "modules", String.class );
-        modelDescription.putListPropertyType( "profiles", Profile.class );
-        modelDescription.putListPropertyType( "repositories", Repository.class );
-        modelDescription.putListPropertyType( "pluginRepositories", Repository.class );
+        desc = new TypeDescription( Developer.class );
+        desc.putListPropertyType( "roles", String.class );
+        addTypeDescription( desc );
 
+        desc = new TypeDescription( Contributor.class );
+        desc.putListPropertyType( "roles", String.class );
+        addTypeDescription( desc );
+
+        desc = new TypeDescription( MailingList.class );
+        desc.putListPropertyType( "otherArchives", String.class );
+        addTypeDescription( desc );
+
+        // Simple types
         addTypeDescription( new TypeDescription( DistributionManagement.class ) );
         addTypeDescription( new TypeDescription( Scm.class ) );
         addTypeDescription( new TypeDescription( IssueManagement.class ) );
-        addTypeDescription( new TypeDescription( CiManagement.class ) );
+        addTypeDescription( new TypeDescription( Parent.class ) );
+        addTypeDescription( new TypeDescription( Organization.class ) );
     }
 
     @Override
