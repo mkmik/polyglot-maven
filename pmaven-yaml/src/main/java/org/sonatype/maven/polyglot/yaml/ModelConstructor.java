@@ -56,6 +56,13 @@ import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.Properties;
 
+/**
+ * YAML model constructor.
+ *
+ * @author jvanzyl
+ * @author bentmann
+ * @author <a href="mailto:jason@planet57.com">Jason Dillon</a>
+ */
 public class ModelConstructor
     extends Constructor
 {
