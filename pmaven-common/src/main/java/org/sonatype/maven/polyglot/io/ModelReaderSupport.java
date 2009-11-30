@@ -42,7 +42,7 @@ import java.util.Map;
 public abstract class ModelReaderSupport
     implements ModelReader
 {
-    public Model read(final File input, final  Map<String,?> options) throws IOException, ModelParseException {
+    public Model read(final File input, final  Map<String,?> options) throws IOException {
         Model model;
 
         Reader reader = new BufferedReader(new FileReader(input));
@@ -56,7 +56,7 @@ public abstract class ModelReaderSupport
         return model;
     }
 
-    public Model read(final InputStream input, final Map<String,?> options) throws IOException, ModelParseException {
+    public Model read(final InputStream input, final Map<String,?> options) throws IOException {
         return read(new InputStreamReader(input), options);
     }
 }

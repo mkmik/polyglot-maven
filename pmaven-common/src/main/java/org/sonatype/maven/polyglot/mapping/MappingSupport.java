@@ -44,7 +44,7 @@ public abstract class MappingSupport
 
     private String[] acceptOptionKeys = EMPTY;
 
-    private String[] acceptLocationExtentions = EMPTY;
+    private String[] acceptLocationExtensions = EMPTY;
 
     private float priority;
 
@@ -85,12 +85,12 @@ public abstract class MappingSupport
         return writer;
     }
 
-    public String[] getAcceptLocationExtentions() {
-        return acceptLocationExtentions;
+    public String[] getAcceptLocationExtensions() {
+        return acceptLocationExtensions;
     }
 
-    public void setAcceptLocationExtentions(final String... accept) {
-        this.acceptLocationExtentions = accept;
+    public void setAcceptLocationExtensions(final String... accept) {
+        this.acceptLocationExtensions = accept;
     }
 
     public String[] getAcceptOptionKeys() {
@@ -132,7 +132,7 @@ public abstract class MappingSupport
 
             String location = String.valueOf(options.get(ModelProcessor.LOCATION));
             if (location != null) {
-                for (String ext : getAcceptLocationExtentions()) {
+                for (String ext : getAcceptLocationExtensions()) {
                     if (location.endsWith(ext)) {
                         return true;
                     }

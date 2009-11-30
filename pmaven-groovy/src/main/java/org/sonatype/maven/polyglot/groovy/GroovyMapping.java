@@ -34,7 +34,7 @@ public class GroovyMapping
     public GroovyMapping() {
         super("groovy");
         setPomNames("pom.groovy", "pom.gy");
-        setAcceptLocationExtentions(".groovy", ".gy");
+        setAcceptLocationExtensions(".groovy", ".gy");
         setAcceptOptionKeys("groovy:4.0.0");
         setPriority( -1 );
     }

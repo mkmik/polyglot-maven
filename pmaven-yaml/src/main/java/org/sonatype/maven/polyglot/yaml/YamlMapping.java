@@ -24,6 +24,8 @@ import org.sonatype.maven.polyglot.mapping.MappingSupport;
  * YAML model mapping.
  *
  * @author <a href="mailto:jason@planet57.com">Jason Dillon</a>
+ *
+ * @since 1.0
  */
 @Component(role=Mapping.class, hint="yaml")
 public class YamlMapping
@@ -32,7 +34,7 @@ public class YamlMapping
     public YamlMapping() {
         super("yaml");
         setPomNames("pom.yml");
-        setAcceptLocationExtentions(".yml", ".yaml");
+        setAcceptLocationExtensions(".yml", ".yaml");
         setAcceptOptionKeys("yaml:4.0.0");
         setPriority( -2 );
     }

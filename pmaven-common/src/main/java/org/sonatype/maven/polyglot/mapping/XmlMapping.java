@@ -32,7 +32,7 @@ public class XmlMapping
     public XmlMapping() {
         super(null);
         setPomNames("pom.xml");
-        setAcceptLocationExtentions(".xml", ".pom");
+        setAcceptLocationExtensions(".xml", ".pom");
         setAcceptOptionKeys("xml:4.0.0");
     }
 }
