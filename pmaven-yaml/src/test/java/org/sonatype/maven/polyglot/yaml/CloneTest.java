@@ -16,30 +16,15 @@
 
 package org.sonatype.maven.polyglot.yaml;
 
-import org.apache.maven.model.Build;
-import org.apache.maven.model.CiManagement;
-import org.apache.maven.model.Contributor;
-import org.apache.maven.model.Dependency;
-import org.apache.maven.model.DeploymentRepository;
-import org.apache.maven.model.Developer;
-import org.apache.maven.model.DistributionManagement;
-import org.apache.maven.model.IssueManagement;
 import org.apache.maven.model.Model;
-import org.apache.maven.model.Parent;
-import org.apache.maven.model.Plugin;
-import org.apache.maven.model.Scm;
-import org.apache.maven.model.Site;
 import org.apache.maven.model.io.ModelWriter;
-import org.codehaus.plexus.util.xml.Xpp3Dom;
 import org.junit.Test;
 
 import java.io.InputStream;
 import java.io.StringWriter;
 import java.net.URL;
-import java.util.List;
 import java.util.Properties;
 
-import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 
 public class CloneTest

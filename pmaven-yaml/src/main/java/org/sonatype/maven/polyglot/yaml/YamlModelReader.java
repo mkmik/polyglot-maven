@@ -16,20 +16,17 @@
 
 package org.sonatype.maven.polyglot.yaml;
 
-import java.io.IOException;
-import java.io.Reader;
-import java.util.Map;
-
 import org.apache.maven.model.Model;
 import org.apache.maven.model.io.ModelParseException;
 import org.apache.maven.model.io.ModelReader;
 import org.codehaus.plexus.component.annotations.Component;
-import org.codehaus.plexus.util.IOUtil;
+import org.sonatype.maven.polyglot.io.ModelReaderSupport;
 import org.yaml.snakeyaml.Loader;
 import org.yaml.snakeyaml.Yaml;
-import org.yaml.snakeyaml.nodes.NodeId;
-import org.yaml.snakeyaml.resolver.Resolver;
-import org.sonatype.maven.polyglot.io.ModelReaderSupport;
+
+import java.io.IOException;
+import java.io.Reader;
+import java.util.Map;
 
 /**
  * YAML model reader.

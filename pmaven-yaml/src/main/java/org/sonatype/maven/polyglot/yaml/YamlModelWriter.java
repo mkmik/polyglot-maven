@@ -16,20 +16,20 @@
 
 package org.sonatype.maven.polyglot.yaml;
 
+import org.apache.maven.model.Model;
+import org.apache.maven.model.io.ModelWriter;
+import org.codehaus.plexus.component.annotations.Component;
+import org.sonatype.maven.polyglot.io.ModelWriterSupport;
+import org.yaml.snakeyaml.Dumper;
+import org.yaml.snakeyaml.DumperOptions;
+import org.yaml.snakeyaml.DumperOptions.FlowStyle;
+import org.yaml.snakeyaml.Yaml;
+import org.yaml.snakeyaml.nodes.Tags;
+import org.yaml.snakeyaml.representer.Representer;
+
 import java.io.IOException;
 import java.io.Writer;
 import java.util.Map;
-
-import org.apache.maven.model.Model;
-import org.apache.maven.model.io.ModelWriter;
-import org.yaml.snakeyaml.Dumper;
-import org.yaml.snakeyaml.DumperOptions;
-import org.yaml.snakeyaml.Yaml;
-import org.yaml.snakeyaml.DumperOptions.FlowStyle;
-import org.yaml.snakeyaml.nodes.Tags;
-import org.yaml.snakeyaml.representer.Representer;
-import org.codehaus.plexus.component.annotations.Component;
-import org.sonatype.maven.polyglot.io.ModelWriterSupport;
 
 /**
  * YAML model writer.
