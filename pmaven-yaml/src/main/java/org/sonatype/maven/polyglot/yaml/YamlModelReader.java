@@ -41,13 +41,12 @@ import org.sonatype.maven.polyglot.io.ModelReaderSupport;
 public class YamlModelReader
     extends ModelReaderSupport
 {
-    private Yaml yaml;
+    private final Yaml yaml;
 
     public YamlModelReader()
     {
         ModelConstructor constructor = new ModelConstructor();
-        Loader loader = new Loader( constructor );              
-        loader.setResolver( new ModelResolver() );
+        Loader loader = new Loader( constructor );
         yaml = new Yaml( loader );
     }
 
@@ -59,28 +58,6 @@ public class YamlModelReader
             throw new IllegalArgumentException( "YAML Reader is null." );
         }
 
-        Model model = (Model) yaml.load( input );
-        IOUtil.close( input );
-        return model;
-    }
-
-    public class ModelResolver
-        extends Resolver
-    {
-        public ModelResolver()
-        {            
-            // System.out.println( "HI!");
-        }
-        
-        @Override
-        public String resolve( NodeId kind, String value, boolean implicit )
-        {
-            // System.out.println( ">>>>> " + value );
-            
-            String tag = super.resolve( kind, value, implicit );
-
-            
-            return super.resolve( kind, value, implicit );
-        }
+        return (Model) yaml.load( input );
     }
 }
