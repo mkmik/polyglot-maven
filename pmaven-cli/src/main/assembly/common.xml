@@ -81,7 +81,7 @@
                 <include>org.sonatype.pmaven:pmaven-cli</include>
             </includes>
         </dependencySet>
-        
+
         <dependencySet>
             <outputDirectory>ext</outputDirectory>
             <useStrictFiltering>true</useStrictFiltering>
@@ -102,6 +102,16 @@
             <includes>
                 <include>org.sonatype.pmaven:pmaven-yaml</include>
                 <include>org.yaml:snakeyaml</include>
+            </includes>
+        </dependencySet>
+
+        <dependencySet>
+            <outputDirectory>ext</outputDirectory>
+            <useStrictFiltering>true</useStrictFiltering>
+            <includes>
+                <include>org.sonatype.pmaven:pmaven-clojure</include>
+                <include>org.clojure:clojure-lang</include>
+                <include>org.clojure:clojure-contrib</include>
             </includes>
         </dependencySet>
     </dependencySets>
