@@ -31,7 +31,7 @@ build:
     extensions: false
     groupId: org.codehaus.gmaven
     inherited: true
-    version: 1.1-SNAPSHOT
+    version: '1.1'
   - artifactId: plexus-component-metadata
     executions:
     - goals: [generate-metadata, generate-test-metadata]
@@ -59,13 +59,13 @@ dependencies:
 dependencyManagement:
   dependencies:
   - {artifactId: apache-maven, classifier: bin, groupId: org.apache.maven, optional: false,
-    type: zip, version: 3.0-alpha-4}
+    type: zip, version: '${mavenVersion}'}
   - {artifactId: maven-model-builder, groupId: org.apache.maven, optional: false,
-    type: jar, version: 3.0-alpha-4}
+    type: jar, version: '${mavenVersion}'}
   - {artifactId: maven-embedder, groupId: org.apache.maven, optional: false, type: jar,
-    version: 3.0-alpha-4}
+    version: '${mavenVersion}'}
   - {artifactId: maven-plugin-api, groupId: org.apache.maven, optional: false, type: jar,
-    version: 3.0-alpha-4}
+    version: '${mavenVersion}'}
   - artifactId: groovy
     exclusions:
     - {artifactId: jline, groupId: jline}
@@ -75,7 +75,19 @@ dependencyManagement:
     groupId: org.codehaus.groovy
     optional: false
     type: jar
-    version: 1.7-beta-2
+    version: 1.7-rc-1
+  - {artifactId: gossip, groupId: org.sonatype.gossip, optional: false, type: jar,
+    version: '1.1'}
+  - {artifactId: guice, groupId: com.google.inject, optional: false, type: jar, version: '2.0'}
+  - {artifactId: grrrowl, groupId: org.sonatype.grrrowl, optional: false, type: jar,
+    version: '1.0'}
+  - {artifactId: jna, groupId: net.java.dev.jna, optional: false, type: jar, version: 3.2.3}
+  - {artifactId: gshell-core, groupId: org.sonatype.gshell, optional: false, type: jar,
+    version: '2.1'}
+  - {artifactId: gshell-core, classifier: tests, groupId: org.sonatype.gshell, optional: false,
+    type: jar, version: '2.1'}
+  - {artifactId: gshell-plexus, groupId: org.sonatype.gshell, optional: false, type: jar,
+    version: '2.1'}
   - {artifactId: pmaven-common, groupId: org.sonatype.pmaven, optional: false, type: jar,
     version: 1.0-SNAPSHOT}
   - {artifactId: pmaven-cli, groupId: org.sonatype.pmaven, optional: false, type: jar,
@@ -86,22 +98,20 @@ dependencyManagement:
     version: 1.0-SNAPSHOT}
   - {artifactId: pmaven-yaml, groupId: org.sonatype.pmaven, optional: false, type: jar,
     version: 1.0-SNAPSHOT}
+  - {artifactId: pmaven-jruby, groupId: org.sonatype.pmaven, optional: false, type: jar,
+    version: 1.0-SNAPSHOT}
+  - {artifactId: pmaven-commands, groupId: org.sonatype.pmaven, optional: false, type: jar,
+    version: 1.0-SNAPSHOT}
 groupId: org.sonatype.pmaven
 issueManagement: {system: JIRA, url: 'https://issues.sonatype.org/browse/PMAVEN'}
-licenses:
-- {distribution: repo, name: 'The Apache Software License, Version 2.0', url: 'http://www.apache.org/licenses/LICENSE-2.0.txt'}
 modelVersion: 4.0.0
-modules: [pmaven-common, pmaven-maven-plugin, pmaven-groovy, pmaven-yaml, pmaven-cli]
+modules: [pmaven-common, pmaven-maven-plugin, pmaven-groovy, pmaven-yaml, pmaven-cli,
+  pmaven-commands]
 name: Polyglot Maven
 packaging: pom
 parent: {artifactId: forge-parent, groupId: org.sonatype.forge, relativePath: ../pom.xml,
   version: '5'}
-pluginRepositories:
-- id: codehaus.org
-  layout: default
-  releases: {enabled: false}
-  url: http://snapshots.repository.codehaus.org
-properties: {mavenVersion: 3.0-alpha-4, project.build.sourceEncoding: UTF-8}
+properties: {mavenVersion: 3.0-alpha-5, project.build.sourceEncoding: UTF-8}
 scm: {connection: 'scm:git:git://github.com/sonatype/graven.git', developerConnection: 'scm:git:ssh://git@github.com/sonatype/graven.git',
   tag: HEAD, url: 'https://github.com/sonatype/graven'}
 version: 1.0-SNAPSHOT

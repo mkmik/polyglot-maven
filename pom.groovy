@@ -10,13 +10,6 @@ project {
     version '1.0-SNAPSHOT'
     packaging 'pom'
     name 'Polyglot Maven'
-    licenses {
-        license {
-            name 'The Apache Software License, Version 2.0'
-            url 'http://www.apache.org/licenses/LICENSE-2.0.txt'
-            distribution 'repo'
-        }
-    }
     issueManagement {
         system 'JIRA'
         url 'https://issues.sonatype.org/browse/PMAVEN'
@@ -62,7 +55,7 @@ project {
             plugin {
                 groupId 'org.codehaus.gmaven'
                 artifactId 'gmaven-plugin'
-                version '1.1-SNAPSHOT'
+                version '1.1'
                 executions {
                     execution {
                         goals {
@@ -112,15 +105,7 @@ project {
         module 'pmaven-groovy'
         module 'pmaven-yaml'
         module 'pmaven-cli'
-    }
-    pluginRepositories {
-        pluginRepository {
-            releases {
-                enabled 'false'
-            }
-            id 'codehaus.org'
-            url 'http://snapshots.repository.codehaus.org'
-        }
+        module 'pmaven-commands'
     }
     dependencies {
         dependency {
@@ -140,29 +125,29 @@ project {
             dependency {
                 groupId 'org.apache.maven'
                 artifactId 'apache-maven'
-                version '3.0-alpha-4'
+                version '${mavenVersion}'
                 type 'zip'
                 classifier 'bin'
             }
             dependency {
                 groupId 'org.apache.maven'
                 artifactId 'maven-model-builder'
-                version '3.0-alpha-4'
+                version '${mavenVersion}'
             }
             dependency {
                 groupId 'org.apache.maven'
                 artifactId 'maven-embedder'
-                version '3.0-alpha-4'
+                version '${mavenVersion}'
             }
             dependency {
                 groupId 'org.apache.maven'
                 artifactId 'maven-plugin-api'
-                version '3.0-alpha-4'
+                version '${mavenVersion}'
             }
             dependency {
                 groupId 'org.codehaus.groovy'
                 artifactId 'groovy'
-                version '1.7-beta-2'
+                version '1.7-rc-1'
                 exclusions {
                     exclusion {
                         artifactId 'jline'
@@ -181,6 +166,42 @@ project {
                         groupId 'org.apache.ant'
                     }
                 }
+            }
+            dependency {
+                groupId 'org.sonatype.gossip'
+                artifactId 'gossip'
+                version '1.1'
+            }
+            dependency {
+                groupId 'com.google.inject'
+                artifactId 'guice'
+                version '2.0'
+            }
+            dependency {
+                groupId 'org.sonatype.grrrowl'
+                artifactId 'grrrowl'
+                version '1.0'
+            }
+            dependency {
+                groupId 'net.java.dev.jna'
+                artifactId 'jna'
+                version '3.2.3'
+            }
+            dependency {
+                groupId 'org.sonatype.gshell'
+                artifactId 'gshell-core'
+                version '2.1'
+            }
+            dependency {
+                groupId 'org.sonatype.gshell'
+                artifactId 'gshell-core'
+                version '2.1'
+                classifier 'tests'
+            }
+            dependency {
+                groupId 'org.sonatype.gshell'
+                artifactId 'gshell-plexus'
+                version '2.1'
             }
             dependency {
                 groupId 'org.sonatype.pmaven'
@@ -207,10 +228,20 @@ project {
                 artifactId 'pmaven-yaml'
                 version '1.0-SNAPSHOT'
             }
+            dependency {
+                groupId 'org.sonatype.pmaven'
+                artifactId 'pmaven-jruby'
+                version '1.0-SNAPSHOT'
+            }
+            dependency {
+                groupId 'org.sonatype.pmaven'
+                artifactId 'pmaven-commands'
+                version '1.0-SNAPSHOT'
+            }
         }
     }
     properties {
-        mavenVersion '3.0-alpha-4'
+        mavenVersion '3.0-alpha-5'
         'project.build.sourceEncoding' 'UTF-8'
     }
 }
