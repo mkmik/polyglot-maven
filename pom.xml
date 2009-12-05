@@ -2,7 +2,7 @@
 
 <project xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd" xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
     <modelVersion>4.0.0</modelVersion>
-    
+
     <groupId>org.sonatype.pmaven</groupId>
     <artifactId>pmaven</artifactId>
     <name>Polyglot Maven</name>
@@ -109,6 +109,11 @@
                 <artifactId>pmaven-jruby</artifactId>
                 <version>1.0-SNAPSHOT</version>
             </dependency>
+            <dependency>
+                <groupId>org.sonatype.pmaven</groupId>
+                <artifactId>pmaven-clojure</artifactId>
+                <version>1.0-SNAPSHOT</version>
+            </dependency>
         </dependencies>
     </dependencyManagement>
 
@@ -119,7 +124,7 @@
             <version>4.7</version>
             <scope>test</scope>
         </dependency>
-        
+
         <dependency>
             <groupId>org.codehaus.groovy</groupId>
             <artifactId>groovy</artifactId>
@@ -133,12 +138,13 @@
         <module>pmaven-groovy</module>
         <module>pmaven-yaml</module>
         <module>pmaven-jruby</module>
+        <module>pmaven-clojure</module>
         <module>pmaven-cli</module>
     </modules>
-    
+
     <build>
         <defaultGoal>install</defaultGoal>
-        
+
         <plugins>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
@@ -173,7 +179,7 @@
             <plugin>
                 <groupId>org.codehaus.gmaven</groupId>
                 <artifactId>gmaven-plugin</artifactId>
-                <version>1.1-SNAPSHOT</version>
+                <version>1.1</version>
                 <configuration>
                     <providerSelection>1.7</providerSelection>
                 </configuration>
@@ -192,7 +198,7 @@
             <plugin>
                 <groupId>org.codehaus.plexus</groupId>
                 <artifactId>plexus-component-metadata</artifactId>
-                <version>1.4.0-SNAPSHOT</version>
+                <version>1.4.0</version>
                 <executions>
                     <execution>
                         <goals>
