@@ -2,18 +2,24 @@
 
 (use 'clojure.contrib.str-utils)
 
-(defn process-dependencies
+(defn parse-reference
+  [reference]
+  (let [groups (re-find #"(.*):(.*):(.*)" reference)]
+    {:group-id (groups 1) :artifact-id (groups 2) :version (groups 3)}))
+
+(defn add-dependency!
+  [model reference-source]
+  (let [dependency (org.apache.maven.model.Dependency.)
+        reference (parse-reference reference-source)]
+     (.setGroupId dependency (:group-id reference))
+     (.setArtifactId dependency (:artifact-id reference))
+     (.setVersion dependency (:version reference))
+     (.addDependency model dependency)))
+
+(defn process-dependencies!
   [model options]
   (doseq [dependency (:dependencies options)]
-          (let [dep-seq (re-split #"/" (first dependency))
-                dep-group (first dep-seq)
-                dep-artifact (last dep-seq)
-                dep-version (last dependency)
-                dep (org.apache.maven.model.Dependency.)]
-             (.setGroupId dep dep-group)
-             (.setArtifactId dep dep-artifact)
-             (.setVersion dep dep-version)
-             (.addDependency model dep))))
+          (add-dependency! model dependency)))
 
 (defn plugin-execution
   [id phase & goals]
@@ -24,38 +30,33 @@
       (.addGoal execution goal))
     execution))
 
-(defn plugin
-  [group-id artifact-id version & executions]
-  (let [plugin (org.apache.maven.model.Plugin.)]
-    (.setGroupId plugin group-id)
-    (.setArtifactId plugin artifact-id)
-    (.setVersion plugin version)
+(defn add-plugin!
+  [model reference-source & executions]
+  (let [plugin (org.apache.maven.model.Plugin.)
+        reference (parse-reference reference-source)]
+    (.setGroupId plugin (:group-id reference))
+    (.setArtifactId plugin (:artifact-id reference))
+    (.setVersion plugin (:version reference))
     (doseq [execution executions]
       (.addExecution plugin execution))
-    plugin))
+    (.addPlugin (.getBuild model) plugin)))
 
-(defn add-default-plugins
-  [build]
-  (.addPlugin build (plugin "com.theoryinpractise"
-                               "clojure-maven-plugin"
-                               "1.1"
-                               (plugin-execution "compile" "compile" "compile")
-                               (plugin-execution "test" "test" "test"))))
-
-(defn process-build
-  [model options]
-  (let [build (org.apache.maven.model.Build.)]
-    (add-default-plugins build)
-    (.setBuild model build)))
+(defn add-default-plugins!
+  [model]
+  (add-plugin! model "com.theoryinpractise:clojure-maven-plugin:1.1"
+                     (plugin-execution "compile" "compile" "compile")
+                     (plugin-execution "test" "test" "test")))
 
 (defn defproject
-  [group artifact version & rest]
+  [reference-source & rest]
   (let [model (org.apache.maven.model.Model.)
+        reference (parse-reference reference-source)
         options (apply hash-map rest)]
         (.setModelVersion model "4.0.0")
-        (.setGroupId model group)
-        (.setArtifactId model artifact)
-        (.setVersion model version)
-        (process-dependencies model options)
-        (process-build model options)
+        (.setGroupId model (:group-id reference))
+        (.setArtifactId model (:artifact-id reference))
+        (.setVersion model (:version reference))
+        (.setBuild model (org.apache.maven.model.Build.))
+        (process-dependencies! model options)
+        (add-default-plugins! model)
         model))
