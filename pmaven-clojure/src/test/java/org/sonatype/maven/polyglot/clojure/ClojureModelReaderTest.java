@@ -20,21 +20,12 @@ import java.util.Map;
 public class ClojureModelReaderTest
     extends PlexusTestCase
 {
-    private ModelReader reader;
+
 
     @Test
     public void testReading() throws Exception {
 
-        reader = lookup(ModelReader.class, "clojure");
-
-        final String source = "test1.clj";
-        URL input = getClass().getResource(source);
-        assertNotNull(input);
-
-        Map options = new HashMap();
-        options.put(ModelProcessor.LOCATION, input);
-        options.put(ModelProcessor.SOURCE, source);
-        Model model = reader.read(input.openStream(), options);
+        Model model = readClojureModel("test1.clj");
         assertNotNull(model);
 
         System.out.println(model.getModelVersion());
@@ -61,6 +52,38 @@ public class ClojureModelReaderTest
         assertNotNull(plugin);
         assertEquals("clojure-maven-plugin", plugin.getArtifactId());
 
+    }
+
+    @Test
+    public void testScripted() throws Exception {
+
+        Model model = readClojureModel("test2.clj");
+        assertNotNull(model);
+
+        boolean hasTestNg = false;
+        for (Dependency dependency : model.getDependencies()) {
+            if ("testng".equals(dependency.getArtifactId())) {
+                hasTestNg = true;
+            }
+        }
+
+        assertEquals(true, hasTestNg);
+
+
+
+    }
+
+    private Model readClojureModel(final String sourceFile) throws Exception {
+        ModelReader reader = lookup(ModelReader.class, "clojure");
+
+        URL input = getClass().getResource(sourceFile);
+        assertNotNull(input);
+
+        Map options = new HashMap();
+        options.put(ModelProcessor.LOCATION, input);
+        options.put(ModelProcessor.SOURCE, sourceFile);
+        Model model = reader.read(input.openStream(), options);
+        return model;
     }
 
 }
