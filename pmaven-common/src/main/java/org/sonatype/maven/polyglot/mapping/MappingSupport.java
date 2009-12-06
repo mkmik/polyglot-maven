@@ -27,7 +27,7 @@ import java.io.File;
 import java.util.Map;
 
 /**
- * Support for {@link Mapping} impls.
+ * Support for {@link Mapping} implementations.
  *
  * @author <a href="mailto:jason@planet57.com">Jason Dillon</a>
  *
