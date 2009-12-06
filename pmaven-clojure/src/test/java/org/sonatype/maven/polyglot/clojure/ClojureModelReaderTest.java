@@ -1,6 +1,7 @@
 package org.sonatype.maven.polyglot.clojure;
 
 import org.apache.maven.model.Dependency;
+import org.apache.maven.model.Plugin;
 import org.apache.maven.model.building.ModelProcessor;
 import org.junit.Before;
 import org.junit.Test;
@@ -60,6 +61,15 @@ public class ClojureModelReaderTest
         Dependency dependency = model.getDependencies().get(0);
 
         assertEquals("org.clojure", dependency.getGroupId());
+
+        assertNotNull(model.getBuild());
+        assertNotNull(model.getBuild().getPlugins());
+        assertEquals(false, model.getBuild().getPlugins().isEmpty());
+
+        Plugin plugin = model.getBuild().getPlugins().get(0);
+
+        assertNotNull(plugin);
+        assertEquals("clojure-maven-plugin", plugin.getArtifactId());
 
     }
 
