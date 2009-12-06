@@ -1,23 +1,21 @@
 package org.sonatype.maven.polyglot.clojure;
 
 import org.apache.maven.model.Dependency;
+<<<<<<< HEAD
 import org.apache.maven.model.Plugin;
 import org.apache.maven.model.building.ModelProcessor;
 import org.junit.Before;
 import org.junit.Test;
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
+=======
+>>>>>>> 1298b2cd058f4dc6a38cd639faf2a4c7ca41f1cd
 import org.apache.maven.model.Model;
-import org.apache.maven.model.io.DefaultModelWriter;
-import org.w3c.dom.Document;
-import org.xml.sax.InputSource;
-import static org.junit.Assert.*;
-import org.codehaus.plexus.PlexusTestCase;
-
-
+import org.apache.maven.model.building.ModelProcessor;
 import org.apache.maven.model.io.ModelReader;
+import org.codehaus.plexus.PlexusTestCase;
+import org.junit.Test;
 
-import java.io.IOException;
 import java.net.URL;
 import java.util.HashMap;
 import java.util.Map;

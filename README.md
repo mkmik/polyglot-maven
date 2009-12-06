@@ -17,7 +17,7 @@ Check-out and build:
     cd pmaven
     mvn install
 
-After this completes, you can unzip the assembly and have a go with the shell:
+After this completes, you can unzip the assembly play with polyglot maven:
 
     unzip pmaven-cli/target/pmaven-*-bin.zip
     ./pmaven-cli*/bin/mvn

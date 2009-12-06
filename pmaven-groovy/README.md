@@ -1,7 +1,7 @@
 Description
 -----------
 
-Provides Polgyglot Maven the ability to understand Groovy POM files.
+Provides Polyglot Maven the ability to understand Groovy POM files.
 
 Example POM
 ------------------
