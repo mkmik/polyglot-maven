@@ -1,26 +1,24 @@
 package org.sonatype.maven.polyglot.clojure;
 
-import clojure.lang.*;
 import org.apache.maven.model.Model;
 import org.apache.maven.model.building.ModelBuilder;
 import org.apache.maven.model.building.ModelProcessor;
-import org.apache.maven.model.io.DefaultModelWriter;
 import org.apache.maven.model.io.ModelReader;
 import org.codehaus.plexus.component.annotations.Component;
 import org.codehaus.plexus.component.annotations.Requirement;
 import org.codehaus.plexus.logging.Logger;
-import org.codehaus.plexus.util.IOUtil;
-import org.sonatype.maven.polyglot.PolyglotModelUtil;
 import org.sonatype.maven.polyglot.execute.ExecuteManager;
 import org.sonatype.maven.polyglot.io.ModelReaderSupport;
 
-import java.io.*;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.io.Reader;
 import java.util.Map;
 
 /**
- * Reads a <tt>pom.groovy</tt> and transforms into a Maven {@link Model}.
+ * Reads a <tt>pom.clj</tt> and transforms into a Maven {@link Model}.
  *
- * @author <a href="mailto:jason@planet57.com">Jason Dillon</a>
+ * @author <a href="mailto:mark@derricutt.com">Mark Derricutt</a>
  *
  * @since 1.0
  */
