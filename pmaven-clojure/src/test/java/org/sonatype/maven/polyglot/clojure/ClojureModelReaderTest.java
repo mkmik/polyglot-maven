@@ -47,10 +47,13 @@ public class ClojureModelReaderTest
         assertNotNull(model.getBuild().getPlugins());
         assertEquals(false, model.getBuild().getPlugins().isEmpty());
 
+        assertEquals(1, model.getBuild().getPlugins().size());
+
         Plugin plugin = model.getBuild().getPlugins().get(0);
 
         assertNotNull(plugin);
         assertEquals("clojure-maven-plugin", plugin.getArtifactId());
+        assertEquals("1.2-SNAPSHOT", plugin.getVersion());
 
     }
 
