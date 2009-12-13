@@ -7,6 +7,21 @@
   (let [groups (re-find #"(.*):(.*):(.*)" reference)]
     {:group-id (groups 1) :artifact-id (groups 2) :version (groups 3)}))
 
+(defn apply-reference!
+  "Apply the reference's fields to the destination object, then return the destination"
+  [reference dest]
+  (.setGroupId dest (:group-id reference))
+  (.setArtifactId dest (:artifact-id reference))
+  (.setVersion dest (:version reference))
+  dest)
+
+
+(defn build-parent
+  [reference-source]
+  (let [reference (parse-reference reference-source)
+        parent (org.apache.maven.model.Parent.)]
+    (apply-reference! reference parent)))
+
 (defmulti add-dependency! #(class %2))
 
 (defmethod add-dependency! org.apache.maven.model.Dependency
@@ -17,9 +32,7 @@
   [model reference-source]
   (let [dependency (org.apache.maven.model.Dependency.)
         reference (parse-reference reference-source)]
-     (.setGroupId dependency (:group-id reference))
-     (.setArtifactId dependency (:artifact-id reference))
-     (.setVersion dependency (:version reference))
+     (apply-reference! reference dependency)
      (add-dependency! model dependency)))
 
 (defn get-reference
@@ -98,6 +111,8 @@
         (.setName model (:name options))
         (.setDescription model (:description options))
         (.setUrl model (:url options))
+        (if (contains? options :parent)
+          (.setParent (build-parent (parse-reference (:parent options)))))
         (process-dependencies! model options)
         (process-plugins! model options)
         (add-default-plugins! model)
