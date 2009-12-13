@@ -21,18 +21,23 @@ public class ClojureModelWriter extends ModelWriterSupport {
     }
 
     private boolean isExtendedPlugin(Plugin plugin) {
-        return plugin.getExecutions() != null;
+        return plugin.getExecutions() != null && !plugin.getExecutions().isEmpty();
     }
 
     public void buildDependencyString(ClojurePrintWriter out, Dependency dependency) {
 
         if (isExtendedDependency(dependency)) {
 
-            out.printAtNewIndent("[" + MessageFormat.format("\"{0}:{1}:{2}\"",
+            String dep = MessageFormat.format("\"{0}:{1}",
                     dependency.getGroupId(),
-                    dependency.getArtifactId(),
-                    dependency.getVersion()) + " {");
+                    dependency.getArtifactId());
 
+            if (dependency.getVersion() != null) {
+                dep += ":" + dependency.getVersion();
+            }
+            dep += "\"";
+
+            out.printAtNewIndent("[" + dep + " {");
             out.printField("classifier", dependency.getClassifier());
             out.printField("scope", dependency.getScope());
 
@@ -54,10 +59,18 @@ public class ClojureModelWriter extends ModelWriterSupport {
 
         } else {
 
-            out.printLnAtCurrent(MessageFormat.format("\"{0}:{1}:{2}\"",
+            String dep = MessageFormat.format("\"{0}:{1}",
                     dependency.getGroupId(),
-                    dependency.getArtifactId(),
-                    dependency.getVersion()));
+                    dependency.getArtifactId());
+
+            if (dependency.getVersion() != null) {
+                dep += ":" + dependency.getVersion();
+            }
+
+            dep += "\"";
+
+            out.printLnAtCurrent(dep);
+
         }
 
     }
@@ -66,10 +79,18 @@ public class ClojureModelWriter extends ModelWriterSupport {
 
         if (isExtendedPlugin(plugin)) {
             out.printAtNewIndent("[");
-            out.printLnAtCurrent(MessageFormat.format("\"{0}:{1}:{2}\"",
+
+            String ref = MessageFormat.format("\"{0}:{1}",
                     plugin.getGroupId(),
-                    plugin.getArtifactId(),
-                    plugin.getVersion()));
+                    plugin.getArtifactId());
+
+            if (plugin.getVersion() != null) {
+                ref += ":" + plugin.getVersion();
+            }
+
+            ref += "\"";
+
+            out.printLnAtCurrent(ref);
 
             if (!plugin.getExecutions().isEmpty()) {
 
@@ -92,10 +113,18 @@ public class ClojureModelWriter extends ModelWriterSupport {
 
         } else {
 
-            out.printLnAtCurrent(MessageFormat.format("\"{0}:{1}:{2}\"",
+            String ref = MessageFormat.format("\"{0}:{1}",
                     plugin.getGroupId(),
-                    plugin.getArtifactId(),
-                    plugin.getVersion()));
+                    plugin.getArtifactId());
+
+            if (plugin.getVersion() != null) {
+                ref += ":" + plugin.getVersion();
+            }
+
+            ref += "\"";
+
+            out.printLnAtCurrent(ref);
+
         }
 
     }
