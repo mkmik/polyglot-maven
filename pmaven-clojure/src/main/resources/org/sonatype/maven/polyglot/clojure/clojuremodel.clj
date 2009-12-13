@@ -35,6 +35,15 @@
      (apply-reference! reference dependency)
      (add-dependency! model dependency)))
 
+(defmethod add-dependency! clojure.lang.PersistentVector
+  [model [reference-source options]]
+  (let [dependency (org.apache.maven.model.Dependency.)
+        reference (parse-reference reference-source)]
+     (apply-reference! reference dependency)
+     (.setClassifier dependency (:classifier options))
+     (.setScope dependency (:scope options))
+     (add-dependency! model dependency)))
+
 (defn get-reference
   [dependency]
   (str (.getGroupId dependency) ":" (.getArtifactId dependency) ":" (.getVersion dependency)))
@@ -112,7 +121,7 @@
         (.setDescription model (:description options))
         (.setUrl model (:url options))
         (if (contains? options :parent)
-          (.setParent (build-parent (parse-reference (:parent options)))))
+          (.setParent model (build-parent (:parent options))))
         (process-dependencies! model options)
         (process-plugins! model options)
         (add-default-plugins! model)
