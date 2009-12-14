@@ -41,7 +41,7 @@ public class ClojureModelWriterTest extends PlexusTestCase {
         writer.buildDependencyString(out, dependency);
 
         assertThat(sw.getBuffer().toString())
-                .isEqualTo("group:artifact:1.0");
+                .isEqualTo("[\"group:artifact:1.0\"]");
 
     }
 
@@ -61,7 +61,7 @@ public class ClojureModelWriterTest extends PlexusTestCase {
         writer.buildDependencyString(out, dependency);
 
         assertThat(sw.getBuffer().toString())
-                .isEqualTo("[group:artifact:1.0 {:scope \"test\"}]");
+                .isEqualTo("[\"group:artifact:1.0\" {:scope \"test\"}]");
 
     }
 
@@ -81,7 +81,7 @@ public class ClojureModelWriterTest extends PlexusTestCase {
         writer.buildDependencyString(out, dependency);
 
         assertThat(sw.getBuffer().toString())
-                .isEqualTo("[group:artifact:1.0 {:classifier \"jdk15\"}]");
+                .isEqualTo("[\"group:artifact:1.0\" {:classifier \"jdk15\"}]");
 
     }
 
@@ -103,8 +103,8 @@ public class ClojureModelWriterTest extends PlexusTestCase {
 
         assertThat(sw.getBuffer().toString())
                 .isEqualTo("" +
-                        "[group:artifact:1.0 {:classifier \"jdk15\"\n" +
-                        "                     :scope \"test\"}]");
+                        "[\"group:artifact:1.0\" {:classifier \"jdk15\"\n" +
+                        "                       :scope \"test\"}]");
 
     }
 
@@ -130,7 +130,7 @@ public class ClojureModelWriterTest extends PlexusTestCase {
 
         assertThat(sw.getBuffer().toString())
                 .isEqualTo(
-                        "[group:artifact:1.0 {:exclusions [\"please:exclude\"]}]");
+                        "[\"group:artifact:1.0\" {:exclusions [\"please:exclude\"]}]");
 
     }
 
@@ -162,8 +162,8 @@ public class ClojureModelWriterTest extends PlexusTestCase {
 
         assertThat(sw.getBuffer().toString())
                 .isEqualTo("" +
-                        "[group:artifact:1.0 {:exclusions [\"please:exclude\"\n" +
-                        "                                  \"also:exclude\"]}]");
+                        "[\"group:artifact:1.0\" {:exclusions [\"please:exclude\"\n" +
+                        "                                    \"also:exclude\"]}]");
 
     }
 
