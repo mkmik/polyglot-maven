@@ -53,6 +53,16 @@
   (doseq [dependency (:dependencies options)]
           (add-dependency! model dependency)))
 
+(defn add-property!
+  [model key value]
+  (.put (.getProperties model) key value))
+
+(defn process-properties!
+  [model options]
+  (let [properties (:properties options)]
+    (doseq [key (keys properties)]
+            (add-property! model key (get properties key)))))
+
 (defmulti build-plugin-configuration-node #(class %2))
 
 (defmethod build-plugin-configuration-node String
@@ -148,6 +158,7 @@
         (.setUrl model (:url options))
         (if (contains? options :parent)
           (.setParent model (build-parent (:parent options))))
+        (process-properties! model options)
         (process-dependencies! model options)
         (process-plugins! model options)
         (add-default-plugins! model)

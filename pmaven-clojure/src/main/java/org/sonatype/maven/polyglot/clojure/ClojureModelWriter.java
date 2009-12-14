@@ -209,6 +209,17 @@ public class ClojureModelWriter extends ModelWriterSupport {
                 .printField("url", model.getUrl())
                 .printField("inceptionYear", model.getInceptionYear());
 
+        if (model.getProperties() != null && !model.getProperties().isEmpty()) {
+
+            out.printAtNewIndent(":properties {");
+            for (Map.Entry<Object, Object> entry : model.getProperties().entrySet()) {
+                out.printLnAtCurrent("\"" + entry.getKey() + "\" \"" + entry.getValue() + "\"");
+            }
+
+            out.print("}");
+            out.popIndent();
+
+        }
 
         if (!model.getDependencies().isEmpty()) {
 
