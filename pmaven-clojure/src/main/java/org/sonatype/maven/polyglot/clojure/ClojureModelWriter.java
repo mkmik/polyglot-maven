@@ -7,6 +7,7 @@ import com.google.common.base.Join;
 import org.apache.maven.model.*;
 import org.apache.maven.model.io.ModelWriter;
 import org.codehaus.plexus.component.annotations.Component;
+import org.codehaus.plexus.util.xml.Xpp3Dom;
 import org.sonatype.maven.polyglot.io.ModelWriterSupport;
 
 import java.io.*;
@@ -76,6 +77,28 @@ public class ClojureModelWriter extends ModelWriterSupport {
 
     }
 
+    private void writeDom(ClojurePrintWriter out, Xpp3Dom dom) {
+
+        if (dom.getChildCount() == 0) {
+            out.printLnAtCurrent("\"" + dom.getName() + "\" \"" + dom.getValue() + "\"");
+        } else {
+            out.printAtNewIndent("\"" + dom.getChild(0).getName() + "\" [");
+
+            boolean pad = false;
+            for (Xpp3Dom xpp3Dom : dom.getChildren()) {
+                if (pad) {
+                    out.printAtCurrent(" ");
+                } else {
+                    pad = true;
+                }
+                out.printAtCurrent("\"" + xpp3Dom.getValue() + "\"");
+            }
+
+            out.printLnAtCurrent("]");
+            out.popIndent();
+        }
+    }
+
     public void buildPluginString(ClojurePrintWriter out, Plugin plugin) {
 
         if (isExtendedPlugin(plugin)) {
@@ -97,6 +120,10 @@ public class ClojureModelWriter extends ModelWriterSupport {
 
                 out.printAtNewIndent("{");
 
+                if (plugin.getConfiguration() != null) {
+                    appendConfiguration(out, plugin.getConfiguration());
+                }
+
                 if (!plugin.getExecutions().isEmpty()) {
 
                     out.printAtNewIndent(":executions [");
@@ -105,6 +132,10 @@ public class ClojureModelWriter extends ModelWriterSupport {
                         out.printAtNewIndent("{");
                         out.printField("id", execution.getId());
                         out.printField("phase", execution.getPhase());
+
+                        if (execution.getConfiguration() != null) {
+                            appendConfiguration(out, execution.getConfiguration());
+                        }
 
                         if (execution.getGoals() != null && !execution.getGoals().isEmpty()) {
                             out.printLnAtCurrent(":goals [\"" + Join.join(" ", execution.getGoals()) + "\"]");
@@ -137,6 +168,23 @@ public class ClojureModelWriter extends ModelWriterSupport {
 
             out.printLnAtCurrent(ref);
 
+        }
+
+    }
+
+    private void appendConfiguration(ClojurePrintWriter out, Object con) {
+        Xpp3Dom configuration = (Xpp3Dom) con;
+
+        if (configuration.getChildCount() != 0) {
+            out.printAtNewIndent(":configuration {");
+
+            for (Xpp3Dom xpp3Dom : configuration.getChildren()) {
+
+                writeDom(out, xpp3Dom);
+            }
+
+            out.append("}");
+            out.popIndent();
         }
 
     }

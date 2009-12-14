@@ -53,11 +53,36 @@
   (doseq [dependency (:dependencies options)]
           (add-dependency! model dependency)))
 
+(defmulti build-plugin-configuration-node #(class %2))
+
+(defmethod build-plugin-configuration-node String
+  [name value]
+  (let [node (org.codehaus.plexus.util.xml.Xpp3Dom. name)]
+    (.setValue node value)
+    node))
+
+(defmethod build-plugin-configuration-node clojure.lang.PersistentVector
+   [name values]
+  (let [node (org.codehaus.plexus.util.xml.Xpp3Dom. (str name "s"))]
+    (doseq [value values]
+      (let [value-node (org.codehaus.plexus.util.xml.Xpp3Dom. name)]
+        (.setValue value-node value)
+        (.addChild node value-node)))
+    node))
+
+(defn build-plugin-configuration
+  [options]
+  (let [dom (org.codehaus.plexus.util.xml.Xpp3Dom. "configuration")]
+    (doseq [key (keys options)]
+       (.addChild dom (build-plugin-configuration-node key (get options key))))
+    dom))
+
 (defn build-plugin-execution
    [options]
    (let [execution (org.apache.maven.model.PluginExecution.)]
          (.setId execution (:id options))
          (.setPhase execution (:phase options))
+         (.setConfiguration execution (build-plugin-configuration (:configuration options)))
          (doseq [goal (:goals options)]
            (.addGoal execution goal))
          execution))
@@ -69,6 +94,7 @@
     (.setGroupId plugin (:group-id reference))
     (.setArtifactId plugin (:artifact-id reference))
     (.setVersion plugin (:version reference))
+    (.setConfiguration plugin (build-plugin-configuration (:configuration options)))
     (doseq [execution (:executions options)]
       (.addExecution plugin (build-plugin-execution execution)))
     plugin))
@@ -98,7 +124,8 @@
   [model]
   (if-not (contains-plugin? model "com.theoryinpractise:clojure-maven-plugin:1.1")
     (add-plugin! model ["com.theoryinpractise:clojure-maven-plugin:1.1"
-                        {:executions [{:id "compile"
+                        {:configuration {"testScript" "src/test/clojure/test.clj"}
+                         :executions [{:id "compile"
                                        :phase "compile"
                                        :goals ["compile"]}
                                       {:id "test"
