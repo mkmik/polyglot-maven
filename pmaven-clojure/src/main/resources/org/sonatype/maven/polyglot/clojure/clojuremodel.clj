@@ -53,40 +53,34 @@
   (doseq [dependency (:dependencies options)]
           (add-dependency! model dependency)))
 
-(defn plugin-execution
-  [id phase & goals]
-  (let [execution (org.apache.maven.model.PluginExecution.)]
-    (.setId execution id)
-    (.setPhase execution phase)
-    (doseq [goal goals]
-      (.addGoal execution goal))
-    execution))
+(defn build-plugin-execution
+   [options]
+   (let [execution (org.apache.maven.model.PluginExecution.)]
+         (.setId execution (:id options))
+         (.setPhase execution (:phase options))
+         (doseq [goal (:goals options)]
+           (.addGoal execution goal))
+         execution))
 
-(defmulti add-plugin! (fn [model value & _]
-                          (class value)))
-
-(defmethod add-plugin! org.apache.maven.model.Plugin
-  [model plugin & _]
-  (.addPlugin (.getBuild model) plugin))
-
-(defmethod add-plugin! clojure.lang.PersistentVector
-  [model [reference-source rest]]
-  (add-plugin! model reference-source rest))
-
-
-(defmethod add-plugin! String
-  [model reference-source & executions]
+(defn build-plugin
+  [[reference-source options]]
   (let [plugin (org.apache.maven.model.Plugin.)
         reference (parse-reference reference-source)]
     (.setGroupId plugin (:group-id reference))
     (.setArtifactId plugin (:artifact-id reference))
     (.setVersion plugin (:version reference))
-    (doseq [execution executions]
-      (.addExecution plugin execution))
-    (add-plugin! model plugin)))
+    (doseq [execution (:executions options)]
+      (.addExecution plugin (build-plugin-execution execution)))
+    plugin))
+
+
+(defn add-plugin!
+  [model plugin]
+  (.addPlugin (.getBuild model) (build-plugin plugin)))
 
 (defn process-plugins!
   [model options]
+
   (doseq [plugin (:plugins options)]
           (add-plugin! model plugin)))
 
@@ -103,9 +97,14 @@
 (defn add-default-plugins!
   [model]
   (if-not (contains-plugin? model "com.theoryinpractise:clojure-maven-plugin:1.1")
-    (add-plugin! model "com.theoryinpractise:clojure-maven-plugin:1.1"
-                       (plugin-execution "compile" "compile" "compile")
-                       (plugin-execution "test" "test" "test"))))
+    (add-plugin! model ["com.theoryinpractise:clojure-maven-plugin:1.1"
+                        {:executions [{:id "compile"
+                                       :phase "compile"
+                                       :goals ["compile"]}
+                                      {:id "test"
+                                        :phase "test"
+                                        :goals ["test"]}]}])))
+
 
 (defn defproject
   [reference-source & rest]

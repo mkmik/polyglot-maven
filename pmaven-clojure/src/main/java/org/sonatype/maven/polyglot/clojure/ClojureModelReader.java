@@ -41,10 +41,11 @@ public class ClojureModelReader
         Model model;
         try {
 
-            Object location = options.get(ModelProcessor.LOCATION);
-            Object source = options.get(ModelProcessor.SOURCE);
+            Object location = options.containsKey(ModelProcessor.LOCATION) ? options.get(ModelProcessor.LOCATION) : "";
+            Object source = options.containsKey(ModelProcessor.SOURCE) ? options.get(ModelProcessor.SOURCE) : "";
 
             clojure.lang.Compiler.load(new InputStreamReader(ClojureModelReader.class.getResourceAsStream("clojuremodel.clj")));
+
 
             model = (Model) clojure.lang.Compiler.load(input, location.toString(), source.toString());
 

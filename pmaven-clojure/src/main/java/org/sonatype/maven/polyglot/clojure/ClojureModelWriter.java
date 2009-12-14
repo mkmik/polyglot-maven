@@ -3,6 +3,7 @@ package org.sonatype.maven.polyglot.clojure;
 import clojure.lang.Var;
 import clojure.lang.RT;
 
+import com.google.common.base.Join;
 import org.apache.maven.model.*;
 import org.apache.maven.model.io.ModelWriter;
 import org.codehaus.plexus.component.annotations.Component;
@@ -17,7 +18,7 @@ public class ClojureModelWriter extends ModelWriterSupport {
 
     private boolean isExtendedDependency(Dependency dependency) {
         return dependency.getScope() != null || dependency.getClassifier() != null ||
-                        !dependency.getExclusions().isEmpty();
+                !dependency.getExclusions().isEmpty();
     }
 
     private boolean isExtendedPlugin(Plugin plugin) {
@@ -59,7 +60,7 @@ public class ClojureModelWriter extends ModelWriterSupport {
 
         } else {
 
-            String dep = MessageFormat.format("\"{0}:{1}",
+            String dep = MessageFormat.format("[\"{0}:{1}",
                     dependency.getGroupId(),
                     dependency.getArtifactId());
 
@@ -67,7 +68,7 @@ public class ClojureModelWriter extends ModelWriterSupport {
                 dep += ":" + dependency.getVersion();
             }
 
-            dep += "\"";
+            dep += "\"]";
 
             out.printLnAtCurrent(dep);
 
@@ -92,28 +93,39 @@ public class ClojureModelWriter extends ModelWriterSupport {
 
             out.printLnAtCurrent(ref);
 
-            if (!plugin.getExecutions().isEmpty()) {
+            if (!plugin.getExecutions().isEmpty() || plugin.getConfiguration() != null) {
 
-                for (PluginExecution execution : plugin.getExecutions()) {
-                    out.printAtCurrent("(plugin-execution");
-                    out.printAtCurrent(" \"" + execution.getId() + "\"");
-                    out.printAtCurrent(" \"" + execution.getPhase() + "\"");
+                out.printAtNewIndent("{");
 
-                    for (String goal : execution.getGoals()) {
-                        out.printAtCurrent(" \"" + goal + "\"");
+                if (!plugin.getExecutions().isEmpty()) {
+
+                    out.printAtNewIndent(":executions [");
+
+                    for (PluginExecution execution : plugin.getExecutions()) {
+                        out.printAtNewIndent("{");
+                        out.printField("id", execution.getId());
+                        out.printField("phase", execution.getPhase());
+
+                        if (execution.getGoals() != null && !execution.getGoals().isEmpty()) {
+                            out.printLnAtCurrent(":goals [\"" + Join.join(" ", execution.getGoals()) + "\"]");
+                        }
+
+                        out.append("}");
+                        out.popIndent();
                     }
-                    out.printLnAtCurrent(")");
-
+                    out.append("]");
+                    out.popIndent();
                 }
-                out.append("]");
+                out.append("}");
                 out.popIndent();
             }
+            out.append("]");
 
             out.popIndent();
 
         } else {
 
-            String ref = MessageFormat.format("\"{0}:{1}",
+            String ref = MessageFormat.format("[\"{0}:{1}",
                     plugin.getGroupId(),
                     plugin.getArtifactId());
 
@@ -121,7 +133,7 @@ public class ClojureModelWriter extends ModelWriterSupport {
                 ref += ":" + plugin.getVersion();
             }
 
-            ref += "\"";
+            ref += "\"]";
 
             out.printLnAtCurrent(ref);
 
