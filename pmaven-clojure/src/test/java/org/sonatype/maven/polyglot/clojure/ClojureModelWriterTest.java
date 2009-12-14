@@ -3,9 +3,11 @@ package org.sonatype.maven.polyglot.clojure;
 import org.apache.maven.model.Dependency;
 import org.apache.maven.model.Exclusion;
 import org.apache.maven.model.Model;
+import org.apache.maven.model.Plugin;
 import org.apache.maven.model.building.ModelProcessor;
 import org.apache.maven.model.io.ModelReader;
 import org.codehaus.plexus.PlexusTestCase;
+import org.codehaus.plexus.util.xml.Xpp3Dom;
 import org.junit.Test;
 
 import java.io.StringWriter;
@@ -167,6 +169,35 @@ public class ClojureModelWriterTest extends PlexusTestCase {
 
     }
 
+    @Test
+    public void testPluginWithConfigurationAndNoExecution() {
+
+        Plugin plugin = new Plugin();
+
+        plugin.setGroupId("group");
+        plugin.setArtifactId("artifact");
+        plugin.setVersion("1.0");
+
+        Xpp3Dom node = new Xpp3Dom("configuration");
+        Xpp3Dom value = new Xpp3Dom("name");
+        value.setValue("Mark");
+        node.addChild(value);
+
+        plugin.setConfiguration(node);
+
+
+        ClojureModelWriter writer = new ClojureModelWriter();
+
+        StringWriter sw = new StringWriter();
+        ClojurePrintWriter out = new ClojurePrintWriter(sw);
+        writer.buildPluginString(out, plugin);
+
+        assertThat(sw.getBuffer().toString())
+                .isEqualTo("" +
+                        "[\"group:artifact:1.0\"\n" +
+                        " {:configuration {\"name\" \"Mark\"}}]");
+
+    }
 
     @Test
     public void testModelPrinting() throws Exception {

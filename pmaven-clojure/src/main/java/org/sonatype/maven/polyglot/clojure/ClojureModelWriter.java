@@ -22,10 +22,6 @@ public class ClojureModelWriter extends ModelWriterSupport {
                 !dependency.getExclusions().isEmpty();
     }
 
-    private boolean isExtendedPlugin(Plugin plugin) {
-        return plugin.getExecutions() != null && !plugin.getExecutions().isEmpty();
-    }
-
     public void buildDependencyString(ClojurePrintWriter out, Dependency dependency) {
 
         if (isExtendedDependency(dependency)) {
@@ -101,74 +97,56 @@ public class ClojureModelWriter extends ModelWriterSupport {
 
     public void buildPluginString(ClojurePrintWriter out, Plugin plugin) {
 
-        if (isExtendedPlugin(plugin)) {
-            out.printAtNewIndent("[");
+        out.printAtNewIndent("[");
 
-            String ref = MessageFormat.format("\"{0}:{1}",
-                    plugin.getGroupId(),
-                    plugin.getArtifactId());
+        String ref = MessageFormat.format("\"{0}:{1}",
+                plugin.getGroupId(),
+                plugin.getArtifactId());
 
-            if (plugin.getVersion() != null) {
-                ref += ":" + plugin.getVersion();
+        if (plugin.getVersion() != null) {
+            ref += ":" + plugin.getVersion();
+        }
+
+        ref += "\"";
+
+        out.printLnAtCurrent(ref);
+
+        if (!plugin.getExecutions().isEmpty() || plugin.getConfiguration() != null) {
+
+            out.printAtNewIndent("{");
+
+            if (plugin.getConfiguration() != null) {
+                appendConfiguration(out, plugin.getConfiguration());
             }
 
-            ref += "\"";
+            if (!plugin.getExecutions().isEmpty()) {
 
-            out.printLnAtCurrent(ref);
+                out.printAtNewIndent(":executions [");
 
-            if (!plugin.getExecutions().isEmpty() || plugin.getConfiguration() != null) {
+                for (PluginExecution execution : plugin.getExecutions()) {
+                    out.printAtNewIndent("{");
+                    out.printField("id", execution.getId());
+                    out.printField("phase", execution.getPhase());
 
-                out.printAtNewIndent("{");
-
-                if (plugin.getConfiguration() != null) {
-                    appendConfiguration(out, plugin.getConfiguration());
-                }
-
-                if (!plugin.getExecutions().isEmpty()) {
-
-                    out.printAtNewIndent(":executions [");
-
-                    for (PluginExecution execution : plugin.getExecutions()) {
-                        out.printAtNewIndent("{");
-                        out.printField("id", execution.getId());
-                        out.printField("phase", execution.getPhase());
-
-                        if (execution.getConfiguration() != null) {
-                            appendConfiguration(out, execution.getConfiguration());
-                        }
-
-                        if (execution.getGoals() != null && !execution.getGoals().isEmpty()) {
-                            out.printLnAtCurrent(":goals [\"" + Join.join(" ", execution.getGoals()) + "\"]");
-                        }
-
-                        out.append("}");
-                        out.popIndent();
+                    if (execution.getConfiguration() != null) {
+                        appendConfiguration(out, execution.getConfiguration());
                     }
-                    out.append("]");
+
+                    if (execution.getGoals() != null && !execution.getGoals().isEmpty()) {
+                        out.printLnAtCurrent(":goals [\"" + Join.join(" ", execution.getGoals()) + "\"]");
+                    }
+
+                    out.append("}");
                     out.popIndent();
                 }
-                out.append("}");
+                out.append("]");
                 out.popIndent();
             }
-            out.append("]");
-
+            out.append("}");
             out.popIndent();
-
-        } else {
-
-            String ref = MessageFormat.format("[\"{0}:{1}",
-                    plugin.getGroupId(),
-                    plugin.getArtifactId());
-
-            if (plugin.getVersion() != null) {
-                ref += ":" + plugin.getVersion();
-            }
-
-            ref += "\"]";
-
-            out.printLnAtCurrent(ref);
-
         }
+        out.append("]");
+        out.popIndent();
 
     }
 
