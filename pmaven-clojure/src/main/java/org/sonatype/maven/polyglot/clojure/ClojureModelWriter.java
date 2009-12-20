@@ -109,7 +109,7 @@ public class ClojureModelWriter extends ModelWriterSupport {
 
         ref += "\"";
 
-        out.printLnAtCurrent(ref);
+        out.printAtCurrent(ref);
 
         if (!plugin.getExecutions().isEmpty() || plugin.getConfiguration() != null) {
 
@@ -133,7 +133,7 @@ public class ClojureModelWriter extends ModelWriterSupport {
                     }
 
                     if (execution.getGoals() != null && !execution.getGoals().isEmpty()) {
-                        out.printLnAtCurrent(":goals [\"" + Join.join(" ", execution.getGoals()) + "\"]");
+                        out.printLnAtCurrent(":goals [\"" + Join.join("\" \"", execution.getGoals()) + "\"]");
                     }
 
                     out.append("}");

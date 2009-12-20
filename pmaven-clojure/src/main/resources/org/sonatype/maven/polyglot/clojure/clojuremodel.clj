@@ -2,7 +2,15 @@
 
 (use 'clojure.contrib.str-utils)
 
-(defn parse-reference
+(defmulti parse-reference #(+ 1 (count (re-seq #":" %))))
+
+
+(defmethod parse-reference 2
+  [reference]
+  (let [groups (re-find #"(.*):(.*)" reference)]
+    {:group-id (groups 1) :artifact-id (groups 2)}))
+
+(defmethod parse-reference 3
   [reference]
   (let [groups (re-find #"(.*):(.*):(.*)" reference)]
     {:group-id (groups 1) :artifact-id (groups 2) :version (groups 3)}))
