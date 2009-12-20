@@ -1,4 +1,4 @@
-(defproject "a:b:c"
+(defproject main "a:b:c"
     :name "Polyglot Test"
     :description "Maven 3 Clojure based Polyglot test"
     :properties {"test" "test"}

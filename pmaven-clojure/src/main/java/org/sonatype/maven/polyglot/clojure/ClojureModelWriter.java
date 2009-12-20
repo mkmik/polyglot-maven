@@ -109,11 +109,11 @@ public class ClojureModelWriter extends ModelWriterSupport {
 
         ref += "\"";
 
-        out.printAtCurrent(ref);
+        out.printAtNewIndent(ref);
 
         if (!plugin.getExecutions().isEmpty() || plugin.getConfiguration() != null) {
 
-            out.printAtNewIndent("{");
+            out.printAtNewIndent(" {");
 
             if (plugin.getConfiguration() != null) {
                 appendConfiguration(out, plugin.getConfiguration());
@@ -171,7 +171,7 @@ public class ClojureModelWriter extends ModelWriterSupport {
 
         ClojurePrintWriter out = new ClojurePrintWriter(writer);
 
-        out.printLnAtCurrent("(defproject \"" + model.getGroupId() + ":" + model.getArtifactId() + ":" + model.getVersion() + "\"");
+        out.printLnAtCurrent("(defproject main \"" + model.getGroupId() + ":" + model.getArtifactId() + ":" + model.getVersion() + "\"");
         out.pushIndent(4);
         out.printField("model-version", model.getModelVersion());
 
