@@ -30,6 +30,11 @@
                 <groupId>com.theoryinpractise</groupId>
                 <artifactId>clojure-maven-plugin</artifactId>
                 <version>1.1</version>
+                <configuration>
+                    <sourceDirectories>
+                        <sourceDirectory>${basedir}/src/main/clojure</sourceDirectory>
+                    </sourceDirectories>
+                </configuration>
                 <executions>
                     <execution>
                         <id>compile</id>
@@ -38,6 +43,7 @@
                             <goal>compile</goal>
                         </goals>
                     </execution>
+<!--
                     <execution>
                         <id>test-compile</id>
                         <phase>test-compile</phase>
@@ -52,6 +58,7 @@
                             <goal>test</goal>
                         </goals>
                     </execution>
+-->
                 </executions>
             </plugin>
         </plugins>

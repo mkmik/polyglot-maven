@@ -97,8 +97,6 @@ public class ClojureModelWriter extends ModelWriterSupport {
 
     public void buildPluginString(ClojurePrintWriter out, Plugin plugin) {
 
-        out.printAtNewIndent("[");
-
         String ref = MessageFormat.format("\"{0}:{1}",
                 plugin.getGroupId(),
                 plugin.getArtifactId());
@@ -109,7 +107,7 @@ public class ClojureModelWriter extends ModelWriterSupport {
 
         ref += "\"";
 
-        out.printAtNewIndent(ref);
+        out.printAtNewIndent("[" + ref);
 
         if (!plugin.getExecutions().isEmpty() || plugin.getConfiguration() != null) {
 
