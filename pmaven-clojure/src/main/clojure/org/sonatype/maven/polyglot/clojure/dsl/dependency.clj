@@ -11,14 +11,14 @@
   [model reference-source]
   (let [dependency (org.apache.maven.model.Dependency.)
         reference (parse-reference reference-source)]
-     (apply-reference! reference dependency)
-     (add-dependency! model dependency)))
+    (apply-reference! reference dependency)
+    (add-dependency! model dependency)))
 
 (defmethod add-dependency! clojure.lang.PersistentVector
   [model [reference-source options]]
   (let [dependency (org.apache.maven.model.Dependency.)
         reference (parse-reference reference-source)]
-     (apply-reference! reference dependency)
-     (.setClassifier dependency (:classifier options))
-     (.setScope dependency (:scope options))
-     (add-dependency! model dependency)))
+    (apply-reference! reference dependency)
+    (.setClassifier dependency (:classifier options))
+    (.setScope dependency (:scope options))
+    (add-dependency! model dependency)))
