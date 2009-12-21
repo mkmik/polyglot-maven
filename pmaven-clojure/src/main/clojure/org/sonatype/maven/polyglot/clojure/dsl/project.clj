@@ -8,7 +8,7 @@
 
 (defn add-property!
   [project key value]
-  (.put (.getProperties project) key value))
+  (.addProperty project key value))
 
 (defn- build-parent
   [reference-source]
@@ -64,7 +64,7 @@
 (defn process-modules!
   [project options]
   (doseq [module (:modules options)]
-    (.add (.getModules project) module)))
+    (.addModule project module)))
 
 (defn process-build!
   [project options]
