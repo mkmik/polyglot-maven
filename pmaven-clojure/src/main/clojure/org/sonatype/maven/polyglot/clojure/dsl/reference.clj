@@ -1,4 +1,4 @@
-    (ns org.sonatype.maven.polyglot.clojure.dsl.reference)
+(ns org.sonatype.maven.polyglot.clojure.dsl.reference)
 
 (defmulti parse-reference #(+ 1 (count (re-seq #":" %))))
 

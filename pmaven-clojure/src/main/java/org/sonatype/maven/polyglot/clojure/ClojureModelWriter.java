@@ -1,8 +1,5 @@
 package org.sonatype.maven.polyglot.clojure;
 
-import clojure.lang.Var;
-import clojure.lang.RT;
-
 import com.google.common.base.Join;
 import org.apache.maven.model.*;
 import org.apache.maven.model.io.ModelWriter;
@@ -12,7 +9,9 @@ import org.sonatype.maven.polyglot.io.ModelWriterSupport;
 
 import java.io.*;
 import java.text.MessageFormat;
+import java.util.List;
 import java.util.Map;
+import java.util.Properties;
 
 @Component(role = ModelWriter.class, hint = "clojure")
 public class ClojureModelWriter extends ModelWriterSupport {
@@ -36,8 +35,8 @@ public class ClojureModelWriter extends ModelWriterSupport {
             dep += "\"";
 
             out.printAtNewIndent("[" + dep + " {");
-            out.printField("classifier", dependency.getClassifier());
-            out.printField("scope", dependency.getScope());
+            out.printField(":classifier", dependency.getClassifier());
+            out.printField(":scope", dependency.getScope());
 
             if (!dependency.getExclusions().isEmpty()) {
 
@@ -123,8 +122,8 @@ public class ClojureModelWriter extends ModelWriterSupport {
 
                 for (PluginExecution execution : plugin.getExecutions()) {
                     out.printAtNewIndent("{");
-                    out.printField("id", execution.getId());
-                    out.printField("phase", execution.getPhase());
+                    out.printField(":id", execution.getId());
+                    out.printField(":phase", execution.getPhase());
 
                     if (execution.getConfiguration() != null) {
                         appendConfiguration(out, execution.getConfiguration());
@@ -171,24 +170,203 @@ public class ClojureModelWriter extends ModelWriterSupport {
 
         out.printLnAtCurrent("(defproject main \"" + model.getGroupId() + ":" + model.getArtifactId() + ":" + model.getVersion() + "\"");
         out.pushIndent(4);
-        out.printField("model-version", model.getModelVersion());
+        out.printField(":model-version", model.getModelVersion());
 
         final Parent parent = model.getParent();
         if (parent != null) {
-            out.printField("parent", parent.getGroupId() + ":" + parent.getArtifactId() + ":" + parent.getVersion());
+            out.printField(":parent", parent.getGroupId() + ":" + parent.getArtifactId() + ":" + parent.getVersion());
         }
 
         out
-                .printField("name", model.getName())
-                .printField("description", model.getDescription())
-                .printField("packaging", model.getPackaging())
-                .printField("url", model.getUrl())
-                .printField("inceptionYear", model.getInceptionYear());
+                .printField(":name", model.getName())
+                .printField(":description", model.getDescription())
+                .printField(":packaging", model.getPackaging())
+                .printField(":url", model.getUrl())
+                .printField(":inceptionYear", model.getInceptionYear());
 
-        if (model.getProperties() != null && !model.getProperties().isEmpty()) {
+        writeProperties(model.getProperties(), out);
+        writeScm(model, out);
+        writeDistributionManagement(model.getDistributionManagement(), out);
+        writeCiManagement(model, out);
+        writeIssueManagement(model, out);
+        writeProfiles(model, out);
+        writeDependencies(model.getDependencies(), out);
+        writeModules(model.getModules(), out);
+        writeBuild(model.getBuild(), out);
+
+        out.print(")\n");
+        out.flush();
+
+    }
+
+    private void writeDistributionManagement(DistributionManagement distributionManagement, ClojurePrintWriter out) {
+
+        if (distributionManagement != null) {
+            out.printAtNewIndent(":distribution-managemet {");
+            out.printField(":download-url", distributionManagement.getDownloadUrl());
+            out.printField(":status", distributionManagement.getStatus());
+
+            if (distributionManagement.getRelocation() != null) {
+                out.printField(":relocation", distributionManagement.getRelocation().toString());
+            }
+
+            if (distributionManagement.getRepository() != null) {
+                out.printField(":repository", distributionManagement.getRepository().toString());
+            }
+
+            if (distributionManagement.getSnapshotRepository() != null) {
+                out.printField(":snapshot-repository", distributionManagement.getSnapshotRepository().toString());
+            }
+
+            out.popIndent();
+        }
+
+
+    }
+
+    private void writeScm(Model model, ClojurePrintWriter out) {
+
+        if (model.getScm() != null) {
+            out.printAtNewIndent(":scm {");
+            out.printField(":connection", model.getScm().getConnection());
+            out.printField(":developer-connection", model.getScm().getDeveloperConnection());
+            out.printField(":tag", model.getScm().getTag());
+            out.printField(":url", model.getScm().getUrl());
+            out.append("}");
+            out.popIndent();
+        }
+
+    }
+
+    private void writeCiManagement(Model model, ClojurePrintWriter out) {
+
+        if (model.getCiManagement() != null) {
+            out.printAtNewIndent(":ci-management {");
+            out.printField(":system", model.getCiManagement().getSystem());
+            out.printField(":url", model.getCiManagement().getUrl());
+
+            if (model.getCiManagement().getNotifiers() != null && !model.getCiManagement().getNotifiers().isEmpty()) {
+
+                out.printAtNewIndent(":notifiers [");
+
+                for (Notifier notifier : model.getCiManagement().getNotifiers()) {
+                    out.printAtNewIndent("{");
+                    out.printField(":address", notifier.getAddress());
+                    out.printField(":type", notifier.getType());
+                    out.printField(":send-on-error", Boolean.toString(notifier.isSendOnError()));
+                    out.printField(":send-on-failure", Boolean.toString(notifier.isSendOnFailure()));
+                    out.printField(":send-on-success", Boolean.toString(notifier.isSendOnSuccess()));
+                    out.printField(":send-on-warning", Boolean.toString(notifier.isSendOnWarning()));
+                    if (notifier.getConfiguration() != null && !notifier.getConfiguration().isEmpty()) {
+                        out.printAtNewIndent(":configuration {");
+                        for (Map.Entry<Object, Object> entry : notifier.getConfiguration().entrySet()) {
+                            out.printLnAtCurrent(entry.getKey() + " " + entry.getValue());
+                        }
+                        out.popIndent();
+                    }
+                    out.popIndent();
+                }
+                out.popIndent();
+            }
+            out.append("}");
+            out.popIndent();
+        }
+
+    }
+
+    private void writeIssueManagement(Model model, ClojurePrintWriter out) {
+
+        if (model.getIssueManagement() != null) {
+            out.printAtNewIndent(":issue-management {");
+            out.printField(":system", model.getIssueManagement().getSystem());
+            out.printField(":url", model.getIssueManagement().getUrl());
+            out.append("}");
+            out.popIndent();
+        }
+
+    }
+
+    private void writeProfiles(Model model, ClojurePrintWriter out) {
+        if (model.getProfiles() != null && !model.getProfiles().isEmpty()) {
+
+            out.printAtNewIndent(":profiles [");
+            for (Profile profile : model.getProfiles()) {
+                out.printAtNewIndent("{");
+                out.printField(":id", profile.getId());
+                out.printField(":source", profile.getSource());
+
+//                profile.getActivation();
+//                profile.getDependencyManagement();
+//                profile.getRepositories();
+//                profile.getPluginRepositories();
+//                profile.getReporting();
+//                profile.getReports();
+
+                writeDistributionManagement(profile.getDistributionManagement(), out);
+                writeProperties(profile.getProperties(), out);
+                writeModules(profile.getModules(), out);
+                writeDependencies(profile.getDependencies(), out);
+                writeBuild(profile.getBuild(), out);
+                out.append("}");
+                out.popIndent();
+            }
+            out.append("]");
+            out.popIndent();
+        }
+    }
+
+    private void writeModules(List<String> modules, ClojurePrintWriter out) {
+        if (modules != null && !modules.isEmpty()) {
+            out.printLnAtCurrent(":modules [\"" + Join.join("\" \"", modules) + "\"]");
+        }
+    }
+
+    private void writeBuild(final BuildBase buildBase, ClojurePrintWriter out) {
+        if (buildBase != null && !buildBase.getPlugins().isEmpty()) {
+
+            out.printField(":default-goal", buildBase.getDefaultGoal());
+            out.printField(":final-name", buildBase.getFinalName());
+            out.printField(":directory", buildBase.getDirectory());
+
+            if (buildBase instanceof Build) {
+                Build build = (Build) buildBase;
+                out.printField(":output-directory", build.getOutputDirectory());
+                out.printField(":script-source-directory", build.getScriptSourceDirectory());
+                out.printField(":source-directory", build.getSourceDirectory());
+                out.printField(":test-source-directory", build.getTestSourceDirectory());
+                out.printField(":test-output-directory", build.getTestOutputDirectory());
+            }
+
+            out.printAtNewIndent(":plugins [");
+
+            for (Plugin plugin : buildBase.getPlugins()) {
+                buildPluginString(out, plugin);
+            }
+
+            out.print("]");
+            out.popIndent();
+        }
+    }
+
+    private void writeDependencies(List<Dependency> dependencies, ClojurePrintWriter out) {
+        if (!dependencies.isEmpty()) {
+
+            out.printAtNewIndent(":dependencies [");
+
+            for (Dependency dependency : dependencies) {
+                buildDependencyString(out, dependency);
+            }
+
+            out.print("]");
+            out.popIndent();
+        }
+    }
+
+    private void writeProperties(Properties properties, ClojurePrintWriter out) {
+        if (properties != null && !properties.isEmpty()) {
 
             out.printAtNewIndent(":properties {");
-            for (Map.Entry<Object, Object> entry : model.getProperties().entrySet()) {
+            for (Map.Entry<Object, Object> entry : properties.entrySet()) {
                 out.printLnAtCurrent("\"" + entry.getKey() + "\" \"" + entry.getValue() + "\"");
             }
 
@@ -196,33 +374,5 @@ public class ClojureModelWriter extends ModelWriterSupport {
             out.popIndent();
 
         }
-
-        if (!model.getDependencies().isEmpty()) {
-
-            out.printAtNewIndent(":dependencies [");
-
-            for (Dependency dependency : model.getDependencies()) {
-                buildDependencyString(out, dependency);
-            }
-
-            out.print("]");
-            out.popIndent();
-        }
-
-        if (model.getBuild() != null && !model.getBuild().getPlugins().isEmpty()) {
-
-            out.printAtNewIndent(":plugins [");
-
-            for (Plugin plugin : model.getBuild().getPlugins()) {
-                buildPluginString(out, plugin);
-            }
-
-            out.print("]");
-            out.popIndent();
-        }
-
-        out.print(")\n");
-        out.flush();
-
     }
 }

@@ -58,13 +58,14 @@ public class ClojurePrintWriter extends PrintWriter {
     }
 
     public ClojurePrintWriter popIndent() {
+        needNewLine = true;
         indents.pop();
         return this;
     }
 
     public ClojurePrintWriter printField(String fieldName, String fieldValue) {
         if (fieldValue != null) {
-            printLnAtCurrent(":" + fieldName + " \"" + fieldValue + "\"");
+            printLnAtCurrent(fieldName + " \"" + fieldValue + "\"");
         }
         return this;
     }

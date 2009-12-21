@@ -9,8 +9,8 @@
                                                                                        :phase "compile"
                                                                                        :goals ["compile"]}
                                                                                       {:id "test-compile"
-                                                                                        :phase "test-compile"
-                                                                                        :goals ["testCompile"]}
+                                                                                       :phase "test-compile"
+                                                                                       :goals ["testCompile"]}
                                                                                       {:id "test"
-                                                                                        :phase "test"
-                                                                                        :goals ["test"]}]}])))
+                                                                                       :phase "test"
+                                                                                       :goals ["test"]}]}])))

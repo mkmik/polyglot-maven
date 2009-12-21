@@ -10,7 +10,7 @@
     node))
 
 (defmethod build-plugin-configuration-node clojure.lang.PersistentVector
-   [name values]
+  [name values]
   (let [node (org.codehaus.plexus.util.xml.Xpp3Dom. (str name "s"))]
     (doseq [value values]
       (let [value-node (org.codehaus.plexus.util.xml.Xpp3Dom. name)]
@@ -22,18 +22,18 @@
   [options]
   (let [dom (org.codehaus.plexus.util.xml.Xpp3Dom. "configuration")]
     (doseq [key (keys options)]
-       (.addChild dom (build-plugin-configuration-node key (get options key))))
+      (.addChild dom (build-plugin-configuration-node key (get options key))))
     dom))
 
 (defn build-plugin-execution
-   [options]
-   (let [execution (org.apache.maven.model.PluginExecution.)]
-         (.setId execution (:id options))
-         (.setPhase execution (:phase options))
-         (.setConfiguration execution (build-plugin-configuration (:configuration options)))
-         (doseq [goal (:goals options)]
-           (.addGoal execution goal))
-         execution))
+  [options]
+  (let [execution (org.apache.maven.model.PluginExecution.)]
+    (.setId execution (:id options))
+    (.setPhase execution (:phase options))
+    (.setConfiguration execution (build-plugin-configuration (:configuration options)))
+    (doseq [goal (:goals options)]
+      (.addGoal execution goal))
+    execution))
 
 (defn build-plugin
   [[reference-source options]]
@@ -50,12 +50,12 @@
 (defn contains-plugin?
   [model reference-source]
   (not (empty? (filter (fn [dependency]
-                         (let [ref1 (parse-reference reference-source)
-                               ref2 (parse-reference (get-reference dependency))]
-                           (and
-                             (= (:group-id ref1) (:group-id ref2))
-                             (= (:artifact-id ref1) (:artifact-id ref2)))))
-                       (.getPlugins (.getBuild model))))))
+    (let [ref1 (parse-reference reference-source)
+          ref2 (parse-reference (get-reference dependency))]
+      (and
+        (= (:group-id ref1) (:group-id ref2))
+        (= (:artifact-id ref1) (:artifact-id ref2)))))
+    (.getPlugins (.getBuild model))))))
 
 
 (defn add-plugin!
