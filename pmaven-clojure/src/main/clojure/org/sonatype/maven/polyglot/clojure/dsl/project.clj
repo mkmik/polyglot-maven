@@ -61,6 +61,11 @@
       (.setUrl dest (:url src))
       (.setIssueManagement project dest))))
 
+(defn process-modules!
+  [project options]
+  (doseq [module (:modules options)]
+    (.add (.getModules project) module)))
+
 (defn process-build!
   [project options]
   (let [build (org.apache.maven.model.Build.)]
@@ -75,12 +80,13 @@
 
 (defn process-profiles!
   [project options]
-  (doseq [src (:profiles options)]
+  (doseq [profile-options (:profiles options)]
     (let [profile (org.apache.maven.model.Profile.)]
-      (.setId profile (:id src))
-      (process-build! profile src)
-      (process-dependencies! profile src)
-      (process-plugins! profile src)
+      (.setId profile (:id profile-options))
+      (process-modules! profile profile-options)
+      (process-build! profile profile-options)
+      (process-dependencies! profile profile-options)
+      (process-plugins! profile profile-options)
       (.addProfile project profile))))
 
   (defn build-project
@@ -98,6 +104,7 @@
     (if (contains? options :parent)
       (.setParent project (build-parent (:parent options))))
     (process-properties! project options)
+    (process-modules! project options)
     (process-scm! project options)
     (process-ci! project options)
     (process-profiles! project options)
