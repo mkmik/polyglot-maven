@@ -20,7 +20,33 @@
   (.setVersion dest (:version reference))
   dest)
 
+(defn contains-version?
+  [source]
+  (and (not= (.getVersion source) nil)))
 
 (defn get-reference
-  [dependency]
-  (str (.getGroupId dependency) ":" (.getArtifactId dependency) ":" (.getVersion dependency)))
+  [source]
+  (str (.getGroupId source) ":" (.getArtifactId source)
+    (if (contains-version? source) (str ":" (.getVersion source)) "")))
+
+(defn set-version!
+  [dest version]
+  (apply-reference! (assoc (parse-reference (get-reference dest)) :version version) dest))
+
+(defn get-version
+  [dest]
+  (:version (parse-reference (get-reference dest))))
+
+(defn remove-version!
+  [dest]
+  (apply-reference! (dissoc (parse-reference (get-reference dest)) :version) dest))
+
+(defn filter-reference
+  [reference-source]
+  (fn [reference]
+    (let [ref1 (parse-reference reference-source)
+          ref2 (parse-reference (get-reference reference))]
+      (and
+        (= (:group-id ref1) (:group-id ref2))
+        (= (:artifact-id ref1) (:artifact-id ref2))
+        (= (if (contains? :version ref1) (= (:version ref1) (:version ref2)) true))))))

@@ -22,3 +22,13 @@
     (.setClassifier dependency (:classifier options))
     (.setScope dependency (:scope options))
     (add-dependency! model dependency)))
+
+(defn contains-dependency?
+  [model reference-source]
+  (not (empty? (filter (filter-reference reference-source) (.getDependencies model)))))
+
+(defn find-dependency
+  ([model]
+    (seq (.getDependencies model)))
+  ([model reference-source]
+    (filter (filter-reference reference-source) (.getDependencies model))))

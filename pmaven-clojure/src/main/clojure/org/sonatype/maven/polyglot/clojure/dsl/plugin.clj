@@ -49,15 +49,28 @@
 
 (defn contains-plugin?
   [model reference-source]
-  (not (empty? (filter (fn [dependency]
-    (let [ref1 (parse-reference reference-source)
-          ref2 (parse-reference (get-reference dependency))]
-      (and
-        (= (:group-id ref1) (:group-id ref2))
-        (= (:artifact-id ref1) (:artifact-id ref2)))))
-    (.getPlugins (.getBuild model))))))
+  (not (empty? (filter (filter-reference reference-source) (.getPlugins (.getBuild model))))))
 
+(defn find-plugin
+  ([model]
+    (seq (.getPlugins (.getBuild model))))
+  ([model reference-source]
+    (filter (filter-reference reference-source) (.getPlugins (.getBuild model)))))
 
-(defn add-plugin!
+(defn find-plugin-executions
+  [plugin]
+  (seq (.getExecutions plugin)))
+
+(defmulti add-plugin! #(class %2))
+
+(defmethod add-plugin! org.apache.maven.model.Plugin
+  [model plugin]
+  (.addPlugin (.getBuild model) plugin))
+
+(defmethod add-plugin! String
+  [model reference-source]
+  (.addPlugin (.getBuild model) (build-plugin [reference-source])))
+
+(defmethod add-plugin! clojure.lang.PersistentVector
   [model plugin]
   (.addPlugin (.getBuild model) (build-plugin plugin)))
