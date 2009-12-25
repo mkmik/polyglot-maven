@@ -49,6 +49,11 @@
             <groupId>org.sonatype.pmaven</groupId>
             <artifactId>pmaven-clojure</artifactId>
         </dependency>
+
+        <dependency>
+            <groupId>org.sonatype.pmaven</groupId>
+            <artifactId>pmaven-scala</artifactId>
+        </dependency>
     </dependencies>
 
     <build>

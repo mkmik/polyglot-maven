@@ -191,6 +191,12 @@
                 <artifactId>pmaven-clojure</artifactId>
                 <version>1.0-SNAPSHOT</version>
             </dependency>
+            
+            <dependency>
+                <groupId>org.sonatype.pmaven</groupId>
+                <artifactId>pmaven-scala</artifactId>
+                <version>1.0-SNAPSHOT</version>
+            </dependency>
         </dependencies>
     </dependencyManagement>
 
@@ -218,6 +224,7 @@
         <!--<module>pmaven-jruby</module>-->
         <module>pmaven-cli</module>
         <module>pmaven-commands</module>
+        <module>pmaven-scala</module>
     </modules>
 
     <build>

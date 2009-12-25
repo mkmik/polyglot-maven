@@ -64,6 +64,26 @@
             <scope>test</scope>
         </dependency>
     </dependencies>
+    
+http://download.java.net/maven/2/
+    <repositories>
+    <repository>
+      <releases>
+        <enabled>true</enabled>
+        <updatePolicy>always</updatePolicy>
+        <checksumPolicy>warn</checksumPolicy>
+      </releases>
+      <snapshots>
+        <enabled>false</enabled>
+        <updatePolicy>never</updatePolicy>
+        <checksumPolicy>fail</checksumPolicy>
+      </snapshots>
+      <id>downloads.java.net</id>
+      <name>Java.net Downloads</name>
+      <url>http://download.java.net/maven/2</url>
+      <layout>default</layout>
+    </repository>
+    </repositories>
 
 </project>
 
