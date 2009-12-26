@@ -28,7 +28,15 @@ import org.apache.maven._
  * </pre></blockindent></code>
  **/
 class Model extends model.Model {
+  def modelVersion: String = getModelVersion
+  def modelVersion_=(s: String) = setModelVersion(s)
+
+  def artifactId: String = getArtifactId
   def artifactId_=(s: String) = setArtifactId(s)  
+  
+  def groupId: String = getGroupId
   def groupId_=(s: String) = setGroupId(s)  
+  
+  def version: String = getVersion
   def version_= (s: String) = setVersion(s)
 }
