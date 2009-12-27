@@ -1,6 +1,22 @@
+/*
+ * Copyright (C) 2009 the original author or authors.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ * http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
 package org.sonatype.maven.polyglot.scala
 
-import scala.tools.nsc.{GenericRunnerSettings, CompileClient, Settings, CompileSocket, Global}
+import scala.tools.nsc.{GenericRunnerSettings, CompileClient, Settings, CompileSocket, Global, Properties}
 import scala.tools.nsc.reporters.ConsoleReporter
 import scala.tools.nsc.io.{Directory, File, Path, PlainFile}
 import scala.tools.nsc.util.{CompoundSourceFile, BatchSourceFile, SourceFile, SourceFileFragment}
@@ -9,6 +25,7 @@ import java.io.{InputStream, OutputStream, BufferedReader, FileInputStream, File
   FileReader, InputStreamReader, PrintWriter, FileWriter, IOException, Reader, StringWriter,
   Writer, File => JFile}
 import java.util.jar.{JarEntry, JarOutputStream}
+import java.net.URL
 
 import org.codehaus.plexus.logging.Logger
 
@@ -90,6 +107,21 @@ object PMavenScriptCompiler {
       case _: Error => jarFile.delete() // XXX what errors to catch?
     }
   }
+  
+  /**
+   * Locates a JAR file housing the given Class' classfile. Uses the
+   * location of he class' classfile, and assumes the normal Java JAR file
+   * URL protocol string <code>"jar:&lt;jar location>!/package/ClassName.class"</code>,
+   * and extracts the <code>&lt;jar location></code> part from it.
+   *
+   * @returns File of the JAR file housing the given Class' classfile.
+   **/
+  def scalaJarFileURL(clazz: java.lang.Class[_]): JFile = {
+    val urlStringAppClass = clazz.getResource("/" + clazz.getName.replace('.', '/') + ".class").toString
+    val bangIndex = urlStringAppClass indexOf ('!')
+    val fileUrl = new URL(urlStringAppClass take bangIndex drop ("jar:".length))
+    new JFile(fileUrl.getFile)
+  }
 
   /**
    * Compile a script using the fsc compilation deamon.
@@ -137,7 +169,7 @@ object PMavenScriptCompiler {
 
   /**
    * Wrap a script file into a model generator object named
-   * <code>ModelGenertaor</code>.
+   * <code>ModelGenerator</code>.
    */
   def wrappedScript(
     filename: String, 
@@ -166,24 +198,26 @@ object PMavenScriptCompiler {
      *  class files, if the compilation succeeded.
      */
     def compile: Option[Directory] = {
+      println("Compiler settings: ")
+      println(settings)
+      
+      println("Compiler Properties:")
+      println(Properties)
+      
       val compiledPath = Directory makeTemp "scalascript"
 
       // delete the directory after the user code has finished
-      addShutdownHook(compiledPath.deleteRecursively())
+      // addShutdownHook(compiledPath.deleteRecursively())
 
       settings.outdir.value = compiledPath.path
 
-      if (settings.nocompdaemon.value) {
-        val reporter = new ConsoleReporter(settings)
-        val compiler = new Global(settings, reporter)
-        val cr = new compiler.Run
-        val wrapped = wrappedScript(scriptFile, compiler getSourceFile _)
+      val reporter = new ConsoleReporter(settings)
+      val compiler = new Global(settings, reporter)
+      val cr = new compiler.Run
+      val wrapped = wrappedScript(scriptFile, compiler getSourceFile _)
         
-        cr compileSources List(wrapped)
-        if (reporter.hasErrors) None else Some(compiledPath)
-      }
-      else if (compileWithDaemon(settings, scriptFile)) Some(compiledPath)
-      else None  	      
+      cr compileSources List(wrapped)
+      if (reporter.hasErrors) None else Some(compiledPath)
     }
 
     if (settings.savecompiled.value) {
