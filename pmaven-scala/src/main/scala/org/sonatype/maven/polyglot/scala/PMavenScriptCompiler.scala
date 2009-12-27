@@ -16,6 +16,8 @@
 
 package org.sonatype.maven.polyglot.scala
 
+import org.sonatype.maven.polyglot.scala.model.Model
+
 import scala.tools.nsc.{GenericRunnerSettings, CompileClient, Settings, CompileSocket, Global, Properties}
 import scala.tools.nsc.reporters.ConsoleReporter
 import scala.tools.nsc.io.{Directory, File, Path, PlainFile}
@@ -26,6 +28,8 @@ import java.io.{InputStream, OutputStream, BufferedReader, FileInputStream, File
   Writer, File => JFile}
 import java.util.jar.{JarEntry, JarOutputStream}
 import java.net.URL
+
+import org.apache.maven.model.{Model => ApacheModelBaseClass}
 
 import org.codehaus.plexus.logging.Logger
 
@@ -44,9 +48,11 @@ object PMavenScriptCompiler {
    * named ModelGenerator.
    */
   def preambleCode: String = """
+    | import org.sonatype.maven.polyglot.scala.model._
+    | import org.sonatype.maven.polyglot.scala.model.Project._
+    |
     | object ModelGenerator {
     |   def generateModel: Model = {
-    |     import org.sonatype.mavem.polyglot.scala.model.Project._
   """.stripMargin
   
   def endCode: String = """
@@ -109,18 +115,32 @@ object PMavenScriptCompiler {
   }
   
   /**
-   * Locates a JAR file housing the given Class' classfile. Uses the
+   * Locates a JAR file or directory housing the given Class' classfile. Uses the
    * location of he class' classfile, and assumes the normal Java JAR file
    * URL protocol string <code>"jar:&lt;jar location>!/package/ClassName.class"</code>,
-   * and extracts the <code>&lt;jar location></code> part from it.
+   * and extracts the <code>&lt;jar location></code> part from it. If thats not right,
+   * then looks for the appropriate parent dir to put on a classpath that would correctly
+   * house the classfile.
    *
    * @returns File of the JAR file housing the given Class' classfile.
    **/
-  def scalaJarFileURL(clazz: java.lang.Class[_]): JFile = {
-    val urlStringAppClass = clazz.getResource("/" + clazz.getName.replace('.', '/') + ".class").toString
-    val bangIndex = urlStringAppClass indexOf ('!')
-    val fileUrl = new URL(urlStringAppClass take bangIndex drop ("jar:".length))
-    new JFile(fileUrl.getFile)
+  def scalaCPFileFor(clazz: java.lang.Class[_]): JFile = {
+    val fileRelativeUri = "/" + clazz.getName.replace('.', '/') + ".class"
+    val urlAppClass = clazz.getResource(fileRelativeUri)
+    
+    urlAppClass.getProtocol match {
+      case "jar" =>
+        val bangIndex = urlAppClass.toString indexOf ('!')
+        val fileUrl = new URL(urlAppClass.toString take bangIndex drop ("jar:".length))
+        new JFile(fileUrl.getFile)
+      
+      case "file" =>
+        val uriIndex = urlAppClass.toString indexOf fileRelativeUri
+        val parentFileUrl = new URL(urlAppClass.toString take uriIndex)
+        new JFile(parentFileUrl.getFile)
+ 
+      case _ => null
+    }
   }
 
   /**
@@ -201,10 +221,8 @@ object PMavenScriptCompiler {
       println("Compiler settings: ")
       println(settings)
       
-      println("Compiler Properties:")
-      println(Properties)
-      
-      val compiledPath = Directory makeTemp "scalascript"
+      val compiledPath = Directory makeTemp "scalatemp"
+      println("Compiled path: " + compiledPath)
 
       // delete the directory after the user code has finished
       // addShutdownHook(compiledPath.deleteRecursively())
@@ -249,10 +267,18 @@ object PMavenScriptCompiler {
   }
 
   /** 
-   * Compiels a temporary script file named "ModelGenerator.scala". Compiles the script in
+   * <p>
+   * Compiles a temporary script file named "ModelGenerator.scala". Compiles the script in
    * to ModelGenerator.jar. Make sure the "-savecompiled" generic runner
    * setting is turned "no", or else the resultant .jar file will silently be
    * deleted.
+   * </p>
+   *
+   * <p>
+   * The Settings object should have: output dir set, and the "savecompiled" flag
+   * turned on. All testing os done on this basis, and there's no intent for
+   * predictable behavior for this method otherwise.
+   * </p>
    * 
    * @returns the compile script location as a file path name.
    */
@@ -262,11 +288,21 @@ object PMavenScriptCompiler {
     reader: Reader) : Option[String] = {
     val buffWriter = new StringWriter
     copyReaders(reader, buffWriter)
-    
-    val scriptFile = new File( new JFile("ModelGenerator.scala"))
-    
-    // stream the reader to the file
+        
+    // stream the reader to a temp file
+    val scriptFile = new File(new JFile("ModelGenerator.scala"))
     scriptFile writeAll List(buffWriter.toString)
+    
+    // augment the compiler classpath with the Scala std libs and the cwd
+    val cp = List(
+      scalaCPFileFor(classOf[Application]), // std Scala lib jarfile
+      scalaCPFileFor(classOf[Global]),      // Scala compiler lib jarfile
+      scalaCPFileFor(classOf[ApacheModelBaseClass]),
+      scalaCPFileFor(classOf[Model])
+    )
+    settings.classpath.value = cp map {_.getCanonicalPath} mkString JFile.pathSeparator
+    
+    println("Classpath: " + settings.classpath.value)
     
     try compileScript(logger, settings, scriptFile.path)
     finally scriptFile.delete()  // in case there was a compilation error

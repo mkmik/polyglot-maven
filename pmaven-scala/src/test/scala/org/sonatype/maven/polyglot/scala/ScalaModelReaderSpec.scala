@@ -49,17 +49,20 @@ class ScalaModelReaderSpec extends WordSpec with ShouldMatchers {
         model should not be(null)
       }
     }
-    
-    "called with minimal pom and empty options" should {
-    
-      "parse project coordinates" in {
-        val model = reader.read(inputMinimal, emptyOptions)
-        
-        model.getModelVersion should equal ("4.0.0")
-        model.getGroupId should equal ("org.blepharospasm")
-        model.getArtifactId should equal ("squankdiliumtious")
-        model.getVersion should equal ("0.0.0-SNAPSHOT")
-      }
-    }
+
+//    Still working out Project and Model Scala DSL -- will uncomment
+//    when that's designed propertly.
+//
+//    "called with minimal pom and empty options" should {
+//    
+//      "parse project coordinates" in {
+//        val model = reader.read(inputMinimal, emptyOptions)
+//        
+//        model.getModelVersion should equal ("4.0.0")
+//        model.getGroupId should equal ("org.blepharospasm")
+//        model.getArtifactId should equal ("squankdiliumtious")
+//        model.getVersion should equal ("0.0.0-SNAPSHOT")
+//      }
+//    }
   }
 }
