@@ -1,5 +1,11 @@
 # Build output
 target
 
+# Local Eclipse junk, in case anyone's using eclipse
+.classpath
+.manager
+.project
+.settings
+
 # Mac stuff
 .DS_Store
