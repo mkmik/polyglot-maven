@@ -22,6 +22,7 @@ import scala.tools.nsc.{GenericRunnerSettings, CompileClient, Settings, CompileS
 import scala.tools.nsc.reporters.ConsoleReporter
 import scala.tools.nsc.io.{Directory, File, Path, PlainFile}
 import scala.tools.nsc.util.{CompoundSourceFile, BatchSourceFile, SourceFile, SourceFileFragment}
+import scala.tools.nsc.util.ScalaClassLoader
 
 import java.io.{InputStream, OutputStream, BufferedReader, FileInputStream, FileOutputStream,
   FileReader, InputStreamReader, PrintWriter, FileWriter, IOException, Reader, StringWriter,
@@ -49,7 +50,6 @@ object PMavenScriptCompiler {
    */
   def preambleCode: String = """
     | import org.sonatype.maven.polyglot.scala.model._
-    | import org.sonatype.maven.polyglot.scala.model.Project._
     |
     | object ModelGenerator {
     |   def generateModel: Model = {
@@ -103,6 +103,8 @@ object PMavenScriptCompiler {
         else addFromDir(jar, entry.toDirectory, prefix + entry.name + "/")
       }
     }
+    
+    println("jarfile is: " + jarFile);
 
     try {
       val jar = new JarOutputStream(jarFile.outputStream())
@@ -110,7 +112,7 @@ object PMavenScriptCompiler {
       jar.close
     } 
     catch {
-      case _: Error => jarFile.delete() // XXX what errors to catch?
+      case _: Error => println("jarfile creation error"); jarFile.delete() // XXX what errors to catch?
     }
   }
   
@@ -225,10 +227,11 @@ object PMavenScriptCompiler {
       println("Compiled path: " + compiledPath)
 
       // delete the directory after the user code has finished
-      // addShutdownHook(compiledPath.deleteRecursively())
+      addShutdownHook(compiledPath.deleteRecursively())
 
       settings.outdir.value = compiledPath.path
 
+      //...need a different reporter -- one which reports to the Plexus logger...
       val reporter = new ConsoleReporter(settings)
       val compiler = new Global(settings, reporter)
       val cr = new compiler.Run
@@ -282,7 +285,7 @@ object PMavenScriptCompiler {
    * 
    * @returns the compile script location as a file path name.
    */
-  def compileCommandScript(
+  def compileDSL(
     logger: Logger,
     settings: GenericRunnerSettings,
     reader: Reader) : Option[String] = {
@@ -290,7 +293,7 @@ object PMavenScriptCompiler {
     copyReaders(reader, buffWriter)
         
     // stream the reader to a temp file
-    val scriptFile = new File(new JFile("ModelGenerator.scala"))
+    val scriptFile = new File(new JFile("ModelGenerator"))
     scriptFile writeAll List(buffWriter.toString)
     
     // augment the compiler classpath with the Scala std libs and the cwd
@@ -306,5 +309,39 @@ object PMavenScriptCompiler {
     
     try compileScript(logger, settings, scriptFile.path)
     finally scriptFile.delete()  // in case there was a compilation error
+  }
+  
+  /**
+   * <p>
+   * Loads the ModelGenerator object defined in the compiled code identified by
+   * the <code>location</code> parameter. The parameter value should be a value
+   * returned from the <code>compileDSL</code> method. The returned
+   * object will conform to the <code>modelGenerator</code> type (also defined
+   * in this class).
+   * </p>
+   **/
+  def loadModelGenerator(location: String): Option[modelGenerator] = {
+    val libList = List(
+        new JFile(location).toURL,
+        (PMavenScriptCompiler.scalaCPFileFor(classOf[Application]).toURL),
+        (PMavenScriptCompiler.scalaCPFileFor(classOf[org.apache.maven.model.Model]).toURL)
+    )
+    val parentcl = PMavenScriptCompiler.getClass.getClassLoader
+    
+    val ocls: Option[Class[_]] = new ScalaClassLoader.URLClassLoader(libList, parentcl) tryToLoadClass ("ModelGenerator$")
+    
+    def modelGeneratorFromClass(cls: Class[_]): modelGenerator = {
+      cls.getField("MODULE$").get(null).asInstanceOf[modelGenerator]
+    }
+    
+    ocls map { modelGeneratorFromClass(_) }
+  }
+  
+  /**
+   * This structural type defines the API of the PMaven Scala DSL object compiled
+   * by the <code>compileDSL</code> method.
+   **/
+  type modelGenerator = {
+    def generateModel: ApacheModelBaseClass
   }
 }

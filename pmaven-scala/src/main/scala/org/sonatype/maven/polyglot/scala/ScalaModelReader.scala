@@ -29,6 +29,9 @@ import scala.tools.nsc.GenericRunnerSettings
 
 @Component(role=classOf[ModelReader], hint="scala")
 class ScalaModelReader extends ModelReaderSupport {
+  type modelGenerator = {
+    def generateModel: Model
+  }
 
   @Requirement val logger: Logger = null
   
@@ -38,16 +41,24 @@ class ScalaModelReader extends ModelReaderSupport {
     def errorFn(err: String) {
     }
     
-    val cmdLine = List("-savecompiled", "-nocompdaemon", "-d ./target/pmaven-scala")
+    val cmdLine = List("-savecompiled", "-nocompdaemon", "-d ./target/pmaven-scala/")
     val settings = new GenericRunnerSettings(errorFn _)
     settings.parseParams(cmdLine)
         
-    PMavenScriptCompiler.compileCommandScript(logger, settings, input) match {
+    PMavenScriptCompiler.compileDSL(logger, settings, input) match {
       case Some(location) => 
-        //...execute the script...
-        new Model
+        //...execute the script and return the Model object...
+        val omg = PMavenScriptCompiler.loadModelGenerator(location)
+        omg match {
+          case Some(mg) =>
+            mg.generateModel
+          case None =>
+            //...log this...
+            null;
+        }
+
       case None =>
-        //...raise error...
+        //...log this...
         null
     }
   }

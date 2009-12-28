@@ -1,6 +1,6 @@
-project {
-  _.modelVersion = "4.0.0"
-  _.groupId = "org.blepharospasm"
-  _.artifactId = "squankdiliumtious"
-  _.version = "0.0.0-SNAPSHOT"
+project { p =>
+  p.modelVersion = "4.0.0"
+  p.groupId = "org.blepharospasm"
+  p.artifactId = "squankdiliumtious"
+  p.version = "0.0.0-SNAPSHOT"
 }
