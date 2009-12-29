@@ -16,7 +16,13 @@
 
 package org.sonatype.maven.polyglot.scala.model
 
-import org.apache.maven._
+import org.apache.maven.model.{
+    Model => ApacheModel,
+    Contributor => ApacheContributor
+}
+
+import scala.collection.JavaConversions._
+import scala.collection.mutable.{Buffer, Map}
 
 object project {
 
@@ -28,32 +34,7 @@ object project {
 
 }
 
-/**
- * <p>
- * Convenience subclass, adds _= mutators for scalar-typed
- * properties of the base class, and (X)=>Unit mutators as
- * well as _= for defining non-scalar-typed properties.
- * </p>
- *
- * <p>
- * These extra mutator methods are vital for being able to
- * made a DSL for defining builds as a hierarchical structure
- * of Scala-langauge strutures, such as:
- * </p>
- *
- * <code><blockindent><pre>
- * project {
- *   _.artifactId = "some.artifact.id"
- *
- *   parent {
- *     _.groupId = "some.group.id"
- *     _.version = "1.0-SNAPSHOT"
- *   }
- *   ...
- * }
- * </pre></blockindent></code>
- **/
-class Model extends model.Model {
+class Model extends ApacheModel {
   def modelVersion: String = getModelVersion
   def modelVersion_=(s: String) = setModelVersion(s)
   
@@ -65,5 +46,52 @@ class Model extends model.Model {
   
   def version: String = getVersion
   def version_=(s: String) = setVersion(s)
+  
+  def description: String = getDescription
+  def description_=(s: String) = setDescription(s)
+  
+  def inceptionYear: String = getInceptionYear
+  def inceptionYear_=(s: String) = setInceptionYear(s)
+  
+  def modelEncoding: String = getModelEncoding
+  def modelEncoding_=(s: String) = setModelEncoding(s)
+  
+  def name: String = getName
+  def name_=(s: String) = setName(s)
+  
+  def packaging: String = getPackaging
+  def packaging_=(s: String) = setPackaging(s)
+  
+  def url: String = getUrl
+  def url_=(s: String) = setUrl(s)
+  
+  val contributors = (getContributors: Buffer[ApacheContributor])
+  def contributor(body: (Contributor) => Unit): Contributor = {
+    val c = new Contributor
+    body(c)
+    addContributor(c)
+    c
+  }
+  def contributor(s: String): Contributor =
+    contributor (_.name = s)
 }
 
+class Contributor extends ApacheContributor {
+  def email: String = getEmail
+  def email_=(s: String) = setEmail(s)
+  
+  def name: String = getName
+  def name_=(s: String) = setName(s)
+  
+  def organization: String = getOrganization
+  def organization_=(s: String) = setOrganization(s)
+  
+  def organizationUrl: String = getOrganizationUrl
+  def organizationUrl_=(s: String) = setOrganizationUrl(s)
+  
+  def timezone: String = getTimezone
+  def timezone_=(s: String)= setTimezone(s)
+  
+  def roles = (getRoles: Buffer[String])
+  def properties = (getProperties: Map[java.lang.Object, java.lang.Object])
+}

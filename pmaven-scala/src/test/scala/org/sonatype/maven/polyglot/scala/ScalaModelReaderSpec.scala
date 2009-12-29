@@ -22,6 +22,8 @@ import org.scalatest._
 import matchers.ShouldMatchers
 import junit.JUnitRunner
 
+import scala.collection.JavaConversions._
+
 @RunWith(classOf[JUnitRunner])
 class ScalaModelReaderSpec extends WordSpec with ShouldMatchers {
 
@@ -30,6 +32,7 @@ class ScalaModelReaderSpec extends WordSpec with ShouldMatchers {
     
     val inputEmpty = getClass.getResourceAsStream("/pomEmpty.scala")
     val inputMinimal = getClass.getResourceAsStream("/pomMinimal.scala")
+    val inputWithContributors = getClass.getResourceAsStream("/pomWithContributors.scala")
     
     val emptyOptions = new java.util.HashMap[String, String]()
 
@@ -59,6 +62,15 @@ class ScalaModelReaderSpec extends WordSpec with ShouldMatchers {
         model.getGroupId should equal ("org.blepharospasm")
         model.getArtifactId should equal ("squankdiliumtious")
         model.getVersion should equal ("0.0.0-SNAPSHOT")
+      }
+    }
+    
+    "called with pom that includes contriutors" should {
+    
+      "parse contributors" in {
+        val model = reader.read(inputWithContributors, emptyOptions)
+        model.getContributors map {_.getName} should contain ("John Lennon")
+        model.getContributors map {_.getName} should contain ("Elvis Presley")
       }
     }
   }
