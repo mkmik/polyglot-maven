@@ -8,6 +8,7 @@ project { p =>
   p.contributor { c =>
     c.name = "Elvis Presley"
     c.email = "elvis@graceland.com"
+    c.properties += ("isAlive" -> "false", "lovesPeanutButterAndBacon" -> "true")
   }
   
 }

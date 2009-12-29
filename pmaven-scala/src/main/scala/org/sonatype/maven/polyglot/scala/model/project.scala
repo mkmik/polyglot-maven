@@ -18,7 +18,8 @@ package org.sonatype.maven.polyglot.scala.model
 
 import org.apache.maven.model.{
     Model => ApacheModel,
-    Contributor => ApacheContributor
+    Contributor => ApacheContributor,
+    Developer => ApacheDeveloper
 }
 
 import scala.collection.JavaConversions._
@@ -72,8 +73,18 @@ class Model extends ApacheModel {
     addContributor(c)
     c
   }
-  def contributor(s: String): Contributor =
-    contributor (_.name = s)
+  def contributor(name: String): Contributor =
+    contributor (_.name = name)
+
+  val developers = (getDevelopers: Buffer[ApacheDeveloper])
+  def developer(body: (Developer) => Unit): Developer = {
+    val d = new Developer
+    body(d)
+    addDeveloper(d)
+    d
+  }
+  def developer(id: String): Developer =
+    developer (_.id = id)
 }
 
 class Contributor extends ApacheContributor {
@@ -94,4 +105,9 @@ class Contributor extends ApacheContributor {
   
   def roles = (getRoles: Buffer[String])
   def properties = (getProperties: Map[java.lang.Object, java.lang.Object])
+}
+
+class Developer extends ApacheDeveloper {
+  def id: String = getId
+  def id_=(s: String) = setId(s)
 }

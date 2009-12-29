@@ -33,6 +33,7 @@ class ScalaModelReaderSpec extends WordSpec with ShouldMatchers {
     val inputEmpty = getClass.getResourceAsStream("/pomEmpty.scala")
     val inputMinimal = getClass.getResourceAsStream("/pomMinimal.scala")
     val inputWithContributors = getClass.getResourceAsStream("/pomWithContributors.scala")
+    val inputWithDevelopers = getClass.getResourceAsStream("/pomWithDevelopers.scala")
     
     val emptyOptions = new java.util.HashMap[String, String]()
 
@@ -65,12 +66,24 @@ class ScalaModelReaderSpec extends WordSpec with ShouldMatchers {
       }
     }
     
-    "called with pom that includes contriutors" should {
+    "called with pom that includes contributors" should {
     
       "parse contributors" in {
         val model = reader.read(inputWithContributors, emptyOptions)
         model.getContributors map {_.getName} should contain ("John Lennon")
         model.getContributors map {_.getName} should contain ("Elvis Presley")
+        
+        val m = model.getContributors filter {_.getName.equals("Elvis Presley")} get 0
+        m.getProperties.apply("isAlive") should be("false")
+      }
+    }
+
+    "called with pom that includes developers" should {
+    
+      "parse contributors" in {
+        val model = reader.read(inputWithDevelopers, emptyOptions)
+        model.getDevelopers map {_.getId} should contain ("bmaso")
+        model.getDevelopers map {_.getId} should contain ("hseeberger")
       }
     }
   }
