@@ -54,7 +54,8 @@ import org.apache.maven.model.{
     PluginConfiguration => ApachePluginConfiguration,
     PluginContainer => ApachePluginContainer,
     ReportPlugin => ApacheReportPlugin,
-    ReportSet => ApacheReportSet
+    ReportSet => ApacheReportSet,
+    Parent => ApacheParent
 }
 
 import scala.collection.JavaConversions._
@@ -67,7 +68,7 @@ object project {
     body(m)
     m
   }
-
+  
 }
 
 trait ModelBaseProps {
@@ -86,15 +87,17 @@ trait ModelBaseProps {
   def repositories = (getRepositories: Buffer[ApacheRepository])
   def repository(body: (Repository) => Unit): Repository = {
     val r = new Repository
-    body(r)
+    r.apply(body)
     addRepository(r)
     r
   }
+  def repository(id: String): Repository =
+    repository( _.id = id )
   
   def pluginRepositories = (getPluginRepositories: Buffer[ApacheRepository])
   def pluginRepository(body: (Repository) => Unit): Repository = {
     val r = new Repository
-    body(r)
+    r.apply(body)
     addPluginRepository(r)
     r
   }
@@ -102,10 +105,12 @@ trait ModelBaseProps {
   def dependencies = (getDependencies: Buffer[ApacheDependency])
   def dependency(body: (Dependency) => Unit): Dependency = {
     val d = new Dependency
-    body(d)
+    d.apply(body)
     addDependency(d)
     d
   }
+  def dependency(aref: String): Dependency =
+    dependency(_ artifactRef aref)
   
   def reporting: ApacheReporting = getReporting
   def reporting(body: (Reporting) => Unit): Reporting = {
@@ -239,6 +244,49 @@ class Model extends ApacheModel with ModelBaseProps {
   }
 }
 
+trait WithCoords[This] {
+  self: This =>
+  
+  def groupId_=(s: String): Unit
+  def artifactId_=(s: String): Unit
+  def version_=(s: String): Unit
+
+  /**
+   * parses the input string as a Maven coordinate "groupId:artifactId(:version)?" triple,
+   * and sets the values of this object accordingly.
+   **/
+  def coords(coordinates: String): This = {
+    val cpatt = "([^:]+):([^:]+)(:(.+))?".r
+    coordinates match {
+      case cpatt(gid, aid, _, ver) if ver.length > 0 =>
+        groupId_=(gid)
+        artifactId_=(aid)
+        version_=(ver)
+      
+      case cpatt(gid, aid, _, _) =>
+        groupId_=(gid)
+        artifactId_=(aid)
+    }
+    this
+  }
+}
+  
+class Parent extends ApacheParent with WithCoords[Parent] {
+  def groupId: String = getGroupId
+  def groupId_=(s: String) = setGroupId(s)
+  
+  def artifactId: String = getArtifactId
+  def artifactId_=(s: String) = setArtifactId(s)
+  
+  def version: String = getVersion
+  def version_=(s: String) = setVersion(version)
+  
+  def apply(body: (Parent) => Unit): Parent = {
+    body(this)
+    this
+  }
+}
+
 class Contributor extends ApacheContributor {
   def email: String = getEmail
   def email_=(s: String) = setEmail(s)
@@ -298,6 +346,40 @@ class MailingList extends ApacheMailingList {
 }
 
 class Dependency extends ApacheDependency {
+  def artifactRef(coordinates: String): Dependency = {
+    val deppatt = "([^:]+):([^:]+)(:([^:]+)(:([^:]+)(:([^:]+))?)?)?".r
+    coordinates match {
+      case deppatt(gid, aid, _, typ, _, classifier, _, version) if version.length > 0 =>
+        coords(gid, aid, typ, classifier, version)
+      case deppatt(gid, aid, _, typ, _, version,_, _) if version.length > 0 =>
+        coords(gid, aid, typ, version)
+      case deppatt(gid, aid, _, version, _, _, _, _) if version.length > 0 =>
+        coords(gid, aid, version)
+      case deppatt(gid, aid, _, _, _, _, _, _) =>
+        coords(gid, aid)
+    }
+    this
+  }
+  
+  def apply(body: (Dependency) => Unit): Dependency = {
+    body(this)
+    this
+  }
+  
+  def coords(gid: String, aid: String, typ: String, classifier: String, ver: String): Unit = {
+    groupId_=(gid)
+    artifactId_=(aid)
+    version_=(ver)
+    classifier_=(classifier)
+    _type_=(typ)
+  }
+  def coords(gid: String, aid: String, typ: String, ver: String): Unit =
+    coords(gid, aid, typ, null, ver)
+  def coords(gid: String, aid: String, ver: String): Unit =
+    coords(gid, aid, null, null, ver)
+  def coords(gid: String, aid: String): Unit =
+    coords(gid, aid, null, null, null)
+  
   def groupId: String = getGroupId
   def groupId_=(s: String) = setGroupId(s)
 
@@ -480,6 +562,11 @@ trait RepositoryBaseProps {
 }
 
 class Repository extends ApacheRepository with RepositoryBaseProps {
+  def apply(body: (Repository) => Unit): Repository = {
+    body(this);
+    this
+  }
+  
   def releases: ApacheRepositoryPolicy = getReleases
   def releases(body: (RepositoryPolicy) => Unit): RepositoryPolicy = {
     val p = new RepositoryPolicy
@@ -691,10 +778,12 @@ trait PluginContainerProps {
   def plugins = (getPlugins: Buffer[ApachePlugin])
   def plugin(body: (Plugin) => Unit): Plugin = {
     val p = new Plugin
-    body(p)
+    p.apply(body)
     addPlugin(p)
     p
   }
+  def plugin(coordinates: String): Plugin =
+    plugin(_ coords coordinates)
 }
 
 trait PluginConfigurationProps extends PluginContainerProps {
@@ -709,7 +798,29 @@ trait PluginConfigurationProps extends PluginContainerProps {
   }
 }
 
-class Plugin extends ApachePlugin with ConfigurationContainerProps {
+class Plugin extends ApachePlugin with ConfigurationContainerProps with WithCoords[Plugin] {
+  /**
+   * <p>
+   * Intended to support creation and an initialization closure in the DSL.
+   * For example, the following creates and initializes a Plugin from a PluginContainerProps
+   * instance "cont":
+   * </p>
+   *
+   * <p><blockquote><pre>
+   *   ...
+   *   cont.plugin("org.whatever:some-plugin:0.1-SNAPSHOT") { plugin =>
+   *     plugin execution { ex =>
+   *       //...initialization of the PluginExecution object...
+   *     }
+   *   }
+   *   ...
+   * </pre></blockquote></p>
+   **/
+  def apply(body: (Plugin) => Unit): Plugin = {
+    body(this)
+    this
+  }
+  
   def groupId: String = getGroupId
   def groupId_=(s: String) = setGroupId(s)
   
