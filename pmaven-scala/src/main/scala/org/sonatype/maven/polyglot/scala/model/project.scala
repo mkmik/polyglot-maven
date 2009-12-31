@@ -188,13 +188,13 @@ class Model extends ApacheModel with ModelBaseProps {
   def url_=(s: String) = setUrl(s)
   
   def contributors = (getContributors: Buffer[ApacheContributor])
-  def contributor(body: (Contributor) => Unit): Contributor = {
-    val c = new Contributor
+  def contributor(body: (ContributorProps) => Unit): ContributorProps = {
+    val c = new ApacheContributor with ContributorProps
     body(c)
     addContributor(c)
     c
   }
-  def contributor(name: String): Contributor =
+  def contributor(name: String): ContributorProps =
     contributor (_.name = name)
 
   def developers = (getDevelopers: Buffer[ApacheDeveloper])
