@@ -55,11 +55,17 @@ import org.apache.maven.model.{
     PluginContainer => ApachePluginContainer,
     ReportPlugin => ApacheReportPlugin,
     ReportSet => ApacheReportSet,
-    Parent => ApacheParent
+    Parent => ApacheParent,
+    Organization => ApacheOrganization,
+    DependencyManagement => ApacheDependencyManagement
 }
 
 import scala.collection.JavaConversions._
 import scala.collection.mutable.{Buffer, Map}
+
+import java.io.StringReader
+import org.xml.sax.InputSource
+import project._
 
 object project {
 
@@ -68,7 +74,18 @@ object project {
     body(m)
     m
   }
-  
+
+  /**
+   * Convert Scala XML elements to DOM Elements implicitly. Needed for the
+   * several places where Maven requires DOM Elements, and the DSL supports Scala
+   * literal XML Elems. Need to convert Elem to DOM Element automatically.
+   **/
+  implicit def scalaElem2DOMElement(sel: scala.xml.Elem): org.w3c.dom.Element = {
+    val factory = javax.xml.parsers.DocumentBuilderFactory.newInstance()
+    val builder = factory.newDocumentBuilder
+    val doc = builder.parse(new InputSource(new StringReader(sel.toString)))
+    doc.getDocumentElement
+  }
 }
 
 trait ModelBaseProps {
@@ -92,7 +109,7 @@ trait ModelBaseProps {
     r
   }
   def repository(id: String): Repository =
-    repository( _.id = id )
+    repository( _.id_=(id) )
   
   def pluginRepositories = (getPluginRepositories: Buffer[ApacheRepository])
   def pluginRepository(body: (Repository) => Unit): Repository = {
@@ -119,6 +136,14 @@ trait ModelBaseProps {
     setReporting(r)
     r
   }
+  
+  def dependencyManagement: ApacheDependencyManagement = getDependencyManagement
+  def dependencyManagement(body: (DependencyManagement) => Unit): DependencyManagement = {
+    val dm = new DependencyManagement
+    body(dm)
+    setDependencyManagement(dm)
+    dm
+  }
 
   def properties = (getProperties: Map[java.lang.Object, java.lang.Object])  
 }
@@ -141,6 +166,14 @@ class Model extends ApacheModel with ModelBaseProps {
   
   def inceptionYear: String = getInceptionYear
   def inceptionYear_=(s: String) = setInceptionYear(s)
+  
+  def organization: ApacheOrganization = getOrganization
+  def organization(body: (Organization) => Unit): Organization = {
+    val o = new Organization
+    body(o)
+    setOrganization(o)
+    o
+  }
   
   def modelEncoding: String = getModelEncoding
   def modelEncoding_=(s: String) = setModelEncoding(s)
@@ -202,6 +235,8 @@ class Model extends ApacheModel with ModelBaseProps {
     addProfile(p)
     p
   }
+  def profile(id: String): Profile =
+    profile(_.id_=(name))
   
   def issueManagement: ApacheIssueManagement = getIssueManagement
   def issueManagement(body: (IssueManagement) => Unit): IssueManagement = {
@@ -287,7 +322,9 @@ class Parent extends ApacheParent with WithCoords[Parent] {
   }
 }
 
-class Contributor extends ApacheContributor {
+trait ContributorProps {
+  self: ApacheContributor =>
+  
   def email: String = getEmail
   def email_=(s: String) = setEmail(s)
   
@@ -307,9 +344,14 @@ class Contributor extends ApacheContributor {
   def properties = (getProperties: Map[java.lang.Object, java.lang.Object])
 }
 
-class Developer extends ApacheDeveloper {
+class Developer extends ApacheDeveloper with ContributorProps {
   def id: String = getId
   def id_=(s: String) = setId(s)
+  
+  def apply(body: (Developer) => Unit): Developer = {
+    body(this)
+    this
+  }
 }
 
 class License extends ApacheLicense {
@@ -343,6 +385,19 @@ class MailingList extends ApacheMailingList {
   def archive_=(s: String) = setArchive(s)
   
   val otherArchives = (getOtherArchives: Buffer[String])
+}
+
+class DependencyManagement extends ApacheDependencyManagement {
+  def dependencies = (getDependencies: Buffer[ApacheDependency])
+  def dependency(body: (Dependency) => Unit): Dependency = {
+    val d = new Dependency
+    d.apply(body)
+    addDependency(d)
+    d
+  }
+  def dependency(aref: String): Dependency =
+    dependency(_ artifactRef aref)
+  
 }
 
 class Dependency extends ApacheDependency {
@@ -410,13 +465,34 @@ class Dependency extends ApacheDependency {
   def exclusions = (getExclusions: Buffer[ApacheExclusion])
   def exclusion(body: (Exclusion) => Unit): Exclusion = {
     val e = new Exclusion
-    body(e)
+    e(body)
     addExclusion(e)
     e
   }
+  def exclusion(coordinates: String): Exclusion =
+    exclusion {_.artifactRef(coordinates) }
 }
 
 class Exclusion extends ApacheExclusion {
+  def artifactRef(coordinates: String): Exclusion = {
+    val deppatt = "([^:]+):([^:]+)".r
+    coordinates match {
+      case deppatt(gid, aid) =>
+        coords(gid, aid)
+    }
+    this
+  }
+  
+  def apply(body: (Exclusion) => Unit): Exclusion = {
+    body(this)
+    this
+  }
+  
+  def coords(gid: String, aid: String): Unit = {
+    groupId_=(gid)
+    artifactId_=(aid)
+  }
+  
   def groupId: String = getGroupId
   def groupId_=(s: String) = setGroupId(s)
   
@@ -494,6 +570,8 @@ class DistributionManagement extends ApacheDistributionManagement {
     setRepository(d)
     d
   }
+  def repository(id: String): DeploymentRepository =
+    repository(_.id_=(id))
   
   def snapshotRepository: ApacheDeploymentRepository = getSnapshotRepository
   def snapshotRepository(body: (DeploymentRepository) => Unit): DeploymentRepository = {
@@ -502,6 +580,9 @@ class DistributionManagement extends ApacheDistributionManagement {
     setSnapshotRepository(d)
     d
   }  
+  def snapshotRepository(id: String): DeploymentRepository =
+    snapshotRepository(_.id_=(id))
+  
   
   def site: ApacheSite = getSite
   def site(body: (Site) => Unit) = {
@@ -510,6 +591,8 @@ class DistributionManagement extends ApacheDistributionManagement {
     setSite(s)
     s
   }
+  def site(id: String): Site =
+    site(_.id_=(id))
   
   def downloadUrl: String = getDownloadUrl
   def downloadUrl_=(s: String) = setDownloadUrl(s)
@@ -529,6 +612,11 @@ class DistributionManagement extends ApacheDistributionManagement {
 class DeploymentRepository extends ApacheDeploymentRepository with RepositoryBaseProps {
   def uniqueVersion: Boolean = isUniqueVersion
   def uniqueVersion_=(b: Boolean) = setUniqueVersion(b)
+  
+  def apply(body: (DeploymentRepository) => Unit): DeploymentRepository = {
+    body(this)
+    this
+  }
 }
 
 class Relocation extends ApacheRelocation {
@@ -614,9 +702,14 @@ class Profile extends ApacheProfile with ModelBaseProps {
     setBuild(b)
     b
   }
+  
+  def apply(body: (Profile) => Unit): Profile = {
+    body(this)
+    this
+  }
 }
 
-trait BuildBaseProps {
+trait BuildBaseProps extends PluginConfigurationProps {
   self: ApacheBuildBase =>
   
   def defaultGoal: String = getDefaultGoal
@@ -701,7 +794,7 @@ class Scm extends ApacheScm {
 
 class CiManagement extends ApacheCiManagement {
   def system: String = getSystem
-  def system_=:(s: String) = setSystem(s)
+  def system_=(s: String) = setSystem(s)
  
   def url: String = getUrl
   def url_=(s: String) = setUrl(s)
@@ -745,7 +838,7 @@ class Prerequisites extends ApachePrerequisites {
   def maven_=(s: String) = setMaven(s)
 }
 
-class Extension extends ApacheExtension {
+class Extension extends ApacheExtension with WithCoords[Extension] {
   def groupId: String = getGroupId
   def groupId_=(s: String) = setGroupId(s)
   
@@ -770,6 +863,8 @@ class Reporting extends ApacheReporting {
     addPlugin(r)
     r
   }
+  def plugin(coordinates: String): ReportPlugin =
+    plugin(_ coords coordinates)
 }
 
 trait PluginContainerProps {
@@ -783,7 +878,7 @@ trait PluginContainerProps {
     p
   }
   def plugin(coordinates: String): Plugin =
-    plugin(_ coords coordinates)
+    plugin((pi: Plugin) => pi.coords(coordinates))
 }
 
 trait PluginConfigurationProps extends PluginContainerProps {
@@ -876,7 +971,8 @@ trait ConfigurationContainerProps {
    * is supposed to be a W3C DOM Element node. So this mutator method
    * adds a little type safety by requiring use of a W3C DOM Element.
    **/
-  def configuration_=(elem: org.w3c.dom.Element) = setConfiguration(elem)
+  def configuration_=(elem: org.w3c.dom.Element):Unit = setConfiguration(elem)
+  def configuration_=(element: scala.xml.Elem): Unit = configuration_=(element: org.w3c.dom.Element)
 }
 
 class PluginManagement extends ApachePluginManagement with PluginContainerProps {
@@ -892,11 +988,16 @@ class Site extends ApacheSite {
   
   def url: String = getUrl
   def url_=(s: String) = setUrl(s)
+  
+  def apply(body: (Site) => Unit): Site = {
+    body(this)
+    this
+  }
 }
 
 // Funny this doesn't inherit from ConfigurationContainer. Seems like an
 // oversight in the Apache Maven model codebase.
-class ReportPlugin extends ApacheReportPlugin {
+class ReportPlugin extends ApacheReportPlugin with WithCoords[ReportPlugin] {
   def groupId: String = getGroupId
   def groupId_=(s: String) = setGroupId(s)
   
@@ -904,7 +1005,7 @@ class ReportPlugin extends ApacheReportPlugin {
   def artifactId_=(s: String) = setArtifactId(s)
   
   def version: String = getVersion
-  def verion_=(s: String) = setVersion(s)
+  def version_=(s: String) = setVersion(s)
   
   def inherited: Boolean = isInherited
   def inherited_=(b: Boolean) = setInherited(b)
@@ -923,7 +1024,13 @@ class ReportPlugin extends ApacheReportPlugin {
    * is supposed to be a W3C DOM Element node. So this mutator method
    * adds a little type safety by requiring use of a W3C DOM Element.
    **/
-  def configuration_=(elem: org.w3c.dom.Element) = setConfiguration(elem)
+  def configuration_=(elem: org.w3c.dom.Element): Unit = setConfiguration(elem)
+  def configuration_=(element: scala.xml.Elem): Unit = configuration_=(element: org.w3c.dom.Element)  
+  
+  def apply(body: (ReportPlugin) => Unit): ReportPlugin = {
+    body(this)
+    this
+  }
 }
 
 // Funny this doesn't inherit from ConfigurationContainer. Seems like an
@@ -940,6 +1047,14 @@ class ReportSet extends ApacheReportSet {
    * is supposed to be a W3C DOM Element node. So this mutator method
    * adds a little type safety by requiring use of a W3C DOM Element.
    **/
-  def configuration_=(elem: org.w3c.dom.Element) = setConfiguration(elem)
+  def configuration_=(elem: org.w3c.dom.Element): Unit = setConfiguration(elem)
+  def configuration_=(element: scala.xml.Elem): Unit = configuration_=(element: org.w3c.dom.Element)
 }
 
+class Organization extends ApacheOrganization {
+  def name: String = getName
+  def name_=(s: String) = setName(s)
+  
+  def url: String = getUrl
+  def url_=(s: String) = setUrl(s)
+}

@@ -1,3 +1,27 @@
+/*
+ * Copyright (C) 2009 the original author or authors.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ * http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
+// This is a copy of the Scala-ized Lift 1.1-SNAPSHOT POM, placed
+// in a compilable class.
+
+import org.sonatype.maven.polyglot.scala.model._
+
+object LiftPMavenModelGenerator {
+  def generateModel: Model = {
+
 /**********
  ** Tranlsation of the Lift Web 1.1-SNAPSHOT POM to Scala PMaven
  **********/
@@ -53,7 +77,7 @@ project { p =>
     "project.reporting.outputEncoding" -> "${project.build.sourceEncoding}",
     
     /* TODO: for lift-build_date.
-         http://maven.apache.org/guides/introduction/introduction-to-the-pom.html#Available_Variables -->
+         http://maven.apache.org/guides/introduction/introduction-to-the-pom.html#Available_Variables */
     /* <maven.build.timestamp.format/> */
 
     /* "scala.version" -> "[2.7.5,2.7.6),(2.7.6,2.7.7]", */
@@ -90,100 +114,98 @@ project { p =>
   
   p.developer("dpp") { dev =>
     dev.name = "David Pollak"; dev.timezone = "-8";
-    dev.email= "dpp [at] liftweb.net"; dev.roles += List("BDFL","Feeder of the Bears")
+    dev.email= "dpp [at] liftweb.net"; dev.roles += ("BDFL","Feeder of the Bears");
   }
 
-  p.developer { dev =>
-    dev.id = "Burak.Emir": dev.name = "Burak Emir";
+  p.developer("Burak.Emir") { dev =>
+    dev.name = "Burak Emir";
   }
   
-  p.developer { dev =>
-    dev.id = "philipp.schmidt"; dev.name = "philipp.schmidt";
+  p.developer("philipp.schmidt") { dev =>
+    dev.name = "philipp.schmidt";
   }
   
-  p.developer { dev =>
-    dev.id = "cwilkes"; dev.name = "cwilkes";
+  p.developer("cwilkes") { dev =>
+    dev.name = "cwilkes";
   }
   
-  p.developer { dev =>
-    dev.id = "julien.wetterwald"; dev.name = "julien.wetterwald";
+  p.developer("julien.wetterwald") { dev =>
+    dev.name = "julien.wetterwald";
   }
   
-  p.developer { dev =>
-    dev.id = "leppoc"; dev.name = "leppoc";
+  p.developer("leppoc") { dev =>
+    dev.name = "leppoc";
   }
   
-  p.developer { dev =>
-    dev.id = "stepan.koltsov"; dev.name = "stephan.koltsov";
+  p.developer("stepan.koltsov") { dev =>
+    dev.name = "stephan.koltsov";
   }
   
-  p.developer { dev =>
-    dev.id = "jorge.ortiz"; dev.name = "Jorge Ortiz"; dev.timezone = "-8";
+  p.developer("jorge.ortiz") { dev =>
+    dev.name = "Jorge Ortiz"; dev.timezone = "-8";
     dev.email = "jorge [at] liftweb.net";
   }
   
-  p.developer { dev =>
-    dev.id = "stevej"; dev.name = "Steve Jenson";
+  p.developer("stevej") { dev =>
+    dev.name = "Steve Jenson";
   }
   
-  p.developer { dev =>
-    dev.id = "alex.boisvert"; dev.name = "Alex Boisvert";
+  p.developer("alex.boisvert") { dev =>
+    dev.name = "Alex Boisvert";
   }
   
-  p.developer { dev =>
-    dev.name = "OctoberDan"
-  }
+  p.developer("OctoberDan")
   
-  p.developer { dev =>
-    dev.id = "viktor.klang"; dev.name = "Viktor Klang a.k.a. Sevikkla";
+  p.developer("viktor.klang") { dev =>
+    dev.name = "Viktor Klang a.k.a. Sevikkla";
     dev.timezone = "+1"
-    dev.roles += List("Enhancement specialist", "Funny guy")
+    dev.roles += ("Enhancement specialist", "Funny guy")
   }
   
-  p.developer { dev =>
-    dev.id = "david.bernard.31"; dev.name = "David Bernard"; dev.email = "dwayne [at] liftweb.net";
+  p.developer("david.bernard.31") { dev =>
+    dev.name = "David Bernard"; dev.email = "dwayne [at] liftweb.net";
     dev.timezone = "+1"
-    dev.roles += List("maven support")
+    dev.roles += ("maven support")
   }
   
-  p.developer { dev =>
-    dev.id = "mstarzyk"; dev.name = "Maciek Starzyk";
+  p.developer("mstarzyk") { dev =>
+    dev.name = "Maciek Starzyk";
   }
 
-  p.developer { dev =>
-    dev.id = "etorreborre"; dev.name = "Eric Torreborre"; dev.timezone = "+9";
+  p.developer("etorreborre") { dev =>
+    dev.name = "Eric Torreborre"; dev.timezone = "+9";
   }
   
-  p.developer { dev =>
-    dev.id = "marius.danciu"; dev.name = "Marius Danciu"; dev.timezone = "+2";
+  p.developer("marius.danciu") { dev =>
+    dev.name = "Marius Danciu"; dev.timezone = "+2";
   }
   
-  p.developer { dev =>
-    dev.id = "tyler.weir"; dev.name = "Tyler Weir"; dev.timezone = "-5";
+  p.developer("tyler.weir") { dev =>
+    dev.name = "Tyler Weir"; dev.timezone = "-5";
   }
   
-  p.developer { dev =>
-    dev.id = "timperrett"; dev.name = "Tim Perrett"; dev.email = "hello [at] timperrett.com";
-    dev.timezone = "0"; dev.roles += List("Installation and Deployment", "Advanced Localization");
+  p.developer("timperrett") { dev =>
+    dev.name = "Tim Perrett"; dev.email = "hello [at] timperrett.com";
+    dev.timezone = "0"; dev.roles += ("Installation and Deployment", "Advanced Localization");
   }
   
-  p.developer { dev =>
-    dev.id = "dchenbecker"; dev.name = "Derek Chen-Becker"; dev.email = "java [at] chen-becker.org";
+  p.developer("dchenbecker") { dev =>
+    dev.name = "Derek Chen-Becker"; dev.email = "java [at] chen-becker.org";
     dev.timezone = "-7";
   }
   
-  p.developer { dev =>
-    dev.id = "jboner"; dev.name = "Jonas Bon&#233;r"; dev.email = "jonas [at] jonasboner [dot] com";
+  p.developer("jboner") { dev =>
+    dev.name = "Jonas Bon&#233;r"; dev.email = "jonas [at] jonasboner [dot] com";
     dev.timezone = "+1";
   }
 
-  p.developer { dev =>
-    dev.id = "heiko.seeberger"; dev.name = "Heiko Seeberger"; dev.email = "heiko [dot] seeberger [at] googlemail [dot] com";
-    dev.timezone = "+1"; dev.roles += List("OSGi expert and Scala enthusiast");
+  p.developer("heiko.seeberger") { dev =>
+    dev.name = "Heiko Seeberger"; dev.email = "heiko [dot] seeberger [at] googlemail [dot] com";
+    dev.timezone = "+1"; dev.roles += ("OSGi expert and Scala enthusiast");
   }
   
-  p.developer = { dev =>
-    dev.id = "indrajitr"; dev.name = "Indrajit Raychaudhuri"; dev.email = "irc [at] indrajit [dot] com";
+  p.developer("indrjitr") { dev =>
+    dev.name = "Indrajit Raychaudhuri"; dev.email = "irc [at] indrajit [dot] com";
     dev.timezone = "+5.5";
   }
 
@@ -196,8 +218,8 @@ project { p =>
   
   p.ciManagement { cim =>
     cim.system = "hudson"; cim.url = "http://hudson.scala-tools.org/job/Lift/";
-    /* TODO: Configure */
-    cim.notifiers += List()
+    /* TODO: Configure
+    cim.notifiers += List(???) */
   }
 
   p.mailingList { ml =>
@@ -225,9 +247,9 @@ project { p =>
   }
   
   p.scm { scm =>
-    p.connection= "scm:git:git://github.com/dpp/liftweb.git"
-    p.developerConnection="scm:git:git@github.com:dpp/liftweb.git"
-    p.url="http://github.com/dpp/liftweb/tree/master"
+    scm.connection= "scm:git:git://github.com/dpp/liftweb.git"
+    scm.developerConnection="scm:git:git@github.com:dpp/liftweb.git"
+    scm.url="http://github.com/dpp/liftweb/tree/master"
   }
   
   p.repository { repo =>
@@ -276,14 +298,14 @@ project { p =>
       dm.dependency("org.scala-libs:scalajpa:1.1")
       dm.dependency("javax.mail:mail:[1.4,1.4.3)")
       dm.dependency("commons-codec:commons-codec:1.3")
-                     /* version [1.3,1.4]  */ }
+                     /* version [1.3,1.4]  */
       dm.dependency("commons-collections:commons-collections:3.2.1")
       dm.dependency("commons-fileupload:commons-fileupload:1.2.1")
       dm.dependency("commons-httpclient:commons-httpclient:3.1")
       dm.dependency("log4j:log4j:1.2.14")
-                     /* version [1.2.14,1.2.15] */ }
+                     /* version [1.2.14,1.2.15] */
       dm.dependency("org.slf4j:slf4j-api:${slf4j.version}")
-                     /* option true */ }
+                     /* option true */
                      
     /**********
       ~ Provided scope: provided by container, available only in compile and test classpath, non-transitive
@@ -320,7 +342,7 @@ project { p =>
   /**********
     ~ Modules Setting
    **********/   
-  p.modules += List(
+  p.modules += (
     "lift-base", "lift-persistence", "lift-modules", "lift-archtypes", "lift-examples", "lift-core" )
 
   /**********
@@ -342,7 +364,7 @@ project { p =>
                </configuration>
            pi execution { ex =>
                ex.id = "default-enforce"
-               ex.goals += List("enforce")
+               ex.goals += ("enforce")
            }
          }
       
@@ -360,12 +382,12 @@ project { p =>
             pi.execution { ex =>
                 ex.id = "scala-compile"
                 ex.phase = "process-resources"
-                ex.goals += List("compile")
+                ex.goals += ("compile")
             }
             pi execution { ex =>
                 ex.id = "scala-testCompile"
                 ex.phase = "process-test-resources"
-                ex.goals += List("testCompile")
+                ex.goals += ("testCompile")
             }
           }
       
@@ -380,8 +402,8 @@ project { p =>
                     </manifest>
                     <manifestEntries>
                       <!-- TODO: Deprecate and use Default Implementation Entries (Implementation-Version) -->
-                      <lift_version>${pom.version}</lift_version>
-                      <lift_build_date>${maven.build.timestamp}</lift_build_date>
+                      <lift_version>{"${pom.version}"}</lift_version>
+                      <lift_build_date>{"${maven.build.timestamp}"}</lift_build_date>
                     </manifestEntries>
                   </archive>
                 </configuration>
@@ -390,7 +412,7 @@ project { p =>
       pm.plugin("org.apache.maven.plugins:maven-source-plugin:2.1.1")
           { pi =>
             pi.execution { ex =>
-                ex.goals += List("jar-no-fork")
+                ex.goals += ("jar-no-fork")
             }
           }
       
@@ -399,14 +421,14 @@ project { p =>
             pi execution { ex =>
                 ex.id = "default-copy-resources"
                 ex.phase = "pre-site"
-                ex.goals += List("copy-resources")
+                ex.goals += ("copy-resources")
                 ex.configuration =
                     <configuration>
                       <overwrite>true</overwrite>
-                      <outputDirectory>${project.build.directory}</outputDirectory>
+                      <outputDirectory>{"${project.build.directory}"}</outputDirectory>
                       <resources>
                         <resource>
-                          <directory>${project.basedir}/src</directory>
+                          <directory>{"${project.basedir}/src"}</directory>
                           <includes>
                             <include>packageLinkDefs.properties</include>
                           </includes>
@@ -423,7 +445,7 @@ project { p =>
           { pi =>
             pi.execution { ex =>
                 ex.id = "default-changes-validate"
-                ex.goals += List("changes-validate")
+                ex.goals += ("changes-validate")
                 ex.configuration = 
                     <configuration>
                       <failOnError>true</failOnError>
@@ -445,14 +467,14 @@ project { p =>
             pi.execution { ex =>
                 ex.id = "default-bundle"
                 ex.phase = "package"
-                ex.goals += List("bundle")
+                ex.goals += ("bundle")
             }
           }
       
       pm.plugin("net.sf.alchim:yuicompressor-maven-plugin:0.7.1")
           { pi =>
             pi execution { ex =>
-                ex.goals += List("compress")
+                ex.goals += ("compress")
             }
           }
       
@@ -467,7 +489,7 @@ project { p =>
                 </configuration>
             pi execution { ex =>
                 ex.phase = "verify"
-                ex.goals += List("check")
+                ex.goals += ("check")
             }
           }
       
@@ -509,34 +531,37 @@ project { p =>
     ~ Reporting Settings
    **********/
   p.reporting { r =>
-    r.excludeDesfaults = true
+    r.excludeDefaults = "true"
     r.plugin("org.apache.maven.plugins:maven-project-info-reports-plugin:2.1.2")
         { pi =>
-          pi.reportSet.reports += List(
-              "cim", "dependencies", "dependency-convergence",
-              "index", "issue-tracking", "license", "mailing-list",
-              "plugins", "project-team", "scm", "summary")
-              /* "dependency-management" */
-              /* "plugin-management" */
+          pi.reportSet { rs =>
+              rs.reports += (
+                  "cim", "dependencies", "dependency-convergence",
+                  "index", "issue-tracking", "license", "mailing-list",
+                  "plugins", "project-team", "scm", "summary"
+                  /* "dependency-management" */
+                  /* "plugin-management" */
+              )
+          }
         }
         
     r.plugin("org.scala-tools:maven-scala-plugin:2.12.2")
         { pi =>
           pi.configuration =
             <configuration>
-              <charset>${project.build.sourceEncoding}</charset>
+              <charset>{"${project.build.sourceEncoding}"}</charset>
               <!--<bottom>Copyright &#169; {inceptionYear}-{currentYear} {organizationName}. All Rights Reserved.</bottom>-->
               <vscaladocVersion>1.2-SNAPSHOT</vscaladocVersion>
               <jvmArgs>
                 <jvmArg>-Xmx1024m</jvmArg>
-                <jvmArg>-DpackageLinkDefs=file://${project.build.directory}/packageLinkDefs.properties</jvmArg>
+                <jvmArg>-DpackageLinkDefs=file://{"${project.build.directory}"}/packageLinkDefs.properties</jvmArg>
               </jvmArgs>
               <!--FIXME: see that sxr plugin works -->
               <!--
               <compilerPlugins>
                 <compilerPlugin>
                   <groupId>org.scala-tools.sxr</groupId>
-                  <artifactId>sxr_${scala.version}</artifactId>
+                  <artifactId>sxr_{"${scala.version}"}</artifactId>
                   <version>0.2.3</version>
                  </compilerPlugin>
               </compilerPlugins>
@@ -551,17 +576,20 @@ project { p =>
               <detectLinks>true</detectLinks>
               <linksource>true</linksource>
             </configuration>
-          pi.reportSet.reports += List(
-              "javadoc", "test-javadoc");
-              /* "aggregate" */
+          pi.reportSet { rs =>
+              rs.reports += (
+                  "javadoc", "test-javadoc"
+                  /* "aggregate" */
+              )
+          }
         }
 
     r.plugin("org.apache.maven.plugins:maven-jxr-plugin:2.1")
         { pi =>
           pi.configuration =
             <configuration>
-              <inputEncoding>${project.build.sourceEncoding}</inputEncoding>
-              <outputEncoding>${project.build.sourceEncoding}</outputEncoding>
+              <inputEncoding>{"${project.build.sourceEncoding}"}</inputEncoding>
+              <outputEncoding>{"${project.build.sourceEncoding}"}</outputEncoding>
             </configuration>
         }
         
@@ -574,12 +602,14 @@ project { p =>
                   <github>%URL%/%ISSUE%/find</github>
                 </issueLinkTemplatePerSystem>
               </configuration>
-          pi.reportSets.reports += List("changes-report")
+          pi.reportSet { rs =>
+              rs.reports += ("changes-report")
+          }
         }
         
     r.plugin("org.apache.maven.plugins:maven-surefire-report-plugin:2.4.3")
         { pi =>
-          pi.reportSets.reports += List("report-only")
+          pi.reportSet { rs => rs.reports += ("report-only") }
         }
   }
 
@@ -609,7 +639,7 @@ project { p =>
       
   p.profile("release")
       { prof =>
-        prof.properties += List("vscaladoc.links.liftweb.baseurl" -> "http://scala-tools.org/mvnsites/liftweb")
+        prof.properties += ("vscaladoc.links.liftweb.baseurl" -> "http://scala-tools.org/mvnsites/liftweb")
         prof.build { b =>
             b.plugin("org.apache.rat:apache-rat-plugin")
         }
@@ -632,12 +662,17 @@ project { p =>
             repo.url = "http://nexus.scala-tools.org/content/repositories/releases"
         }
          */
-        prof.snapshotRepository("nexus.scala-tools.org") { repo =>
-            repo.url = "http://nexus.scala-tools.org/content/repositories/snapshots"
-            repo.uniqueVersion = false
-        }
-        prof.site("nexus.scala-tools.org") { site =>
-            site.url = "file:///home/scala-tools.org/www/mvnsites-snapshots/liftweb"
+        prof.distributionManagement { dm =>
+            dm.snapshotRepository("nexus.scala-tools.org") { repo =>
+                repo.url = "http://nexus.scala-tools.org/content/repositories/snapshots"
+                repo.uniqueVersion = false
+            }
+            dm.site("nexus.scala-tools.org") { site =>
+                site.url = "file:///home/scala-tools.org/www/mvnsites-snapshots/liftweb"
+            }
         }
       }
+}
+
+  }
 }
