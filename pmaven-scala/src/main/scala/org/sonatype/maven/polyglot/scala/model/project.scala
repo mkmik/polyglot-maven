@@ -196,6 +196,16 @@ class Model extends ApacheModel with ModelBaseProps {
   }
   def contributor(name: String): ContributorProps =
     contributor (_.name = name)
+    
+  def parent: ApacheParent = getParent
+  def parent(body: (Parent) => Unit): Parent = {
+    val par = new Parent
+    body(par)
+    setParent(par)
+    par
+  }
+  def parent(coordinates: String): Parent =
+    parent(_ coords coordinates)
 
   def developers = (getDevelopers: Buffer[ApacheDeveloper])
   def developer(body: (Developer) => Unit): Developer = {
@@ -314,7 +324,7 @@ class Parent extends ApacheParent with WithCoords[Parent] {
   def artifactId_=(s: String) = setArtifactId(s)
   
   def version: String = getVersion
-  def version_=(s: String) = setVersion(version)
+  def version_=(s: String) = setVersion(s)
   
   def apply(body: (Parent) => Unit): Parent = {
     body(this)
