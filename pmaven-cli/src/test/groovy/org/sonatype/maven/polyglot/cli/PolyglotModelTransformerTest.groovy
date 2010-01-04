@@ -74,7 +74,13 @@ public class PolyglotTranslatorCliTest
 
     @Test
     void testFormatInterchange() {
-        def formats = [ 'xml', 'groovy', 'yml' ]
+        def formats = [
+            'xml',
+            'groovy',
+            'yml',
+//            'scala',
+//            'clj',
+        ]
         
         for (source in formats) {
             for (target in formats) {
