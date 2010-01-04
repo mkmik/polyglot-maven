@@ -13,8 +13,8 @@ Building
 
 Check-out and build:
 
-    git clone git@github.com:sonatype/graven.git pmaven
-    cd pmaven
+    git clone git@github.com:sonatype/polyglot-maven.git
+    cd polyglot-maven
     mvn install
 
 After this completes, you can unzip the assembly play with polyglot maven:
