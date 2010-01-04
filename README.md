@@ -30,7 +30,21 @@ After this completes, you can unzip the assembly play with polyglot maven:
 Porting
 -------
 
-### Using the 'translate' command
+### Components
+
+Plexus components need to be implemented for:
+
+ * org.sonatype.maven.polyglot.mapping.Mapping (extend org.sonatype.maven.polyglot.mapping.MappingSupport)
+ * org.apache.maven.model.io.ModelReader (extend org.sonatype.maven.polyglot.io.ModelReaderSupport)
+ * org.apache.maven.model.io.ModelWriter (extend org.sonatype.maven.polyglot.io.ModelWriterSupport)
+
+All of these components need to be proper Plexus components wither using the annotations (preferred IMO) or suppling a components.xml.
+
+#### Execute Support
+
+You can ignore the *.execute stuff for now, its highly experimental.
+
+### Using the 'translate' Command
 
 Use the translate command, to help make sure that everything is working correctly.  Then once you think it is,
 then update the PolyglotTranslatorCliTest (in pmaven-cli/src/test/...) to enable the language in testFormatInterchange().
