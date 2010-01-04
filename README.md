@@ -22,8 +22,8 @@ After this completes, you can unzip the assembly play with polyglot maven:
     unzip pmaven-cli/target/pmaven-*-bin.zip
     ./pmaven-cli*/bin/mvn
 
-Porting
--------
+Porting Languages
+-----------------
 
 ### Components
 
@@ -38,6 +38,18 @@ All of these components need to be proper Plexus components wither using the ann
 #### Execute Support
 
 You can ignore the *.execute stuff for now, its highly experimental.
+
+### Hooking up to the CLI
+
+To hook up to the cli (so the mvn and translate commands see new languages) the following files need to be updated:
+
+##### pmaven-cli/pom.xml
+
+Add a dep on the new language module
+
+##### pmaven-cli/src/main/assembly/common.xml
+
+Define a new dependencySet to install the required jars into the ext dir.
 
 ### Using the 'translate' Command
 
