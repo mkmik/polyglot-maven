@@ -48,26 +48,6 @@ public class ClojureModelWriterTest extends PlexusTestCase {
     }
 
     @Test
-    public void testScopedDependencyRendering() {
-
-        Dependency dependency = new Dependency();
-        dependency.setGroupId("group");
-        dependency.setArtifactId("artifact");
-        dependency.setVersion("1.0");
-        dependency.setScope("test");
-
-        ClojureModelWriter writer = new ClojureModelWriter();
-
-        StringWriter sw = new StringWriter();
-        ClojurePrintWriter out = new ClojurePrintWriter(sw);
-        writer.buildDependencyString(out, dependency);
-
-        assertThat(sw.getBuffer().toString())
-                .isEqualTo("[\"group:artifact:1.0\" {:scope \"test\"}]");
-
-    }
-
-    @Test
     public void testClassifiedDependencyRendering() {
 
         Dependency dependency = new Dependency();
@@ -84,29 +64,6 @@ public class ClojureModelWriterTest extends PlexusTestCase {
 
         assertThat(sw.getBuffer().toString())
                 .isEqualTo("[\"group:artifact:1.0\" {:classifier \"jdk15\"}]");
-
-    }
-
-    @Test
-    public void testScopedClassifiedDependencyRendering() {
-
-        Dependency dependency = new Dependency();
-        dependency.setGroupId("group");
-        dependency.setArtifactId("artifact");
-        dependency.setVersion("1.0");
-        dependency.setClassifier("jdk15");
-        dependency.setScope("test");
-
-        ClojureModelWriter writer = new ClojureModelWriter();
-
-        StringWriter sw = new StringWriter();
-        ClojurePrintWriter out = new ClojurePrintWriter(sw);
-        writer.buildDependencyString(out, dependency);
-
-        assertThat(sw.getBuffer().toString())
-                .isEqualTo("" +
-                        "[\"group:artifact:1.0\" {:classifier \"jdk15\"\n" +
-                        "                       :scope \"test\"}]");
 
     }
 
