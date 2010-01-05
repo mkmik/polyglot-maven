@@ -102,6 +102,16 @@ public class ClojureModelWriter extends ModelWriterSupport {
         }
     }
 
+    private boolean pluginHasConfiguration(Plugin plugin) {
+        return plugin.getConfiguration() != null
+                && ((Xpp3Dom) plugin.getConfiguration()).getChildCount() != 0;
+    }
+
+    private boolean pluginExecutionHasConfiguration(PluginExecution pluginExecution) {
+        return pluginExecution.getConfiguration() != null
+                && ((Xpp3Dom) pluginExecution.getConfiguration()).getChildCount() != 0;
+    }
+
     public void buildPluginString(ClojurePrintWriter out, Plugin plugin) {
 
         String ref = MessageFormat.format("\"{0}:{1}",
@@ -116,11 +126,12 @@ public class ClojureModelWriter extends ModelWriterSupport {
 
         out.printAtNewIndent("[" + ref);
 
-        if (!plugin.getExecutions().isEmpty() || plugin.getConfiguration() != null) {
+        if (!plugin.getExecutions().isEmpty()
+                || pluginHasConfiguration(plugin)) {
 
             out.printAtNewIndent(" {");
 
-            if (plugin.getConfiguration() != null) {
+            if (pluginHasConfiguration(plugin)) {
                 appendConfiguration(out, plugin.getConfiguration());
             }
 
@@ -133,7 +144,7 @@ public class ClojureModelWriter extends ModelWriterSupport {
                     out.printField(":id", execution.getId());
                     out.printField(":phase", execution.getPhase());
 
-                    if (execution.getConfiguration() != null) {
+                    if (pluginExecutionHasConfiguration(execution)) {
                         appendConfiguration(out, execution.getConfiguration());
                     }
 
@@ -158,18 +169,14 @@ public class ClojureModelWriter extends ModelWriterSupport {
     private void appendConfiguration(ClojurePrintWriter out, Object con) {
         Xpp3Dom configuration = (Xpp3Dom) con;
 
-        if (configuration.getChildCount() != 0) {
-            out.printAtNewIndent(":configuration {");
+        out.printAtNewIndent(":configuration {");
 
-            for (Xpp3Dom xpp3Dom : configuration.getChildren()) {
-
-                writeDom(out, xpp3Dom);
-            }
-
-            out.append("}");
-            out.popIndent();
+        for (Xpp3Dom xpp3Dom : configuration.getChildren()) {
+            writeDom(out, xpp3Dom);
         }
 
+        out.append("}");
+        out.popIndent();
     }
 
     public void write(Writer writer, Map<String, Object> stringObjectMap, Model model) throws IOException {

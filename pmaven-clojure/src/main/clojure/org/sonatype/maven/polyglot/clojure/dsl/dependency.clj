@@ -18,6 +18,7 @@
   [[reference-source options]]
   (let [dependency (make-dependency reference-source)]
     (.setClassifier dependency (:classifier options))
+    (.setType dependency (:type options))
     dependency))
 
 (defn add-dependency!

@@ -118,6 +118,8 @@
     (.setName project (:name options))
     (.setDescription project (:description options))
     (.setUrl project (:url options))
+    (if (contains? options :packaging)
+      (.setPackaging project (:packaging options)))
     (if (contains? options :parent)
       (.setParent project (build-parent (:parent options))))
     (process-properties! project options)
@@ -137,6 +139,6 @@
 (defmacro defproject [name reference-source & options]
   `(do
     (def ~name (build-project ~reference-source ~@options))
-    (add-default-plugins! ~name)
+    ;(add-default-plugins! ~name)
     (use-project ~name)))
 
