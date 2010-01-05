@@ -16,7 +16,6 @@
         parent (org.apache.maven.model.Parent.)]
     (apply-reference! reference parent)))
 
-
 (defn- keyword-for-scope
   "Return the keyword to use for a given scope"
   [scope]
@@ -107,10 +106,9 @@
       (.addProfile project profile))))
 
 (defn build-project
-  [reference-source & options]
+  [reference-source options]
   (let [project (org.apache.maven.model.Model.)
-        reference (parse-reference reference-source)
-        options (apply hash-map options)]
+        reference (parse-reference reference-source)]
     (.setModelVersion project "4.0.0")
     (.setGroupId project (:group-id reference))
     (.setArtifactId project (:artifact-id reference))
@@ -137,8 +135,8 @@
   (reset! *PROJECT* project))
 
 (defmacro defproject [name reference-source & options]
-  `(do
-    (def ~name (build-project ~reference-source ~@options))
-    ;(add-default-plugins! ~name)
+  `(let [project-options# (apply hash-map [~@options])]
+    (def ~name (build-project ~reference-source project-options#))
+    (if (add-default-plugins? project-options#)
+      (add-default-plugins! ~name))
     (use-project ~name)))
-

@@ -1,6 +1,12 @@
 (ns org.sonatype.maven.polyglot.clojure.dsl.defaults
   (:use org.sonatype.maven.polyglot.clojure.dsl.plugin))
 
+(defn add-default-plugins?
+  [options]
+  (if (contains? options :add-default-plugins)
+    (= true (options :add-default-plugins))
+    true))
+
 (defn add-default-plugins!
   [model]
   (if-not (contains-plugin? model "com.theoryinpractise:clojure-maven-plugin")

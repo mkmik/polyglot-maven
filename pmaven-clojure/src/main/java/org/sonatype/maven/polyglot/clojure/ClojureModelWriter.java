@@ -13,6 +13,7 @@ import org.sonatype.maven.polyglot.io.ModelWriterSupport;
 
 import java.io.*;
 import java.text.MessageFormat;
+import java.util.Date;
 import java.util.List;
 import java.util.Map;
 import java.util.Properties;
@@ -186,6 +187,7 @@ public class ClojureModelWriter extends ModelWriterSupport {
         out.printLnAtCurrent("(defproject main \"" + model.getGroupId() + ":" + model.getArtifactId() + ":" + model.getVersion() + "\"");
         out.pushIndent(4);
         out.printField(":model-version", model.getModelVersion());
+        out.printField(":add-default-plugins", false);
 
         final Parent parent = model.getParent();
         if (parent != null) {

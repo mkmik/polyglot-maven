@@ -70,4 +70,11 @@ public class ClojurePrintWriter extends PrintWriter {
         return this;
     }
 
+    public ClojurePrintWriter printField(String fieldName, Boolean fieldValue) {
+        if (fieldValue != null) {
+            printLnAtCurrent(fieldName + " " + fieldValue);
+        }
+        return this;
+    }
+
 }
