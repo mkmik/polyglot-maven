@@ -1,27 +1,32 @@
 (ns org.sonatype.maven.polyglot.clojure.dsl.dependency
   (:use org.sonatype.maven.polyglot.clojure.dsl.reference))
 
-(defmulti add-dependency! #(class %2))
+(defmulti make-dependency class)
 
-(defmethod add-dependency! org.apache.maven.model.Dependency
-  [model dependency]
-  (.addDependency model dependency))
+(defmethod make-dependency org.apache.maven.model.Dependency
+  [dependency]
+  dependency)
 
-(defmethod add-dependency! String
-  [model reference-source]
+(defmethod make-dependency String
+  [reference-source]
   (let [dependency (org.apache.maven.model.Dependency.)
         reference (parse-reference reference-source)]
     (apply-reference! reference dependency)
-    (add-dependency! model dependency)))
+    dependency))
 
-(defmethod add-dependency! clojure.lang.PersistentVector
-  [model [reference-source options]]
-  (let [dependency (org.apache.maven.model.Dependency.)
-        reference (parse-reference reference-source)]
-    (apply-reference! reference dependency)
+(defmethod make-dependency clojure.lang.PersistentVector
+  [[reference-source options]]
+  (let [dependency (make-dependency reference-source)]
     (.setClassifier dependency (:classifier options))
-    (.setScope dependency (:scope options))
-    (add-dependency! model dependency)))
+    dependency))
+
+(defn add-dependency!
+  ([model reference-source]
+    (.addDependency model (make-dependency reference-source)))
+  ([model reference-source scope]
+    (let [dependency (make-dependency reference-source)]
+      (.setScope dependency scope)
+      (.addDependency model dependency))))
 
 (defn contains-dependency?
   [model reference-source]

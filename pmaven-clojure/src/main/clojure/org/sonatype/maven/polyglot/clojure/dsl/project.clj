@@ -16,10 +16,19 @@
         parent (org.apache.maven.model.Parent.)]
     (apply-reference! reference parent)))
 
+
+(defn- keyword-for-scope
+	"Return the keyword to use for a given scope"
+	[scope]
+	(if (= "compile" scope)
+	  :dependencies
+	  (keyword (str scope "-dependencies"))))
+
 (defn- process-dependencies!
   [project options]
-  (doseq [dependency (:dependencies options)]
-    (add-dependency! project dependency)))
+  (doseq [scope ["compile" "provided" "runtime" "test" "system" "import"]]
+    (doseq [dependency ((keyword-for-scope scope) options)]
+      (add-dependency! project dependency scope))))
 
 (defn- process-properties!
   [project options]

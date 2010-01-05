@@ -1,6 +1,10 @@
 package org.sonatype.maven.polyglot.clojure;
 
 import com.google.common.base.Join;
+import com.google.common.base.Nullable;
+import com.google.common.base.Predicate;
+import com.google.common.collect.Iterables;
+import com.google.common.collect.Lists;
 import org.apache.maven.model.*;
 import org.apache.maven.model.io.ModelWriter;
 import org.codehaus.plexus.component.annotations.Component;
@@ -36,7 +40,6 @@ public class ClojureModelWriter extends ModelWriterSupport {
 
             out.printAtNewIndent("[" + dep + " {");
             out.printField(":classifier", dependency.getClassifier());
-            out.printField(":scope", dependency.getScope());
 
             if (!dependency.getExclusions().isEmpty()) {
 
@@ -348,18 +351,34 @@ public class ClojureModelWriter extends ModelWriterSupport {
         }
     }
 
-    private void writeDependencies(List<Dependency> dependencies, ClojurePrintWriter out) {
-        if (!dependencies.isEmpty()) {
+    private void writeDependencies(List<Dependency> dependencies, final String scope, String prefix, ClojurePrintWriter out) {
 
-            out.printAtNewIndent(":dependencies [");
+        Iterable<Dependency> scopedDependencies = Iterables.filter(dependencies, new Predicate<Dependency>() {
+            public boolean apply(@Nullable Dependency dependency) {
+                return scope.equals(dependency.getScope());
+            }
+        });
 
-            for (Dependency dependency : dependencies) {
+        if (!Iterables.isEmpty(scopedDependencies)) {
+
+            out.printAtNewIndent(":" + prefix + "dependencies [");
+
+            for (Dependency dependency : scopedDependencies) {
                 buildDependencyString(out, dependency);
             }
 
             out.print("]");
             out.popIndent();
         }
+    }
+
+    private void writeDependencies(List<Dependency> dependencies, ClojurePrintWriter out) {
+        writeDependencies(dependencies, "compile", "", out);
+        writeDependencies(dependencies, "provided", "provided-", out);
+        writeDependencies(dependencies, "runtime", "runtime-", out);
+        writeDependencies(dependencies, "test", "test-", out);
+        writeDependencies(dependencies, "system", "system-", out);
+        writeDependencies(dependencies, "import", "import-", out);
     }
 
     private void writeProperties(Properties properties, ClojurePrintWriter out) {
