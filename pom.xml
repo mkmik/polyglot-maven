@@ -222,9 +222,9 @@
         <module>pmaven-yaml</module>
         <module>pmaven-clojure</module>
         <!--<module>pmaven-jruby</module>-->
+        <module>pmaven-scala</module>
         <module>pmaven-cli</module>
         <module>pmaven-commands</module>
-        <module>pmaven-scala</module>
     </modules>
 
     <build>
