@@ -21,8 +21,9 @@ import java.util.Properties;
 public class ClojureModelWriter extends ModelWriterSupport {
 
     private boolean isExtendedDependency(Dependency dependency) {
-        return dependency.getScope() != null || dependency.getClassifier() != null ||
-                !dependency.getExclusions().isEmpty();
+        return (dependency.getType() != null && !"jar".equals(dependency.getType()))
+                || dependency.getClassifier() != null
+                || !dependency.getExclusions().isEmpty();
     }
 
     public void buildDependencyString(ClojurePrintWriter out, Dependency dependency) {
@@ -40,6 +41,10 @@ public class ClojureModelWriter extends ModelWriterSupport {
 
             out.printAtNewIndent("[" + dep + " {");
             out.printField(":classifier", dependency.getClassifier());
+
+            if (!"jar".equals(dependency.getType())) {
+                out.printField(":type", dependency.getType());
+            }
 
             if (!dependency.getExclusions().isEmpty()) {
 
@@ -193,6 +198,7 @@ public class ClojureModelWriter extends ModelWriterSupport {
         writeCiManagement(model, out);
         writeIssueManagement(model, out);
         writeProfiles(model, out);
+        writeDependencyManagement(model.getDependencyManagement(), out);
         writeDependencies(model.getDependencies(), out);
         writeModules(model.getModules(), out);
         writeBuild(model.getBuild(), out);
@@ -205,7 +211,7 @@ public class ClojureModelWriter extends ModelWriterSupport {
     private void writeDistributionManagement(DistributionManagement distributionManagement, ClojurePrintWriter out) {
 
         if (distributionManagement != null) {
-            out.printAtNewIndent(":distribution-managemet {");
+            out.printAtNewIndent(":distribution-management {");
             out.printField(":download-url", distributionManagement.getDownloadUrl());
             out.printField(":status", distributionManagement.getStatus());
 
@@ -351,11 +357,40 @@ public class ClojureModelWriter extends ModelWriterSupport {
         }
     }
 
+    private void writeDependencyManagement(DependencyManagement dependencyManagement, ClojurePrintWriter out) {
+
+        if (dependencyManagement != null
+                && dependencyManagement.getDependencies() != null
+                && !dependencyManagement.getDependencies().isEmpty()) {
+
+            out.printAtNewIndent(":dependency-management {");
+            writeDependencies(dependencyManagement.getDependencies(), out);
+            out.print("}");
+            out.popIndent();
+        }
+
+    }
+
+    private void writeDependencies(List<Dependency> dependencies, ClojurePrintWriter out) {
+        writeDependencies(dependencies, "compile", "", true, out);
+        writeDependencies(dependencies, "provided", "provided-", out);
+        writeDependencies(dependencies, "runtime", "runtime-", out);
+        writeDependencies(dependencies, "test", "test-", out);
+        writeDependencies(dependencies, "system", "system-", out);
+        writeDependencies(dependencies, "import", "import-", out);
+    }
+
     private void writeDependencies(List<Dependency> dependencies, final String scope, String prefix, ClojurePrintWriter out) {
+        writeDependencies(dependencies, scope, prefix, false, out);
+    }
+
+    private void writeDependencies(List<Dependency> dependencies, final String scope, String prefix, final boolean includeNullScope, ClojurePrintWriter out) {
 
         Iterable<Dependency> scopedDependencies = Iterables.filter(dependencies, new Predicate<Dependency>() {
             public boolean apply(@Nullable Dependency dependency) {
-                return scope.equals(dependency.getScope());
+                return includeNullScope
+                  ? (scope.equals(dependency.getScope()) || dependency.getScope() == null)
+                  : scope.equals(dependency.getScope());
             }
         });
 
@@ -370,15 +405,6 @@ public class ClojureModelWriter extends ModelWriterSupport {
             out.print("]");
             out.popIndent();
         }
-    }
-
-    private void writeDependencies(List<Dependency> dependencies, ClojurePrintWriter out) {
-        writeDependencies(dependencies, "compile", "", out);
-        writeDependencies(dependencies, "provided", "provided-", out);
-        writeDependencies(dependencies, "runtime", "runtime-", out);
-        writeDependencies(dependencies, "test", "test-", out);
-        writeDependencies(dependencies, "system", "system-", out);
-        writeDependencies(dependencies, "import", "import-", out);
     }
 
     private void writeProperties(Properties properties, ClojurePrintWriter out) {

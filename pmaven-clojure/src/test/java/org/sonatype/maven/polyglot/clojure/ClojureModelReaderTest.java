@@ -37,6 +37,9 @@ public class ClojureModelReaderTest
         assertEquals("b", model.getArtifactId());
         assertEquals("c", model.getVersion());
 
+        assertNotNull(model.getDependencyManagement());
+        assertEquals(model.getDependencyManagement().getDependencies().isEmpty(), false);
+
         assertNotNull(model.getDependencies());
 
         Dependency dependency = model.getDependencies().get(0);

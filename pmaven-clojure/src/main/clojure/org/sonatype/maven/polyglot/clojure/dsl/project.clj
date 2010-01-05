@@ -18,17 +18,25 @@
 
 
 (defn- keyword-for-scope
-	"Return the keyword to use for a given scope"
-	[scope]
-	(if (= "compile" scope)
-	  :dependencies
-	  (keyword (str scope "-dependencies"))))
+  "Return the keyword to use for a given scope"
+  [scope]
+  (if (= "compile" scope)
+    :dependencies
+    (keyword (str scope "-dependencies"))))
 
 (defn- process-dependencies!
   [project options]
   (doseq [scope ["compile" "provided" "runtime" "test" "system" "import"]]
     (doseq [dependency ((keyword-for-scope scope) options)]
       (add-dependency! project dependency scope))))
+
+
+(defn- process-dependency-management!
+  [project options]
+  (if (contains? options :dependency-management)
+    (let [dependency-management (org.apache.maven.model.DependencyManagement.)]
+      (process-dependencies! dependency-management (:dependency-management options))
+      (.setDependencyManagement project dependency-management))))
 
 (defn- process-properties!
   [project options]
@@ -98,7 +106,7 @@
       (process-plugins! profile profile-options)
       (.addProfile project profile))))
 
-  (defn build-project
+(defn build-project
   [reference-source & options]
   (let [project (org.apache.maven.model.Model.)
         reference (parse-reference reference-source)
@@ -118,6 +126,7 @@
     (process-ci! project options)
     (process-profiles! project options)
     (process-build! project options)
+    (process-dependency-management! project options)
     (process-dependencies! project options)
     (process-plugins! project options)
     project))

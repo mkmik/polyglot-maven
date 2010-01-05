@@ -2,6 +2,8 @@
   :name "Polyglot Test"
   :description "Maven 3 Clojure based Polyglot test"
   :properties {"test" "test"}
+  :dependency-management {:dependencies [["org.apache.maven:apache-maven:${mavenVersion}" {:classifier "bin"
+                                                                                           :type "zip"}]]}
   :dependencies ["org.clojure:clojure:1.1.0-alpha-SNAPSHOT"
                  "org.clojure:clojure-contrib"]
   :test-dependencies [["org.junit:junit:4.0"]]
