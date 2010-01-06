@@ -74,6 +74,22 @@ class PMavenScriptCompilerSpec extends WordSpec with ShouldMatchers {
             "org.sonatype.maven.polyglot.scala.model.Model")) should be(true)
       }
     }
+
+    "called with a Plexus Util class" should {
+
+      "return a valid URL" in {
+        val file = PMavenScriptCompiler.scalaCPFileFor(classOf[Model])
+        file should not be(null)
+        file.exists should be (true)
+        file.isDirectory should be(true)
+
+        //...need to make sure Scala stand lib AND the Maven model lib AND
+        //   target PMaven Scala lib are loaded and visible through a single class loader...
+        (ScalaClassLoader classExists (List(
+                 (PMavenScriptCompiler.scalaCPFileFor(classOf[org.codehaus.plexus.util.xml.Xpp3Dom]).toURL)),
+            "org.codehaus.plexus.util.xml.Xpp3Dom")) should be(true)
+      }
+    }
   }
 }
 

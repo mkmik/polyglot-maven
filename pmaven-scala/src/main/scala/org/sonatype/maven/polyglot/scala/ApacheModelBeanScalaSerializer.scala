@@ -52,7 +52,44 @@ object ApacheModelBeanScalaSerializer {
    **/
   def shortInstanceName(bi: BeanInfo): String =
     bi.getBeanDescriptor.getBeanClass.getSimpleName.substring(0, 1).toLowerCase
-  
+
+  /**
+   * List[-non-primitive and non-String]-typed properties have special Scala-ized
+   * setter functions to use. The listMemberSetterNameMap gives the special
+   * Scala-ized setter to use for the list-typed beans property.
+   **/
+  val listMemberSetterNameMap: Map[String, String] =
+      Map("dependencies" -> "dependency",
+          "exclusions" -> "exclusion",
+          "repositories" -> "repository",
+          "pluginRepositories" -> "pluginRepository",
+          "contributors" -> "contributor",
+          "developers" -> "developer",
+          "licenses" -> "license",
+          "mailingLists" -> "mailingList",
+          "profiles" -> "profile",
+          "resources" -> "resource",
+          "testResources" -> "testResource",
+          "extensions" -> "extension",
+          "notifiers" -> "notifier",
+          "plugins" -> "plugin",
+          "executions" -> "execution",
+          "reportSets" -> "reportSet"
+      )
+      
+  def listMemberSetterName(s: String): String =
+      listMemberSetterNameMap(s)
+      
+  /**
+   * Simple-typed properties might need a property name-> Scala-ized setter method
+   * mapping. E.g., "getType/setType" in Java cannot be mapped to the name "type",
+   * since that's keyword in Scala; so instead there is a mapping to "_type".
+   **/
+  def propertySetterName(s: String): String =
+    s match {
+      case "type" => "_type"
+      case x => x
+    }
 }
 
 class ApacheModelBeanScalaSerializer(parentRelativePropRefName: String, instanceName: String,
@@ -68,6 +105,7 @@ class ApacheModelBeanScalaSerializer(parentRelativePropRefName: String, instance
     beanInfo.getPropertyDescriptors foreach { pd => serializePropTo(pd, writer) }
     
   def serializePropTo(pd: PropertyDescriptor, writer: IndentingPrintWriter): Unit = {
+    import ApacheModelBeanScalaSerializer._
   
     //...make sure there's a property getter AND setter methods, indicating the property
     //   is actually readable, and it can be set by a build script...
@@ -81,10 +119,10 @@ class ApacheModelBeanScalaSerializer(parentRelativePropRefName: String, instance
 
         if(pd.getPropertyType.equals(classOf[String])) {
           //...a String-typed property...
-          writer.qe(value) { instanceName + "." + pd.getName + " = \"" + _  + "\"" }
+          writer.qe(value) { instanceName + "." + propertySetterName(pd.getName) + " = \"" + _  + "\"" }
         } else if(pd.getPropertyType.isPrimitive) {
           //...a Boolean or Int or other primitive-typed property
-          writer.qe(value) { instanceName + "." + pd.getName + " = " + _ }
+          writer.qe(value) { instanceName + "." + propertySetterName(pd.getName) + " = " + _ }
         } else if(classOf[java.util.List[_]].isAssignableFrom(pd.getPropertyType)) {
           //...a java.util.List-typed property. Write out each member as a property...
           val list = value.asInstanceOf[java.util.List[java.lang.Object]]
@@ -97,7 +135,8 @@ class ApacheModelBeanScalaSerializer(parentRelativePropRefName: String, instance
               } else {
                 //...property is a List[Apache Model object type]. To serialize this
                 //   we recurse a another level and serialize the value object...
-                ApacheModelBeanScalaSerializer(instanceName + "." + pd.getName, item).serializeTo(writer)
+                ApacheModelBeanScalaSerializer(instanceName + "." +
+                    listMemberSetterName(pd.getName), item).serializeTo(writer)
               }
             }
           }
@@ -107,7 +146,7 @@ class ApacheModelBeanScalaSerializer(parentRelativePropRefName: String, instance
           val map = value.asInstanceOf[java.util.Map[String, java.lang.Object]]
           if(map != null) {
             (map: Map[String, java.lang.Object]) foreach { pair =>
-              writer.println(instanceName + "." + pd.getName + " += (" + pair._1 + "\" -> \"" + pair._2.toString + "\")")
+              writer.println(instanceName + "." + pd.getName + " += (\"" + pair._1 + "\" -> \"" + pair._2.toString + "\")")
             }
           }
         } else if(pd.getPropertyType.equals(classOf[java.lang.Object])) {
@@ -116,7 +155,8 @@ class ApacheModelBeanScalaSerializer(parentRelativePropRefName: String, instance
           //   configuration structures. Just serialize the XML fragment w/o processing
           //   preamble, processing instructions, etc...
           
-          // TODO: figure out how to serialize the configuration XML
+          writer.println(instanceName + "." + pd.getName + " =")
+          writer.serializeXpp3Dom(value.asInstanceOf[org.codehaus.plexus.util.xml.Xpp3Dom])
         } else {
           //...we can assume the property type is another Apache Model Bean...
           ApacheModelBeanScalaSerializer(instanceName + "." + pd.getName, value).serializeTo(writer)

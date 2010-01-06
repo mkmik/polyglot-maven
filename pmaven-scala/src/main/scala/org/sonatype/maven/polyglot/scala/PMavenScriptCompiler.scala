@@ -104,8 +104,6 @@ object PMavenScriptCompiler {
       }
     }
     
-    println("jarfile is: " + jarFile);
-
     try {
       val jar = new JarOutputStream(jarFile.outputStream())
       addFromDir(jar, sourcePath, "")
@@ -220,11 +218,7 @@ object PMavenScriptCompiler {
      *  class files, if the compilation succeeded.
      */
     def compile: Option[Directory] = {
-      println("Compiler settings: ")
-      println(settings)
-      
       val compiledPath = Directory makeTemp "scalatemp"
-      println("Compiled path: " + compiledPath)
 
       // delete the directory after the user code has finished
       addShutdownHook(compiledPath.deleteRecursively())
@@ -301,11 +295,10 @@ object PMavenScriptCompiler {
       scalaCPFileFor(classOf[Application]), // std Scala lib jarfile
       scalaCPFileFor(classOf[Global]),      // Scala compiler lib jarfile
       scalaCPFileFor(classOf[ApacheModelBaseClass]),
-      scalaCPFileFor(classOf[Model])
+      scalaCPFileFor(classOf[Model]),
+      scalaCPFileFor(classOf[org.codehaus.plexus.util.xml.Xpp3Dom])
     )
     settings.classpath.value = cp map {_.getCanonicalPath} mkString JFile.pathSeparator
-    
-    println("Classpath: " + settings.classpath.value)
     
     try compileScript(logger, settings, scriptFile.path)
     finally scriptFile.delete()  // in case there was a compilation error
@@ -324,7 +317,8 @@ object PMavenScriptCompiler {
     val libList = List(
         new JFile(location).toURL,
         (PMavenScriptCompiler.scalaCPFileFor(classOf[Application]).toURL),
-        (PMavenScriptCompiler.scalaCPFileFor(classOf[org.apache.maven.model.Model]).toURL)
+        (PMavenScriptCompiler.scalaCPFileFor(classOf[org.apache.maven.model.Model]).toURL),
+        (PMavenScriptCompiler.scalaCPFileFor(classOf[org.codehaus.plexus.util.xml.Xpp3Dom]).toURL)
     )
     val parentcl = PMavenScriptCompiler.getClass.getClassLoader
     

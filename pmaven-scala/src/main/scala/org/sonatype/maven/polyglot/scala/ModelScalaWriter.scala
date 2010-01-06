@@ -26,6 +26,8 @@ import org.sonatype.maven.polyglot.io.ModelWriterSupport;
 import java.io.{Writer => JWriter, PrintWriter => JPrintWriter}
 import java.util.{Map => JMap}
 
+import org.codehaus.plexus.util.xml.Xpp3Dom
+
 import scala.collection.mutable.Buffer
 
 /**
@@ -121,5 +123,25 @@ class IndentingPrintWriter(parent: Option[IndentingPrintWriter] = None, target: 
   override def println(s: String): Unit = {
     printIndent
     super.println(s)
+  }
+  
+  def serializeXpp3Dom(dom: Xpp3Dom): Unit = {
+    if (dom.getChildCount() == 0) {
+      println("<" + dom.getName() + ">" + escapeScalaXML(dom.getValue) + "</" + dom.getName() + ">");
+    } else {
+      println("<" + dom.getName() + ">")
+      for(child <- dom.getChildren())
+        indentedWriter.serializeXpp3Dom(child)
+      println("</" + dom.getName() + ">")
+    }
+  }
+  
+  def escapeScalaXML(s: String): String = {
+    val m = java.util.regex.Pattern.compile("\\$\\{[^}]+}").matcher(s)
+    var t = s
+    while (m.find) {
+      t = t.substring(0, m.start) + "{\"" + m.group + "\"}" + t.substring(m.end)
+    }
+    t
   }
 }
