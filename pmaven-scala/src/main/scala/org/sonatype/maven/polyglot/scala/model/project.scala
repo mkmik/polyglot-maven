@@ -64,8 +64,9 @@ import scala.collection.JavaConversions._
 import scala.collection.mutable.{Buffer, Map}
 
 import java.io.StringReader
-import org.xml.sax.InputSource
 import project._
+
+import org.codehaus.plexus.util.xml._
 
 object project {
 
@@ -80,11 +81,8 @@ object project {
    * several places where Maven requires DOM Elements, and the DSL supports Scala
    * literal XML Elems. Need to convert Elem to DOM Element automatically.
    **/
-  implicit def scalaElem2DOMElement(sel: scala.xml.Elem): org.w3c.dom.Element = {
-    val factory = javax.xml.parsers.DocumentBuilderFactory.newInstance()
-    val builder = factory.newDocumentBuilder
-    val doc = builder.parse(new InputSource(new StringReader(sel.toString)))
-    doc.getDocumentElement
+  implicit def scalaElem2Xpp3Dom(sel: scala.xml.Elem): Xpp3Dom = {
+    Xpp3DomBuilder.build(new StringReader(sel.toString))
   }
 }
 
@@ -326,6 +324,9 @@ class Parent extends ApacheParent with WithCoords[Parent] {
   def version: String = getVersion
   def version_=(s: String) = setVersion(s)
   
+  def relativePath: String = getRelativePath
+  def relativePath_=(s: String) = setRelativePath(s)
+  
   def apply(body: (Parent) => Unit): Parent = {
     body(this)
     this
@@ -471,6 +472,7 @@ class Dependency extends ApacheDependency {
   
   def optional: String = getOptional
   def optional_=(s: String) = setOptional(s)
+  def optional_=(b: Boolean) = setOptional(b)
   
   def exclusions = (getExclusions: Buffer[ApacheExclusion])
   def exclusion(body: (Exclusion) => Unit): Exclusion = {
@@ -723,7 +725,7 @@ trait BuildBaseProps extends PluginConfigurationProps {
   self: ApacheBuildBase =>
   
   def defaultGoal: String = getDefaultGoal
-  def defaultoal_=(s: String) = setDefaultGoal(s)
+  def defaultGoal_=(s: String) = setDefaultGoal(s)
   
   def directory: String = getDirectory
   def directory_=(s: String) = setDirectory(s)
@@ -937,6 +939,7 @@ class Plugin extends ApachePlugin with ConfigurationContainerProps with WithCoor
   
   def extensions: String = getExtensions
   def extensions_=(s: String) = setExtensions(s)
+  def extensions_=(b: Boolean) = setExtensions(b)
   
   def executions = (getExecutions: Buffer[ApachePluginExecution])
   def execution(body: (PluginExecution) => Unit): PluginExecution = {
@@ -973,7 +976,8 @@ trait ConfigurationContainerProps {
   self: ApacheConfigurationContainer =>
   
   def inherited: String = getInherited
-  def inherited_=(s: String)= setInherited(s)
+  def inherited_=(s: String) = setInherited(s)
+  def inherited_=(b: Boolean) = setInherited(b)
   
   def configuration: java.lang.Object = getConfiguration
   /**
@@ -981,8 +985,8 @@ trait ConfigurationContainerProps {
    * is supposed to be a W3C DOM Element node. So this mutator method
    * adds a little type safety by requiring use of a W3C DOM Element.
    **/
-  def configuration_=(elem: org.w3c.dom.Element):Unit = setConfiguration(elem)
-  def configuration_=(element: scala.xml.Elem): Unit = configuration_=(element: org.w3c.dom.Element)
+  def configuration_=(elem: Xpp3Dom):Unit = setConfiguration(elem)
+  def configuration_=(element: scala.xml.Elem): Unit = configuration_=(element: Xpp3Dom)
 }
 
 class PluginManagement extends ApachePluginManagement with PluginContainerProps {
@@ -1034,8 +1038,8 @@ class ReportPlugin extends ApacheReportPlugin with WithCoords[ReportPlugin] {
    * is supposed to be a W3C DOM Element node. So this mutator method
    * adds a little type safety by requiring use of a W3C DOM Element.
    **/
-  def configuration_=(elem: org.w3c.dom.Element): Unit = setConfiguration(elem)
-  def configuration_=(element: scala.xml.Elem): Unit = configuration_=(element: org.w3c.dom.Element)  
+  def configuration_=(elem: Xpp3Dom): Unit = setConfiguration(elem)
+  def configuration_=(element: scala.xml.Elem): Unit = configuration_=(element: Xpp3Dom)  
   
   def apply(body: (ReportPlugin) => Unit): ReportPlugin = {
     body(this)
@@ -1057,8 +1061,8 @@ class ReportSet extends ApacheReportSet {
    * is supposed to be a W3C DOM Element node. So this mutator method
    * adds a little type safety by requiring use of a W3C DOM Element.
    **/
-  def configuration_=(elem: org.w3c.dom.Element): Unit = setConfiguration(elem)
-  def configuration_=(element: scala.xml.Elem): Unit = configuration_=(element: org.w3c.dom.Element)
+  def configuration_=(elem: Xpp3Dom): Unit = setConfiguration(elem)
+  def configuration_=(element: scala.xml.Elem): Unit = configuration_=(element: Xpp3Dom)
 }
 
 class Organization extends ApacheOrganization {
