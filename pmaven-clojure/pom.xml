@@ -18,6 +18,9 @@
         <repository>
             <id>clojure-snapshots</id>
             <url>http://build.clojure.org/snapshots/</url>
+            <releases>
+                <enabled>true</enabled>
+            </releases>
             <snapshots>
                 <enabled>true</enabled>
             </snapshots>
@@ -66,7 +69,7 @@
         <dependency>
             <groupId>org.clojure</groupId>
             <artifactId>clojure</artifactId>
-            <version>1.1.0-master-SNAPSHOT</version>
+            <version>1.1.0</version>
         </dependency>
 
         <dependency>
