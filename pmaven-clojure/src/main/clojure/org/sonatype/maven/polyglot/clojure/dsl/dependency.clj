@@ -18,7 +18,9 @@
   [[reference-source options]]
   (let [dependency (make-dependency reference-source)]
     (.setClassifier dependency (:classifier options))
-    (.setType dependency (:type options))
+    (.setType dependency (if (contains? options :type)
+      (:type options)
+      "jar"))
     dependency))
 
 (defn add-dependency!
