@@ -16,24 +16,26 @@
 
     <packaging>pom</packaging>
 
-    <!--<licenses>-->
-        <!--<license>-->
-            <!--<name>The Apache Software License, Version 2.0</name>-->
-            <!--<url>http://www.apache.org/licenses/LICENSE-2.0.txt</url>-->
-            <!--<distribution>repo</distribution>-->
-        <!--</license>-->
-    <!--</licenses>-->
+    <licenses>
+        <license>
+            <name>The Apache Software License, Version 2.0</name>
+            <url>http://www.apache.org/licenses/LICENSE-2.0.txt</url>
+            <distribution>repo</distribution>
+        </license>
+    </licenses>
 
     <scm>
-        <connection>scm:git:git://github.com/sonatype/graven.git</connection>
-        <developerConnection>scm:git:ssh://git@github.com/sonatype/graven.git</developerConnection>
-        <url>https://github.com/sonatype/graven</url>
+        <connection>scm:git:git://github.com/sonatype/polyglot-maven.git</connection>
+        <developerConnection>scm:git:ssh://git@github.com/sonatype/polyglot-maven.git</developerConnection>
+        <url>https://github.com/sonatype/polyglot-maven</url>
     </scm>
 
-    <ciManagement>
-        <system>Hudson</system>
-        <url>https://grid.sonatype.org/ci/view/PMaven</url>
-    </ciManagement>
+    <url>https://docs.sonatype.org/display/PMAVEN</url>
+    
+    <!--<ciManagement>-->
+        <!--<system>Hudson</system>-->
+        <!--<url>https://grid.sonatype.org/ci/view/PMaven</url>-->
+    <!--</ciManagement>-->
 
     <issueManagement>
         <system>JIRA</system>
