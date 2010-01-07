@@ -12,7 +12,7 @@
     <groupId>org.sonatype.pmaven</groupId>
     <artifactId>pmaven</artifactId>
     <name>Polyglot Maven</name>
-    <version>1.0-SNAPSHOT</version>
+    <version>0.7-SNAPSHOT</version>
 
     <packaging>pom</packaging>
 
@@ -147,55 +147,55 @@
             <dependency>
                 <groupId>org.sonatype.pmaven</groupId>
                 <artifactId>pmaven-common</artifactId>
-                <version>1.0-SNAPSHOT</version>
+                <version>0.7-SNAPSHOT</version>
             </dependency>
 
             <dependency>
                 <groupId>org.sonatype.pmaven</groupId>
                 <artifactId>pmaven-cli</artifactId>
-                <version>1.0-SNAPSHOT</version>
+                <version>0.7-SNAPSHOT</version>
             </dependency>
 
             <dependency>
                 <groupId>org.sonatype.pmaven</groupId>
                 <artifactId>pmaven-maven-plugin</artifactId>
-                <version>1.0-SNAPSHOT</version>
+                <version>0.7-SNAPSHOT</version>
             </dependency>
 
             <dependency>
                 <groupId>org.sonatype.pmaven</groupId>
                 <artifactId>pmaven-groovy</artifactId>
-                <version>1.0-SNAPSHOT</version>
+                <version>0.7-SNAPSHOT</version>
             </dependency>
 
             <dependency>
                 <groupId>org.sonatype.pmaven</groupId>
                 <artifactId>pmaven-yaml</artifactId>
-                <version>1.0-SNAPSHOT</version>
+                <version>0.7-SNAPSHOT</version>
             </dependency>
 
             <dependency>
                 <groupId>org.sonatype.pmaven</groupId>
                 <artifactId>pmaven-jruby</artifactId>
-                <version>1.0-SNAPSHOT</version>
+                <version>0.7-SNAPSHOT</version>
             </dependency>
 
             <dependency>
                 <groupId>org.sonatype.pmaven</groupId>
                 <artifactId>pmaven-commands</artifactId>
-                <version>1.0-SNAPSHOT</version>
+                <version>0.7-SNAPSHOT</version>
             </dependency>
 
             <dependency>
                 <groupId>org.sonatype.pmaven</groupId>
                 <artifactId>pmaven-clojure</artifactId>
-                <version>1.0-SNAPSHOT</version>
+                <version>0.7-SNAPSHOT</version>
             </dependency>
             
             <dependency>
                 <groupId>org.sonatype.pmaven</groupId>
                 <artifactId>pmaven-scala</artifactId>
-                <version>1.0-SNAPSHOT</version>
+                <version>0.7-SNAPSHOT</version>
             </dependency>
         </dependencies>
     </dependencyManagement>

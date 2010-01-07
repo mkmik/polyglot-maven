@@ -7,7 +7,7 @@ project {
     }
     groupId 'org.sonatype.pmaven'
     artifactId 'pmaven'
-    version '1.0-SNAPSHOT'
+    version '0.7-SNAPSHOT'
     packaging 'pom'
     name 'Polyglot Maven'
     issueManagement {
@@ -55,7 +55,7 @@ project {
             plugin {
                 groupId 'org.codehaus.gmaven'
                 artifactId 'gmaven-plugin'
-                version '1.1'
+                version '1.2'
                 executions {
                     execution {
                         goals {
@@ -104,6 +104,8 @@ project {
         module 'pmaven-maven-plugin'
         module 'pmaven-groovy'
         module 'pmaven-yaml'
+        module 'pmaven-clojure'
+        module 'pmaven-scala'
         module 'pmaven-cli'
         module 'pmaven-commands'
     }
@@ -147,7 +149,7 @@ project {
             dependency {
                 groupId 'org.codehaus.groovy'
                 artifactId 'groovy'
-                version '1.7-rc-1'
+                version '1.7.0'
                 exclusions {
                     exclusion {
                         artifactId 'jline'
@@ -170,7 +172,7 @@ project {
             dependency {
                 groupId 'org.sonatype.gossip'
                 artifactId 'gossip'
-                version '1.1'
+                version '1.2'
             }
             dependency {
                 groupId 'com.google.inject'
@@ -206,37 +208,47 @@ project {
             dependency {
                 groupId 'org.sonatype.pmaven'
                 artifactId 'pmaven-common'
-                version '1.0-SNAPSHOT'
+                version '0.7-SNAPSHOT'
             }
             dependency {
                 groupId 'org.sonatype.pmaven'
                 artifactId 'pmaven-cli'
-                version '1.0-SNAPSHOT'
+                version '0.7-SNAPSHOT'
             }
             dependency {
                 groupId 'org.sonatype.pmaven'
                 artifactId 'pmaven-maven-plugin'
-                version '1.0-SNAPSHOT'
+                version '0.7-SNAPSHOT'
             }
             dependency {
                 groupId 'org.sonatype.pmaven'
                 artifactId 'pmaven-groovy'
-                version '1.0-SNAPSHOT'
+                version '0.7-SNAPSHOT'
             }
             dependency {
                 groupId 'org.sonatype.pmaven'
                 artifactId 'pmaven-yaml'
-                version '1.0-SNAPSHOT'
+                version '0.7-SNAPSHOT'
             }
             dependency {
                 groupId 'org.sonatype.pmaven'
                 artifactId 'pmaven-jruby'
-                version '1.0-SNAPSHOT'
+                version '0.7-SNAPSHOT'
             }
             dependency {
                 groupId 'org.sonatype.pmaven'
                 artifactId 'pmaven-commands'
-                version '1.0-SNAPSHOT'
+                version '0.7-SNAPSHOT'
+            }
+            dependency {
+                groupId 'org.sonatype.pmaven'
+                artifactId 'pmaven-clojure'
+                version '0.7-SNAPSHOT'
+            }
+            dependency {
+                groupId 'org.sonatype.pmaven'
+                artifactId 'pmaven-scala'
+                version '0.7-SNAPSHOT'
             }
         }
     }
