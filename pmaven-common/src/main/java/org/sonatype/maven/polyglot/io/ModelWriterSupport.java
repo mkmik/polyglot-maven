@@ -33,7 +33,7 @@ import java.util.Map;
  *
  * @author <a href="mailto:jason@planet57.com">Jason Dillon</a>
  *
- * @since 1.0
+ * @since 0.7
  */
 public abstract class ModelWriterSupport
     implements ModelWriter

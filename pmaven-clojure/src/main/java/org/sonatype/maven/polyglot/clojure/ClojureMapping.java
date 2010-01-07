@@ -9,7 +9,7 @@ import org.sonatype.maven.polyglot.mapping.MappingSupport;
  *
  * @author <a href="mailto:mark@derricutt.com">Mark Derricutt</a>
  *
- * @since 1.0
+ * @since 0.7
  */
 @Component(role=Mapping.class, hint="clojure")
 public class ClojureMapping

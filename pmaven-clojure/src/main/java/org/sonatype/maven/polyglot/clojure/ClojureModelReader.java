@@ -23,7 +23,7 @@ import static clojure.lang.RT.seq;
  * Reads a <tt>pom.clj</tt> and transforms into a Maven {@link Model}.
  *
  * @author <a href="mailto:mark@derricutt.com">Mark Derricutt</a>
- * @since 1.0
+ * @since 0.7
  */
 @Component(role = ModelReader.class, hint = "clojure")
 public class ClojureModelReader extends ModelReaderSupport {
