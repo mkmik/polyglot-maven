@@ -22,6 +22,9 @@ import scala.collection.mutable.Map
 
 import java.beans._
 
+/**
+ * @since 0.7
+ */
 object ApacheModelBeanScalaSerializer {
 
   def apply(parentRelativePropRefName: String, a: AnyRef): ApacheModelBeanScalaSerializer = {
