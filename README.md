@@ -3,6 +3,10 @@ Description
 
 Sonatype [Polyglot Maven](https://docs.sonatype.org/display/PMAVEN/Home).
 
+License
+-------
+
+[Apache 2.0](http://www.apache.org/licenses/LICENSE-2.0.html)
 
 Building
 --------
