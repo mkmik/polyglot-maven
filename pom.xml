@@ -123,26 +123,24 @@
                 <version>3.2.3</version>
             </dependency>
 
-            <!-- GShell -->
+            <!--<dependency>-->
+                <!--<groupId>org.sonatype.gshell</groupId>-->
+                <!--<artifactId>gshell-core</artifactId>-->
+                <!--<version>2.1</version>-->
+            <!--</dependency>-->
 
-            <dependency>
-                <groupId>org.sonatype.gshell</groupId>
-                <artifactId>gshell-core</artifactId>
-                <version>2.1</version>
-            </dependency>
+            <!--<dependency>-->
+                <!--<groupId>org.sonatype.gshell</groupId>-->
+                <!--<artifactId>gshell-core</artifactId>-->
+                <!--<classifier>tests</classifier>-->
+                <!--<version>2.1</version>-->
+            <!--</dependency>-->
 
-            <dependency>
-                <groupId>org.sonatype.gshell</groupId>
-                <artifactId>gshell-core</artifactId>
-                <classifier>tests</classifier>
-                <version>2.1</version>
-            </dependency>
-
-            <dependency>
-                <groupId>org.sonatype.gshell</groupId>
-                <artifactId>gshell-plexus</artifactId>
-                <version>2.1</version>
-            </dependency>
+            <!--<dependency>-->
+                <!--<groupId>org.sonatype.gshell</groupId>-->
+                <!--<artifactId>gshell-plexus</artifactId>-->
+                <!--<version>2.1</version>-->
+            <!--</dependency>-->
 
             <!-- INTERNAL -->
 
@@ -182,11 +180,11 @@
                 <!--<version>0.7-SNAPSHOT</version>-->
             <!--</dependency>-->
 
-            <dependency>
-                <groupId>org.sonatype.pmaven</groupId>
-                <artifactId>pmaven-commands</artifactId>
-                <version>0.7-SNAPSHOT</version>
-            </dependency>
+            <!--<dependency>-->
+                <!--<groupId>org.sonatype.pmaven</groupId>-->
+                <!--<artifactId>pmaven-commands</artifactId>-->
+                <!--<version>0.7-SNAPSHOT</version>-->
+            <!--</dependency>-->
 
             <dependency>
                 <groupId>org.sonatype.pmaven</groupId>
@@ -226,7 +224,7 @@
         <!--<module>pmaven-jruby</module>-->
         <module>pmaven-scala</module>
         <module>pmaven-cli</module>
-        <module>pmaven-commands</module>
+        <!--<module>pmaven-commands</module>-->
     </modules>
 
     <build>
