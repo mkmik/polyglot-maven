@@ -20,6 +20,13 @@ import java.io.PrintWriter;
 import java.io.Writer;
 import java.util.Stack;
 
+/**
+ * ???
+ *
+ * @author <a href="mailto:mark@derricutt.com">Mark Derricutt</a>
+ *
+ * @since 0.7
+ */
 public class ClojurePrintWriter extends PrintWriter {
     private Stack<Integer> indents = new Stack<Integer>();
     private boolean needNewLine = false;

@@ -20,20 +20,37 @@ import com.google.common.base.Join;
 import com.google.common.base.Nullable;
 import com.google.common.base.Predicate;
 import com.google.common.collect.Iterables;
-import com.google.common.collect.Lists;
-import org.apache.maven.model.*;
+import org.apache.maven.model.Build;
+import org.apache.maven.model.BuildBase;
+import org.apache.maven.model.Dependency;
+import org.apache.maven.model.DependencyManagement;
+import org.apache.maven.model.DistributionManagement;
+import org.apache.maven.model.Exclusion;
+import org.apache.maven.model.Model;
+import org.apache.maven.model.Notifier;
+import org.apache.maven.model.Parent;
+import org.apache.maven.model.Plugin;
+import org.apache.maven.model.PluginExecution;
+import org.apache.maven.model.Profile;
 import org.apache.maven.model.io.ModelWriter;
 import org.codehaus.plexus.component.annotations.Component;
 import org.codehaus.plexus.util.xml.Xpp3Dom;
 import org.sonatype.maven.polyglot.io.ModelWriterSupport;
 
-import java.io.*;
+import java.io.IOException;
+import java.io.Writer;
 import java.text.MessageFormat;
-import java.util.Date;
 import java.util.List;
 import java.util.Map;
 import java.util.Properties;
 
+/**
+ * Writes a Maven {@link org.apache.maven.model.Model} to a <tt>pom.clj</tt>.
+ *
+ * @author <a href="mailto:mark@derricutt.com">Mark Derricutt</a>
+ *
+ * @since 0.7
+ */
 @Component(role = ModelWriter.class, hint = "clojure")
 public class ClojureModelWriter extends ModelWriterSupport {
 

@@ -16,7 +16,10 @@
 
 package org.sonatype.maven.polyglot.clojure;
 
-import clojure.lang.*;
+import clojure.lang.Atom;
+import clojure.lang.RT;
+import clojure.lang.Symbol;
+import clojure.lang.Var;
 import org.apache.maven.model.Model;
 import org.apache.maven.model.building.ModelBuilder;
 import org.apache.maven.model.building.ModelProcessor;
@@ -28,12 +31,9 @@ import org.sonatype.maven.polyglot.execute.ExecuteManager;
 import org.sonatype.maven.polyglot.io.ModelReaderSupport;
 
 import java.io.IOException;
-import java.io.InputStreamReader;
 import java.io.Reader;
 import java.io.StringReader;
 import java.util.Map;
-
-import static clojure.lang.RT.seq;
 
 /**
  * Reads a <tt>pom.clj</tt> and transforms into a Maven {@link Model}.
