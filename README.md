@@ -1,9 +1,7 @@
 Description
 -----------
 
-Sonatype Polyglot Maven.
-
-https://docs.sonatype.org/display/PMAVEN/Home
+Sonatype [Polyglot Maven](https://docs.sonatype.org/display/PMAVEN/Home).
 
 
 Building
