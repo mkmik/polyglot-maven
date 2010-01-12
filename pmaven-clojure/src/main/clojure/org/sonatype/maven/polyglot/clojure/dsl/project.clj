@@ -124,7 +124,6 @@
 (defn build-project
   ([options]
     (let [project (org.apache.maven.model.Model.)]
-      (.setModelVersion project "4.0.0")
       (.setName project (:name options))
       (.setDescription project (:description options))
       (.setUrl project (:url options))

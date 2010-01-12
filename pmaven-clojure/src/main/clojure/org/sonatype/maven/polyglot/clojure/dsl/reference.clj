@@ -31,19 +31,37 @@
 (defn apply-reference!
   "Apply the reference's fields to the destination object, then return the destination"
   [reference dest]
-  (.setGroupId dest (:group-id reference))
-  (.setArtifactId dest (:artifact-id reference))
-  (.setVersion dest (:version reference))
+  (if (contains? reference :group-id)
+    (.setGroupId dest (:group-id reference)))
+  (if (contains? reference :artifact-id)
+    (.setArtifactId dest (:artifact-id reference)))
+  (if (contains? reference :version)
+    (.setVersion dest (:version reference)))
   dest)
+
+(defn contains-group-id?
+  [source]
+  (and (not= (.getGroupId source) nil)))
+
+(defn contains-artifact-id?
+  [source]
+  (and (not= (.getArtifactId source) nil)))
 
 (defn contains-version?
   [source]
   (and (not= (.getVersion source) nil)))
 
+(defn contains-reference?
+  [source]
+  (and (contains-group-id? source)
+       (contains-artifact-id? source)))
+
 (defn get-reference
   [source]
-  (str (.getGroupId source) ":" (.getArtifactId source)
-    (if (contains-version? source) (str ":" (.getVersion source)) "")))
+  (if (contains-reference? source)
+    (str (.getGroupId source) ":" (.getArtifactId source)
+      (if (contains-version? source) (str ":" (.getVersion source)) ""))
+    nil))
 
 (defn set-version!
   [dest version]

@@ -25,6 +25,8 @@
 
 (defn add-default-plugins!
   [model]
+  (if (nil? (.getModelVersion model))
+    (.setModelVersion model "4.0.0"))
   (if-not (contains-plugin? model "com.theoryinpractise:clojure-maven-plugin")
     (add-plugin! model ["com.theoryinpractise:clojure-maven-plugin:1.3" {:configuration {"testScript" "src/test/clojure/test.clj"}
                                                                          :executions [{:id "compile"
