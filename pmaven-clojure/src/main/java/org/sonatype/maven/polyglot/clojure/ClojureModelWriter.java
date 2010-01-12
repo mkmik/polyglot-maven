@@ -216,7 +216,7 @@ public class ClojureModelWriter extends ModelWriterSupport {
 
         ClojurePrintWriter out = new ClojurePrintWriter(writer);
 
-        out.printLnAtCurrent("(defproject main \"" + model.getGroupId() + ":" + model.getArtifactId() + ":" + model.getVersion() + "\"");
+        out.printLnAtCurrent("(defproject main \"" + getArtifactReference(model) + "\"");
         out.pushIndent(4);
         out.printField(":model-version", model.getModelVersion());
         out.printField(":add-default-plugins", false);
@@ -247,6 +247,11 @@ public class ClojureModelWriter extends ModelWriterSupport {
         out.print(")\n");
         out.flush();
 
+    }
+
+    private String getArtifactReference(Model model) {
+        return (model.getGroupId() != null && model.getArtifactId() != null && model.getVersion() != null) 
+                ? model.getGroupId() + ":" + model.getArtifactId() + ":" + model.getVersion() : "";
     }
 
     private void writeDistributionManagement(DistributionManagement distributionManagement, ClojurePrintWriter out) {
