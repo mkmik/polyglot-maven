@@ -192,7 +192,7 @@ public class ClojureModelWriterTest extends PlexusTestCase {
 
         assertThat(sw.getBuffer().toString())
                 .isEqualTo("" +
-                        "[\"group:artifact:1.0\" {:configuration {\"name\" \"Mark\"}}]");
+                        "[\"group:artifact:1.0\" {:configuration {:name \"Mark\"}}]");
 
     }
 

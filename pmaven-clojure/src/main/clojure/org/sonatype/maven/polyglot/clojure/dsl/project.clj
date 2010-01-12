@@ -57,7 +57,7 @@
   [project options]
   (let [properties (:properties options)]
     (doseq [key (keys properties)]
-      (add-property! project key (get properties key)))))
+      (add-property! project (.getName key) (get properties key)))))
 
 (defn- process-plugins!
   [project options]

@@ -21,15 +21,15 @@
 
 (defmethod build-plugin-configuration-node String
   [name value]
-  (let [node (org.codehaus.plexus.util.xml.Xpp3Dom. name)]
+  (let [node (org.codehaus.plexus.util.xml.Xpp3Dom. (.getName name))]
     (.setValue node value)
     node))
 
 (defmethod build-plugin-configuration-node clojure.lang.PersistentVector
   [name values]
-  (let [node (org.codehaus.plexus.util.xml.Xpp3Dom. (str name "s"))]
+  (let [node (org.codehaus.plexus.util.xml.Xpp3Dom. (str (.getName name) "s"))]
     (doseq [value values]
-      (let [value-node (org.codehaus.plexus.util.xml.Xpp3Dom. name)]
+      (let [value-node (org.codehaus.plexus.util.xml.Xpp3Dom. (.getName name))]
         (.setValue value-node value)
         (.addChild node value-node)))
     node))

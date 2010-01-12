@@ -116,9 +116,9 @@ public class ClojureModelWriter extends ModelWriterSupport {
     private void writeDom(ClojurePrintWriter out, Xpp3Dom dom) {
 
         if (dom.getChildCount() == 0) {
-            out.printLnAtCurrent("\"" + dom.getName() + "\" \"" + dom.getValue() + "\"");
+            out.printLnAtCurrent(":" + dom.getName() + " \"" + dom.getValue() + "\"");
         } else {
-            out.printAtNewIndent("\"" + dom.getChild(0).getName() + "\" [");
+            out.printAtNewIndent(":" + dom.getChild(0).getName() + " [");
 
             boolean pad = false;
             for (Xpp3Dom xpp3Dom : dom.getChildren()) {
@@ -464,7 +464,7 @@ public class ClojureModelWriter extends ModelWriterSupport {
 
             out.printAtNewIndent(":properties {");
             for (Map.Entry<Object, Object> entry : properties.entrySet()) {
-                out.printLnAtCurrent("\"" + entry.getKey() + "\" \"" + entry.getValue() + "\"");
+                out.printLnAtCurrent(":" + entry.getKey() + " \"" + entry.getValue() + "\"");
             }
 
             out.print("}");
