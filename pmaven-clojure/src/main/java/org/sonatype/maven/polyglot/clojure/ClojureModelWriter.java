@@ -17,7 +17,6 @@
 package org.sonatype.maven.polyglot.clojure;
 
 import com.google.common.base.Join;
-import com.google.common.base.Nullable;
 import com.google.common.base.Predicate;
 import com.google.common.collect.Iterables;
 import org.apache.maven.model.Build;
@@ -429,7 +428,7 @@ public class ClojureModelWriter extends ModelWriterSupport {
     private void writeDependencies(List<Dependency> dependencies, final String scope, String prefix, final boolean includeNullScope, ClojurePrintWriter out) {
 
         Iterable<Dependency> scopedDependencies = Iterables.filter(dependencies, new Predicate<Dependency>() {
-            public boolean apply(@Nullable Dependency dependency) {
+            public boolean apply(Dependency dependency) {
                 return includeNullScope
                   ? (scope.equals(dependency.getScope()) || dependency.getScope() == null)
                   : scope.equals(dependency.getScope());

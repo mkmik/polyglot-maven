@@ -111,7 +111,6 @@
             <includes>
                 <include>org.sonatype.pmaven:pmaven-clojure</include>
                 <include>org.clojure:clojure</include>
-                <include>org.clojure:clojure-contrib</include>
             </includes>
         </dependencySet>
 

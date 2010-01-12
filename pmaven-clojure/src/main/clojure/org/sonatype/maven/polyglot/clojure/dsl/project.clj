@@ -122,37 +122,44 @@
       (.addProfile project profile))))
 
 (defn build-project
-  [reference-source options]
-  (let [project (org.apache.maven.model.Model.)
-        reference (parse-reference reference-source)]
-    (.setModelVersion project "4.0.0")
-    (.setGroupId project (:group-id reference))
-    (.setArtifactId project (:artifact-id reference))
-    (.setVersion project (:version reference))
-    (.setName project (:name options))
-    (.setDescription project (:description options))
-    (.setUrl project (:url options))
-    (if (contains? options :packaging)
-      (.setPackaging project (:packaging options)))
-    (if (contains? options :parent)
-      (.setParent project (build-parent (:parent options))))
-    (process-properties! project options)
-    (process-modules! project options)
-    (process-scm! project options)
-    (process-ci! project options)
-    (process-profiles! project options)
-    (process-build! project options)
-    (process-dependency-management! project options)
-    (process-dependencies! project options)
-    (process-plugins! project options)
-    project))
+  ([options]
+    (let [project (org.apache.maven.model.Model.)]
+      (.setModelVersion project "4.0.0")
+      (.setName project (:name options))
+      (.setDescription project (:description options))
+      (.setUrl project (:url options))
+      (if (contains? options :packaging)
+        (.setPackaging project (:packaging options)))
+      (if (contains? options :parent)
+        (.setParent project (build-parent (:parent options))))
+      (process-properties! project options)
+      (process-modules! project options)
+      (process-scm! project options)
+      (process-ci! project options)
+      (process-profiles! project options)
+      (process-build! project options)
+      (process-dependency-management! project options)
+      (process-dependencies! project options)
+      (process-plugins! project options)
+      project))
+  ([reference-source options]
+    (let [project (build-project options)]
+      (apply-reference! (parse-reference reference-source) project)
+      project)))
 
 (defn use-project [project]
   (reset! *PROJECT* project))
 
-(defmacro defproject [name reference-source & options]
-  `(let [project-options# (apply hash-map [~@options])]
-    (def ~name (build-project ~reference-source project-options#))
-    (if (add-default-plugins? project-options#)
-      (add-default-plugins! ~name))
-    (use-project ~name)))
+(defmacro defproject
+  [name reference-source & options]
+  (if (keyword? reference-source)
+    `(let [project-options# (apply hash-map ~(vec (cons reference-source options)))]
+      (def ~name (build-project project-options#))
+      (if (add-default-plugins? project-options#)
+        (add-default-plugins! ~name))
+      (use-project ~name))
+    `(let [project-options# (apply hash-map [~@options])]
+      (def ~name (build-project ~reference-source project-options#))
+      (if (add-default-plugins? project-options#)
+        (add-default-plugins! ~name))
+      (use-project ~name))))

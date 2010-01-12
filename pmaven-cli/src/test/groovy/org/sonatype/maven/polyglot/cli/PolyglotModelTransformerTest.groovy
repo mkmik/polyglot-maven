@@ -32,7 +32,7 @@ public class PolyglotTranslatorCliTest
 
     private void translate(String input, String ext, String expected) {
         println "Translating $input, $ext, $expected"
-        
+
         def url = getClass().getResource(input)
         assertNotNull(url)
 
@@ -46,7 +46,7 @@ public class PolyglotTranslatorCliTest
 
             url = getClass().getResource(expected)
             assertNotNull(url)
-            
+
             def expectedModel = loadModel(url.openStream(), expected)
             def actualModel = loadModel(file.newInputStream(), file.name)
 
@@ -79,9 +79,9 @@ public class PolyglotTranslatorCliTest
             'groovy',
             'yml',
 //            'scala',
-//            'clj',
+            'clj'
         ]
-        
+
         for (source in formats) {
             for (target in formats) {
                 println "Testing $source -> $target"

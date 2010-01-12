@@ -72,7 +72,7 @@ public class ClojureModelReader extends ModelReaderSupport {
                     "(use (quote org.sonatype.maven.polyglot.clojure.dsl.plugin))" +
                     "(use (quote org.sonatype.maven.polyglot.clojure.dsl.defaults))" +
                     "(use (quote org.sonatype.maven.polyglot.clojure.dsl.project))";
-
+            
             clojure.lang.Compiler.load(new StringReader(bootstrapClojureDsl));
             clojure.lang.Compiler.load(input, location.toString(), source.toString());
 
