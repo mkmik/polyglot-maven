@@ -3,14 +3,18 @@ Description
 
 Sonatype [Polyglot Maven](https://docs.sonatype.org/display/PMAVEN/Home).
 
+License
+-------
+
+[Apache 2.0](http://www.apache.org/licenses/LICENSE-2.0.html)
 
 Building
 --------
 
 ### Requirements
 
-* [Maven](http://maven.apache.org) 2.x
-* [Java](http://java.sun.com/) 5
+* [Maven](http://maven.apache.org) 2+
+* [Java](http://java.sun.com/) 5+
 
 Check-out and build:
 
