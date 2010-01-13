@@ -75,6 +75,12 @@ object project {
     body(m)
     m
   }
+  
+  def apply(coordinates: String): Model = {
+    val m = new Model
+    m coords coordinates
+    m
+  }
 
   /**
    * Convert Scala XML elements to DOM Elements implicitly. Needed for the
@@ -88,7 +94,7 @@ object project {
 
 trait ModelBaseProps {
   self: ApacheModelBase =>
-  
+
   def distributionManagement: ApacheDistributionManagement = getDistributionManagement
   def distributionManagement(body: (DistributionManagement) => Unit): DistributionManagement = {
     val d = new DistributionManagement
@@ -143,10 +149,10 @@ trait ModelBaseProps {
     dm
   }
 
-  def properties = (getProperties: Map[java.lang.Object, java.lang.Object])  
+  def properties = (getProperties: Map[java.lang.Object, java.lang.Object])
 }
 
-class Model extends ApacheModel with ModelBaseProps {
+class Model extends ApacheModel with ModelBaseProps with WithCoords[Model] {
   def modelVersion: String = getModelVersion
   def modelVersion_=(s: String) = setModelVersion(s)
   
@@ -285,6 +291,102 @@ class Model extends ApacheModel with ModelBaseProps {
     setBuild(b)
     b
   }
+  
+  def apply(body: (Model) => Unit): Model = {
+    body(this)
+    this
+  }
+  
+  /**
+   * <p>
+   * Convenience function to configure the Model object with the most common
+   * Scala plugin configuration options, as well as reference to the scala-tools
+   * repository. That is, the following Scala DSL code
+   * </p>
+   *
+   * <p><blockquote><pre>
+   *   project { proj =>
+   *     proj includesScalaSourceCode "2.7.7"
+   *   }
+   * </pre></blockquote></p>
+   *
+   * <p>
+   * Is equivalent to the following Maven XML configuration options
+   * added to the model:
+   * </p>
+   *
+   * <p><blockquote><pre>
+   *   &lt;project>
+   *
+   *     &lt;repositories>
+   *       &lt;repository>
+   *         &lt;id>scala-tools.org&lt;/id>
+   *         &lt;name>Scala-tools Maven2 Repository&lt;/name>
+   *         &lt;url>http://scala-tools.org/repo-releases&lt;/url>
+   *       &lt;/repository>
+   *     &lt;/repositories>
+   *
+   *     &lt;pluginRepositories>
+   *       &lt;pluginRepository>
+   *         &lt;id>scala-tools.org</id>
+   *         &lt;name>Scala-tools Maven2 Repository&lt;/name>
+   *         &lt;url>http://scala-tools.org/repo-releases&lt;/url>
+   *       &lt;/pluginRepository>
+   *     &lt;/pluginRepositories>
+   *
+   *     &lt;build>
+   *       &lt;sourceDirectory>src/main/scala&lt;/sourceDirectory>
+   *       &lt;testSourceDirectory>src/test/scala&lt;/testSourceDirectory>
+   *
+   *       &lt;plugins>
+   *         &lt;plugin>
+   *           &lt;groupId>org.scala-tools&/groupId>
+   *           &lt;artifactId>maven-scala-plugin&lt;/artifactId>
+   *           &lt;executions>
+   *             &lt;execution>
+   *               &lt;goals>
+   *                 &lt;goal>compile&lt;/goal>
+   *                 &lt;goal>testCompile&lt;/goal>
+   *               &lt;/goals>
+   *             &lt;/execution>
+   *           &lt;/executions>
+   *           &lt;configuration>
+   *             &lt;scalaVersion><i><b>version</b></i>&lt;/scalaVersion>
+   *           &lt;/configuration>
+   *         &lt;/plugin>
+   *       &lt;plugins>
+   *     &lt;/build>
+   *
+   *   &lt;/project>
+   * </pre></blockquote></p>
+   **/
+  def includesScalaSourceCode(version: String): Unit = {
+    repository { repo =>
+      repo.id = "scala-tools.org"
+      repo.name = "Scala-tools Maven2 Repository"
+      repo.url = "http://scala-tools.org/repo-releases"
+    }
+    
+    pluginRepository { repo =>
+      repo.id = "scala-tools.org"
+      repo.name = "Scala-tools Maven2 Repository"
+      repo.url = "http://scala-tools.org/repo-releases"
+    }
+    
+    build { b =>
+      b.plugin { pi =>
+        pi.groupId = "org.scala-tools"
+        pi.artifactId = "maven-scala-plugin"
+        pi.execution { e =>
+          e.goals += ("compile", "testCompile")
+          e.configuration =
+            <configuration>
+              <scalaVersion>{version}</scalaVersion>
+            </configuration>
+        }
+      }
+    }
+  }
 }
 
 trait WithCoords[This] {
@@ -415,11 +517,11 @@ class Dependency extends ApacheDependency {
   def artifactRef(coordinates: String): Dependency = {
     val deppatt = "([^:]+):([^:]+)(:([^:]+)(:([^:]+)(:([^:]+))?)?)?".r
     coordinates match {
-      case deppatt(gid, aid, _, typ, _, classifier, _, version) if version.length > 0 =>
+      case deppatt(gid, aid, _, typ, _, classifier, _, version) if version != null && version.length > 0 =>
         coords(gid, aid, typ, classifier, version)
-      case deppatt(gid, aid, _, typ, _, version,_, _) if version.length > 0 =>
+      case deppatt(gid, aid, _, typ, _, version,_, _) if version != null && version.length > 0 =>
         coords(gid, aid, typ, version)
-      case deppatt(gid, aid, _, version, _, _, _, _) if version.length > 0 =>
+      case deppatt(gid, aid, _, version, _, _, _, _) if version != null && version.length > 0 =>
         coords(gid, aid, version)
       case deppatt(gid, aid, _, _, _, _, _, _) =>
         coords(gid, aid)

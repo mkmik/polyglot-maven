@@ -78,12 +78,17 @@ public class NoWhitespaceXMLCanonicalizer {
   public String transform(String input) {
     initCanonicalizationEngine();
 
+    System.out.println("INPUT: " + input);
+
     DOMResult domResult = new DOMResult();
     try {
       noWhitespaceTransformer.transform(new StreamSource(
           new StringReader(input)), domResult);
       String output = new String(c11r.canonicalizeSubtree(domResult
           .getNode()));
+      
+      System.out.println("OUTPUT: " + output);
+      
       return output;
     } catch (TransformerException e) {
       throw new RuntimeException(e);

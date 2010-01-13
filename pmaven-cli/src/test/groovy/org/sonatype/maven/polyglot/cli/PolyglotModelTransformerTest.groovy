@@ -3,10 +3,10 @@ package org.sonatype.maven.polyglot.cli
 import org.apache.maven.model.Model
 import org.apache.maven.model.building.ModelProcessor
 import org.apache.maven.model.io.ModelWriter
+import org.apache.maven.model.io.DefaultModelWriter
 import org.codehaus.plexus.PlexusTestCase
 import org.junit.Before
 import org.junit.Test
-import org.sonatype.maven.polyglot.groovy.GroovyModelWriter
 import org.sonatype.maven.polyglot.PolyglotModelManager
 
 /**
@@ -21,8 +21,7 @@ public class PolyglotTranslatorCliTest
 
     private PolyglotTranslatorCli translator;
 
-    // NOTE: Using Groovy, as XML seems to put in encoding sometimes that messes up the tests
-    private ModelWriter writer = new GroovyModelWriter()
+    private ModelWriter writer = new DefaultModelWriter()
 
     @Before
     void setUp() {
@@ -36,12 +35,14 @@ public class PolyglotTranslatorCliTest
         def url = getClass().getResource(input)
         assertNotNull(url)
 
+        println "Input url:\n${url}"
         println "Input text:\n${url.text}"
 
         def file = File.createTempFile("pom", ext)
         file.deleteOnExit()
         try {
             translator.translate(url, file.toURI().toURL())
+            println "Translated text file url:\n ${file.toURI().toURL()}"
             println "Translated text:\n${file.text}"
 
             url = getClass().getResource(expected)
@@ -65,11 +66,18 @@ public class PolyglotTranslatorCliTest
     }
 
     private void assertModelEquals(final Model expected, final Model actual) {
-        def xml1 = new StringWriter()
-        writer.write(xml1, null, expected)
-        def xml2 = new StringWriter()
-        writer.write(xml2, null, actual)
-        assertEquals(xml1.toString(), xml2.toString())
+        //...strips all whitespace and canonicalizes XML documents...
+        def c11r = new NoWhitespaceXMLCanonicalizer();
+        
+        def swxml1 = new StringWriter()
+        writer.write(swxml1, null, expected)
+        def xml1 = c11r.transform(swxml1.toString())
+        
+        def swxml2 = new StringWriter()
+        writer.write(swxml2, null, actual)
+        def xml2 = c11r.transform(swxml2.toString());
+        
+        assertEquals(xml1, xml2)
     }
 
     @Test
@@ -78,7 +86,7 @@ public class PolyglotTranslatorCliTest
             'xml',
             'groovy',
             'yml',
-//            'scala',
+            'scala',
             'clj'
         ]
 

@@ -34,6 +34,7 @@ class ScalaModelReaderSpec extends WordSpec with ShouldMatchers {
     val inputMinimal = getClass.getResourceAsStream("/pomMinimal.scala")
     val inputWithContributors = getClass.getResourceAsStream("/pomWithContributors.scala")
     val inputWithDevelopers = getClass.getResourceAsStream("/pomWithDevelopers.scala")
+    val inputWithScala = getClass.getResourceAsStream("/pomWithScala.scala")
     
     val emptyOptions = new java.util.HashMap[String, String]()
 
@@ -84,6 +85,17 @@ class ScalaModelReaderSpec extends WordSpec with ShouldMatchers {
         val model = reader.read(inputWithDevelopers, emptyOptions)
         model.getDevelopers map {_.getId} should contain ("bmaso")
         model.getDevelopers map {_.getId} should contain ("hseeberger")
+      }
+    }
+    
+    "called with a pom that includes Scala shorthand configuration" should {
+    
+      "parse scala options" in {
+        val model = reader.read(inputWithScala, emptyOptions)
+        
+        //...should contain this following dependency...
+        model.getDependencies.length should be(1)
+        List(model.getDependencies()(0).getGroupId, model.getDependencies()(0).getArtifactId, model.getDependencies()(0).getVersion) should be(List("apache-httpclient", "commons-httpclient", "3.0.1"))
       }
     }
   }
