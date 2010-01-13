@@ -87,7 +87,7 @@ public class PolyglotTranslatorCliTest
             'groovy',
             'yml',
             'scala',
-            'clj'
+            //'clj'
         ]
 
         for (source in formats) {
