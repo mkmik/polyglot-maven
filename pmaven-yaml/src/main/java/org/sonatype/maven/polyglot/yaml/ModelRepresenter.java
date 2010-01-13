@@ -47,7 +47,7 @@ import java.util.TreeSet;
  * @author jvanzyl
  * @author bentmann
  *
- * @since 1.0
+ * @since 0.7
  */
 class ModelRepresenter
     extends Representer

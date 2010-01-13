@@ -32,8 +32,9 @@ import scala.collection.mutable.Buffer
 
 /**
  * Writes a Maven {@link org.apache.maven.model.Model} to a <code>pom.scala</code>.
- **/
- 
+ *
+ * @since 0.7
+ */
 @Component(role=classOf[ModelWriter], hint="scala")
 class ModelScalaWriter extends ModelWriterSupport {
 

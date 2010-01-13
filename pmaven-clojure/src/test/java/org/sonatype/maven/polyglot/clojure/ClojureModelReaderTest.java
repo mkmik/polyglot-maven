@@ -17,10 +17,7 @@ import java.util.Map;
  *
  * @author <a href="mailto:mark@derricutt.com">Mark Derricutt</a>
  */
-public class ClojureModelReaderTest
-    extends PlexusTestCase
-{
-
+public class ClojureModelReaderTest extends PlexusTestCase {
 
     @Test
     public void testReading() throws Exception {
@@ -32,7 +29,7 @@ public class ClojureModelReaderTest
 
         assertEquals("UTF-8", model.getModelEncoding());
         assertEquals("jar", model.getPackaging());
-        assertEquals("4.0.0", model.getModelVersion());
+//        assertEquals("4.0.0", model.getModelVersion());
         assertEquals("a", model.getGroupId());
         assertEquals("b", model.getArtifactId());
         assertEquals("c", model.getVersion());
@@ -75,7 +72,13 @@ public class ClojureModelReaderTest
 
         assertEquals(true, hasTestNg);
 
+    }
 
+    @Test
+    public void testNoGroupOrArtifact() throws Exception {
+
+        Model model = readClojureModel("test3.clj");
+        assertNotNull(model);
 
     }
 

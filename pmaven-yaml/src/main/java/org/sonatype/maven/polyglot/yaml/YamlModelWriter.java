@@ -37,7 +37,7 @@ import java.util.Map;
  * @author jvanzyl
  * @author bentmann
  *
- * @since 1.0
+ * @since 0.7
  */
 @Component(role = ModelWriter.class, hint = "yaml")
 public class YamlModelWriter

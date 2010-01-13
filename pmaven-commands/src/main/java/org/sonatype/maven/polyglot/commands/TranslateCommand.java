@@ -25,7 +25,7 @@ import java.io.File;
  * Translate Maven pom file formats..
  *
  * @author <a href="mailto:jason@planet57.com">Jason Dillon</a>
- * @since 0.8
+ * @since 0.7
  */
 @Command(name="translate")
 public class TranslateCommand

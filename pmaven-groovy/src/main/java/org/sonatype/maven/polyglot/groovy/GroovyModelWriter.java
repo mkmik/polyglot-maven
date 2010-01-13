@@ -46,7 +46,7 @@ import java.util.Map;
  *
  * @author <a href="mailto:jason@planet57.com">Jason Dillon</a>
  *
- * @since 1.0
+ * @since 0.7
  */
 @Component(role=ModelWriter.class, hint="groovy")
 public class GroovyModelWriter

@@ -1,6 +1,25 @@
+/*
+ * Copyright (C) 2010 the original author or authors.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ * http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
 package org.sonatype.maven.polyglot.clojure;
 
-import clojure.lang.*;
+import clojure.lang.Atom;
+import clojure.lang.RT;
+import clojure.lang.Symbol;
+import clojure.lang.Var;
 import org.apache.maven.model.Model;
 import org.apache.maven.model.building.ModelBuilder;
 import org.apache.maven.model.building.ModelProcessor;
@@ -12,18 +31,15 @@ import org.sonatype.maven.polyglot.execute.ExecuteManager;
 import org.sonatype.maven.polyglot.io.ModelReaderSupport;
 
 import java.io.IOException;
-import java.io.InputStreamReader;
 import java.io.Reader;
 import java.io.StringReader;
 import java.util.Map;
-
-import static clojure.lang.RT.seq;
 
 /**
  * Reads a <tt>pom.clj</tt> and transforms into a Maven {@link Model}.
  *
  * @author <a href="mailto:mark@derricutt.com">Mark Derricutt</a>
- * @since 1.0
+ * @since 0.7
  */
 @Component(role = ModelReader.class, hint = "clojure")
 public class ClojureModelReader extends ModelReaderSupport {
@@ -56,7 +72,7 @@ public class ClojureModelReader extends ModelReaderSupport {
                     "(use (quote org.sonatype.maven.polyglot.clojure.dsl.plugin))" +
                     "(use (quote org.sonatype.maven.polyglot.clojure.dsl.defaults))" +
                     "(use (quote org.sonatype.maven.polyglot.clojure.dsl.project))";
-
+            
             clojure.lang.Compiler.load(new StringReader(bootstrapClojureDsl));
             clojure.lang.Compiler.load(input, location.toString(), source.toString());
 

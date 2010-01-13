@@ -36,7 +36,7 @@ import java.util.Map;
  *
  * @author <a href="mailto:jason@planet57.com">Jason Dillon</a>
  *
- * @since 1.0
+ * @since 0.7
  */
 @Component(role=ExecuteManager.class, instantiationStrategy="singleton")
 public class ExecuteManagerImpl
@@ -92,7 +92,7 @@ public class ExecuteManagerImpl
         Plugin plugin = new Plugin();
         plugin.setGroupId("org.sonatype.pmaven");
         plugin.setArtifactId("pmaven-maven-plugin");
-        plugin.setVersion("1.0-SNAPSHOT");
+        plugin.setVersion("0.7-SNAPSHOT");
         model.getBuild().addPlugin(plugin);
 
         List<String> goals = Collections.singletonList("execute");

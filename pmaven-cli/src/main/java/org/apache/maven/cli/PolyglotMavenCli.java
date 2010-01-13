@@ -27,7 +27,7 @@ import org.codehaus.plexus.component.repository.ComponentDescriptor;
  *
  * @author <a href="mailto:jason@planet57.com">Jason Dillon</a>
  *
- * @since 1.0
+ * @since 0.7
  */
 public class PolyglotMavenCli
     extends MavenCli

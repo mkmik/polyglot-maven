@@ -27,6 +27,9 @@ import org.codehaus.plexus.logging.Logger
 
 import scala.tools.nsc.GenericRunnerSettings
 
+/**
+ * @since 0.7
+ */
 @Component(role=classOf[ModelReader], hint="scala")
 class ScalaModelReader extends ModelReaderSupport {
   type modelGenerator = {

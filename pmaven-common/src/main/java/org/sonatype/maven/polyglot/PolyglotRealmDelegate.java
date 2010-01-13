@@ -25,7 +25,7 @@ import org.codehaus.plexus.component.annotations.Component;
  *
  * @author <a href="mailto:jason@planet57.com">Jason Dillon</a>
  *
- * @since 1.0
+ * @since 0.7
  */
 @Component(role=ClassRealmManagerDelegate.class, hint="polyglot")
 public class PolyglotRealmDelegate

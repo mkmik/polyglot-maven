@@ -31,7 +31,7 @@ build:
     extensions: false
     groupId: org.codehaus.gmaven
     inherited: true
-    version: '1.1'
+    version: '1.2'
   - artifactId: plexus-component-metadata
     executions:
     - goals: [generate-metadata, generate-test-metadata]
@@ -51,7 +51,6 @@ build:
     version: 2.0-beta-9
   - {artifactId: maven-scm-plugin, extensions: false, groupId: org.apache.maven.plugins,
     inherited: true, version: '1.2'}
-ciManagement: {system: Hudson, url: 'https://grid.sonatype.org/ci/view/PMaven'}
 dependencies:
 - {artifactId: junit, groupId: junit, optional: false, scope: test, type: jar, version: '4.7'}
 - {artifactId: groovy, groupId: org.codehaus.groovy, optional: false, scope: test,
@@ -75,43 +74,40 @@ dependencyManagement:
     groupId: org.codehaus.groovy
     optional: false
     type: jar
-    version: 1.7-rc-1
+    version: 1.7.0
   - {artifactId: gossip, groupId: org.sonatype.gossip, optional: false, type: jar,
-    version: '1.1'}
+    version: '1.2'}
   - {artifactId: guice, groupId: com.google.inject, optional: false, type: jar, version: '2.0'}
   - {artifactId: grrrowl, groupId: org.sonatype.grrrowl, optional: false, type: jar,
     version: '1.0'}
   - {artifactId: jna, groupId: net.java.dev.jna, optional: false, type: jar, version: 3.2.3}
-  - {artifactId: gshell-core, groupId: org.sonatype.gshell, optional: false, type: jar,
-    version: '2.1'}
-  - {artifactId: gshell-core, classifier: tests, groupId: org.sonatype.gshell, optional: false,
-    type: jar, version: '2.1'}
-  - {artifactId: gshell-plexus, groupId: org.sonatype.gshell, optional: false, type: jar,
-    version: '2.1'}
   - {artifactId: pmaven-common, groupId: org.sonatype.pmaven, optional: false, type: jar,
-    version: 1.0-SNAPSHOT}
+    version: 0.7-SNAPSHOT}
   - {artifactId: pmaven-cli, groupId: org.sonatype.pmaven, optional: false, type: jar,
-    version: 1.0-SNAPSHOT}
+    version: 0.7-SNAPSHOT}
   - {artifactId: pmaven-maven-plugin, groupId: org.sonatype.pmaven, optional: false,
-    type: jar, version: 1.0-SNAPSHOT}
+    type: jar, version: 0.7-SNAPSHOT}
   - {artifactId: pmaven-groovy, groupId: org.sonatype.pmaven, optional: false, type: jar,
-    version: 1.0-SNAPSHOT}
+    version: 0.7-SNAPSHOT}
   - {artifactId: pmaven-yaml, groupId: org.sonatype.pmaven, optional: false, type: jar,
-    version: 1.0-SNAPSHOT}
-  - {artifactId: pmaven-jruby, groupId: org.sonatype.pmaven, optional: false, type: jar,
-    version: 1.0-SNAPSHOT}
-  - {artifactId: pmaven-commands, groupId: org.sonatype.pmaven, optional: false, type: jar,
-    version: 1.0-SNAPSHOT}
+    version: 0.7-SNAPSHOT}
+  - {artifactId: pmaven-clojure, groupId: org.sonatype.pmaven, optional: false, type: jar,
+    version: 0.7-SNAPSHOT}
+  - {artifactId: pmaven-scala, groupId: org.sonatype.pmaven, optional: false, type: jar,
+    version: 0.7-SNAPSHOT}
 groupId: org.sonatype.pmaven
 issueManagement: {system: JIRA, url: 'https://issues.sonatype.org/browse/PMAVEN'}
+licenses:
+- {distribution: repo, name: 'The Apache Software License, Version 2.0', url: 'http://www.apache.org/licenses/LICENSE-2.0.txt'}
 modelVersion: 4.0.0
-modules: [pmaven-common, pmaven-maven-plugin, pmaven-groovy, pmaven-yaml, pmaven-cli,
-  pmaven-commands]
+modules: [pmaven-common, pmaven-maven-plugin, pmaven-groovy, pmaven-yaml, pmaven-clojure,
+  pmaven-scala, pmaven-cli]
 name: Polyglot Maven
 packaging: pom
 parent: {artifactId: forge-parent, groupId: org.sonatype.forge, relativePath: ../pom.xml,
   version: '5'}
-properties: {mavenVersion: 3.0-alpha-5, project.build.sourceEncoding: UTF-8}
-scm: {connection: 'scm:git:git://github.com/sonatype/graven.git', developerConnection: 'scm:git:ssh://git@github.com/sonatype/graven.git',
-  tag: HEAD, url: 'https://github.com/sonatype/graven'}
-version: 1.0-SNAPSHOT
+properties: {mavenVersion: 3.0-alpha-6, project.build.sourceEncoding: UTF-8}
+scm: {connection: 'scm:git:git://github.com/sonatype/polyglot-maven.git', developerConnection: 'scm:git:ssh://git@github.com/sonatype/polyglot-maven.git',
+  tag: HEAD, url: 'https://github.com/sonatype/polyglot-maven'}
+url: https://docs.sonatype.org/display/PMAVEN
+version: 0.7-SNAPSHOT

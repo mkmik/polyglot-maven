@@ -21,7 +21,7 @@ import org.sonatype.maven.polyglot.mapping.{Mapping, MappingSupport}
 
 /**
  * Scala model mapping.
- * @since 1.0
+ * @since 0.7
  */
 @Component(role=classOf[Mapping], hint="scala")
 class ScalaMapping extends MappingSupport("scala") {

@@ -1,3 +1,19 @@
+;
+; Copyright (C) 2010 the original author or authors.
+;
+; Licensed under the Apache License, Version 2.0 (the "License");
+; you may not use this file except in compliance with the License.
+; You may obtain a copy of the License at
+;
+; http://www.apache.org/licenses/LICENSE-2.0
+;
+; Unless required by applicable law or agreed to in writing, software
+; distributed under the License is distributed on an "AS IS" BASIS,
+; WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+; See the License for the specific language governing permissions and
+; limitations under the License.
+;
+
 (ns org.sonatype.maven.polyglot.clojure.dsl.reference)
 
 (defmulti parse-reference #(+ 1 (count (re-seq #":" %))))
@@ -15,19 +31,37 @@
 (defn apply-reference!
   "Apply the reference's fields to the destination object, then return the destination"
   [reference dest]
-  (.setGroupId dest (:group-id reference))
-  (.setArtifactId dest (:artifact-id reference))
-  (.setVersion dest (:version reference))
+  (if (contains? reference :group-id)
+    (.setGroupId dest (:group-id reference)))
+  (if (contains? reference :artifact-id)
+    (.setArtifactId dest (:artifact-id reference)))
+  (if (contains? reference :version)
+    (.setVersion dest (:version reference)))
   dest)
+
+(defn contains-group-id?
+  [source]
+  (and (not= (.getGroupId source) nil)))
+
+(defn contains-artifact-id?
+  [source]
+  (and (not= (.getArtifactId source) nil)))
 
 (defn contains-version?
   [source]
   (and (not= (.getVersion source) nil)))
 
+(defn contains-reference?
+  [source]
+  (and (contains-group-id? source)
+       (contains-artifact-id? source)))
+
 (defn get-reference
   [source]
-  (str (.getGroupId source) ":" (.getArtifactId source)
-    (if (contains-version? source) (str ":" (.getVersion source)) "")))
+  (if (contains-reference? source)
+    (str (.getGroupId source) ":" (.getArtifactId source)
+      (if (contains-version? source) (str ":" (.getVersion source)) ""))
+    nil))
 
 (defn set-version!
   [dest version]

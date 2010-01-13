@@ -34,6 +34,9 @@ import org.apache.maven.model.{Model => ApacheModelBaseClass}
 
 import org.codehaus.plexus.logging.Logger
 
+/**
+ * @since 0.7
+ */
 object PMavenScriptCompiler {
 
   /**

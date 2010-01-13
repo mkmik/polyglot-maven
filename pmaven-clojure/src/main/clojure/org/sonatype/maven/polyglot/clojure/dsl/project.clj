@@ -1,3 +1,19 @@
+;
+; Copyright (C) 2010 the original author or authors.
+;
+; Licensed under the Apache License, Version 2.0 (the "License");
+; you may not use this file except in compliance with the License.
+; You may obtain a copy of the License at
+;
+; http://www.apache.org/licenses/LICENSE-2.0
+;
+; Unless required by applicable law or agreed to in writing, software
+; distributed under the License is distributed on an "AS IS" BASIS,
+; WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+; See the License for the specific language governing permissions and
+; limitations under the License.
+;
+
 (ns org.sonatype.maven.polyglot.clojure.dsl.project
   (:use org.sonatype.maven.polyglot.clojure.dsl.reference)
   (:use org.sonatype.maven.polyglot.clojure.dsl.dependency)
@@ -41,7 +57,7 @@
   [project options]
   (let [properties (:properties options)]
     (doseq [key (keys properties)]
-      (add-property! project key (get properties key)))))
+      (add-property! project (.getName key) (get properties key)))))
 
 (defn- process-plugins!
   [project options]
@@ -106,37 +122,43 @@
       (.addProfile project profile))))
 
 (defn build-project
-  [reference-source options]
-  (let [project (org.apache.maven.model.Model.)
-        reference (parse-reference reference-source)]
-    (.setModelVersion project "4.0.0")
-    (.setGroupId project (:group-id reference))
-    (.setArtifactId project (:artifact-id reference))
-    (.setVersion project (:version reference))
-    (.setName project (:name options))
-    (.setDescription project (:description options))
-    (.setUrl project (:url options))
-    (if (contains? options :packaging)
-      (.setPackaging project (:packaging options)))
-    (if (contains? options :parent)
-      (.setParent project (build-parent (:parent options))))
-    (process-properties! project options)
-    (process-modules! project options)
-    (process-scm! project options)
-    (process-ci! project options)
-    (process-profiles! project options)
-    (process-build! project options)
-    (process-dependency-management! project options)
-    (process-dependencies! project options)
-    (process-plugins! project options)
-    project))
+  ([options]
+    (let [project (org.apache.maven.model.Model.)]
+      (.setName project (:name options))
+      (.setDescription project (:description options))
+      (.setUrl project (:url options))
+      (if (contains? options :packaging)
+        (.setPackaging project (:packaging options)))
+      (if (contains? options :parent)
+        (.setParent project (build-parent (:parent options))))
+      (process-properties! project options)
+      (process-modules! project options)
+      (process-scm! project options)
+      (process-ci! project options)
+      (process-profiles! project options)
+      (process-build! project options)
+      (process-dependency-management! project options)
+      (process-dependencies! project options)
+      (process-plugins! project options)
+      project))
+  ([reference-source options]
+    (let [project (build-project options)]
+      (apply-reference! (parse-reference reference-source) project)
+      project)))
 
 (defn use-project [project]
   (reset! *PROJECT* project))
 
-(defmacro defproject [name reference-source & options]
-  `(let [project-options# (apply hash-map [~@options])]
-    (def ~name (build-project ~reference-source project-options#))
-    (if (add-default-plugins? project-options#)
-      (add-default-plugins! ~name))
-    (use-project ~name)))
+(defmacro defproject
+  [name reference-source & options]
+  (if (keyword? reference-source)
+    `(let [project-options# (apply hash-map ~(vec (cons reference-source options)))]
+      (def ~name (build-project project-options#))
+      (if (add-default-plugins? project-options#)
+        (add-default-plugins! ~name))
+      (use-project ~name))
+    `(let [project-options# (apply hash-map [~@options])]
+      (def ~name (build-project ~reference-source project-options#))
+      (if (add-default-plugins? project-options#)
+        (add-default-plugins! ~name))
+      (use-project ~name))))

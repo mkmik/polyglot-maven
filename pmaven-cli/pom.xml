@@ -23,7 +23,7 @@
     <parent>
         <groupId>org.sonatype.pmaven</groupId>
         <artifactId>pmaven</artifactId>
-        <version>1.0-SNAPSHOT</version>
+        <version>0.7-SNAPSHOT</version>
     </parent>
 
     <artifactId>pmaven-cli</artifactId>
@@ -53,6 +53,14 @@
         <dependency>
             <groupId>org.sonatype.pmaven</groupId>
             <artifactId>pmaven-scala</artifactId>
+        </dependency>
+
+        <!-- Used for XML Canonicalization, to compare
+             pom.xml files -->
+        <dependency>
+            <groupId>xml-security</groupId>
+            <artifactId>xmlsec</artifactId>
+            <version>1.3.0</version>
         </dependency>
     </dependencies>
 

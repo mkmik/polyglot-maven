@@ -7,21 +7,25 @@ project {
     }
     groupId 'org.sonatype.pmaven'
     artifactId 'pmaven'
-    version '1.0-SNAPSHOT'
+    version '0.7-SNAPSHOT'
     packaging 'pom'
     name 'Polyglot Maven'
+    url 'https://docs.sonatype.org/display/PMAVEN'
+    licenses {
+        license {
+            name 'The Apache Software License, Version 2.0'
+            url 'http://www.apache.org/licenses/LICENSE-2.0.txt'
+            distribution 'repo'
+        }
+    }
+    scm {
+        connection 'scm:git:git://github.com/sonatype/polyglot-maven.git'
+        developerConnection 'scm:git:ssh://git@github.com/sonatype/polyglot-maven.git'
+        url 'https://github.com/sonatype/polyglot-maven'
+    }
     issueManagement {
         system 'JIRA'
         url 'https://issues.sonatype.org/browse/PMAVEN'
-    }
-    scm {
-        connection 'scm:git:git://github.com/sonatype/graven.git'
-        developerConnection 'scm:git:ssh://git@github.com/sonatype/graven.git'
-        url 'https://github.com/sonatype/graven'
-    }
-    ciManagement {
-        system 'Hudson'
-        url 'https://grid.sonatype.org/ci/view/PMaven'
     }
     build {
         defaultGoal 'install'
@@ -55,7 +59,7 @@ project {
             plugin {
                 groupId 'org.codehaus.gmaven'
                 artifactId 'gmaven-plugin'
-                version '1.1'
+                version '1.2'
                 executions {
                     execution {
                         goals {
@@ -104,21 +108,13 @@ project {
         module 'pmaven-maven-plugin'
         module 'pmaven-groovy'
         module 'pmaven-yaml'
+        module 'pmaven-clojure'
+        module 'pmaven-scala'
         module 'pmaven-cli'
-        module 'pmaven-commands'
     }
-    dependencies {
-        dependency {
-            groupId 'junit'
-            artifactId 'junit'
-            version '4.7'
-            scope 'test'
-        }
-        dependency {
-            groupId 'org.codehaus.groovy'
-            artifactId 'groovy'
-            scope 'test'
-        }
+    properties {
+        mavenVersion '3.0-alpha-6'
+        'project.build.sourceEncoding' 'UTF-8'
     }
     dependencyManagement {
         dependencies {
@@ -147,7 +143,7 @@ project {
             dependency {
                 groupId 'org.codehaus.groovy'
                 artifactId 'groovy'
-                version '1.7-rc-1'
+                version '1.7.0'
                 exclusions {
                     exclusion {
                         artifactId 'jline'
@@ -170,7 +166,7 @@ project {
             dependency {
                 groupId 'org.sonatype.gossip'
                 artifactId 'gossip'
-                version '1.1'
+                version '1.2'
             }
             dependency {
                 groupId 'com.google.inject'
@@ -188,60 +184,53 @@ project {
                 version '3.2.3'
             }
             dependency {
-                groupId 'org.sonatype.gshell'
-                artifactId 'gshell-core'
-                version '2.1'
-            }
-            dependency {
-                groupId 'org.sonatype.gshell'
-                artifactId 'gshell-core'
-                version '2.1'
-                classifier 'tests'
-            }
-            dependency {
-                groupId 'org.sonatype.gshell'
-                artifactId 'gshell-plexus'
-                version '2.1'
-            }
-            dependency {
                 groupId 'org.sonatype.pmaven'
                 artifactId 'pmaven-common'
-                version '1.0-SNAPSHOT'
+                version '0.7-SNAPSHOT'
             }
             dependency {
                 groupId 'org.sonatype.pmaven'
                 artifactId 'pmaven-cli'
-                version '1.0-SNAPSHOT'
+                version '0.7-SNAPSHOT'
             }
             dependency {
                 groupId 'org.sonatype.pmaven'
                 artifactId 'pmaven-maven-plugin'
-                version '1.0-SNAPSHOT'
+                version '0.7-SNAPSHOT'
             }
             dependency {
                 groupId 'org.sonatype.pmaven'
                 artifactId 'pmaven-groovy'
-                version '1.0-SNAPSHOT'
+                version '0.7-SNAPSHOT'
             }
             dependency {
                 groupId 'org.sonatype.pmaven'
                 artifactId 'pmaven-yaml'
-                version '1.0-SNAPSHOT'
+                version '0.7-SNAPSHOT'
             }
             dependency {
                 groupId 'org.sonatype.pmaven'
-                artifactId 'pmaven-jruby'
-                version '1.0-SNAPSHOT'
+                artifactId 'pmaven-clojure'
+                version '0.7-SNAPSHOT'
             }
             dependency {
                 groupId 'org.sonatype.pmaven'
-                artifactId 'pmaven-commands'
-                version '1.0-SNAPSHOT'
+                artifactId 'pmaven-scala'
+                version '0.7-SNAPSHOT'
             }
         }
     }
-    properties {
-        mavenVersion '3.0-alpha-5'
-        'project.build.sourceEncoding' 'UTF-8'
+    dependencies {
+        dependency {
+            groupId 'junit'
+            artifactId 'junit'
+            version '4.7'
+            scope 'test'
+        }
+        dependency {
+            groupId 'org.codehaus.groovy'
+            artifactId 'groovy'
+            scope 'test'
+        }
     }
 }

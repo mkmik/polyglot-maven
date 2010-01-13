@@ -12,28 +12,30 @@
     <groupId>org.sonatype.pmaven</groupId>
     <artifactId>pmaven</artifactId>
     <name>Polyglot Maven</name>
-    <version>1.0-SNAPSHOT</version>
+    <version>0.7-SNAPSHOT</version>
 
     <packaging>pom</packaging>
 
-    <!--<licenses>-->
-        <!--<license>-->
-            <!--<name>The Apache Software License, Version 2.0</name>-->
-            <!--<url>http://www.apache.org/licenses/LICENSE-2.0.txt</url>-->
-            <!--<distribution>repo</distribution>-->
-        <!--</license>-->
-    <!--</licenses>-->
+    <licenses>
+        <license>
+            <name>The Apache Software License, Version 2.0</name>
+            <url>http://www.apache.org/licenses/LICENSE-2.0.txt</url>
+            <distribution>repo</distribution>
+        </license>
+    </licenses>
 
     <scm>
-        <connection>scm:git:git://github.com/sonatype/graven.git</connection>
-        <developerConnection>scm:git:ssh://git@github.com/sonatype/graven.git</developerConnection>
-        <url>https://github.com/sonatype/graven</url>
+        <connection>scm:git:git://github.com/sonatype/polyglot-maven.git</connection>
+        <developerConnection>scm:git:ssh://git@github.com/sonatype/polyglot-maven.git</developerConnection>
+        <url>https://github.com/sonatype/polyglot-maven</url>
     </scm>
 
-    <ciManagement>
-        <system>Hudson</system>
-        <url>https://grid.sonatype.org/ci/view/PMaven</url>
-    </ciManagement>
+    <url>https://docs.sonatype.org/display/PMAVEN</url>
+    
+    <!--<ciManagement>-->
+        <!--<system>Hudson</system>-->
+        <!--<url>https://grid.sonatype.org/ci/view/PMaven</url>-->
+    <!--</ciManagement>-->
 
     <issueManagement>
         <system>JIRA</system>
@@ -42,7 +44,7 @@
 
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-        <mavenVersion>3.0-alpha-5</mavenVersion>
+        <mavenVersion>3.0-alpha-6</mavenVersion>
     </properties>
 
     <dependencyManagement>
@@ -121,81 +123,79 @@
                 <version>3.2.3</version>
             </dependency>
 
-            <!-- GShell -->
+            <!--<dependency>-->
+                <!--<groupId>org.sonatype.gshell</groupId>-->
+                <!--<artifactId>gshell-core</artifactId>-->
+                <!--<version>2.1</version>-->
+            <!--</dependency>-->
 
-            <dependency>
-                <groupId>org.sonatype.gshell</groupId>
-                <artifactId>gshell-core</artifactId>
-                <version>2.1</version>
-            </dependency>
+            <!--<dependency>-->
+                <!--<groupId>org.sonatype.gshell</groupId>-->
+                <!--<artifactId>gshell-core</artifactId>-->
+                <!--<classifier>tests</classifier>-->
+                <!--<version>2.1</version>-->
+            <!--</dependency>-->
 
-            <dependency>
-                <groupId>org.sonatype.gshell</groupId>
-                <artifactId>gshell-core</artifactId>
-                <classifier>tests</classifier>
-                <version>2.1</version>
-            </dependency>
-
-            <dependency>
-                <groupId>org.sonatype.gshell</groupId>
-                <artifactId>gshell-plexus</artifactId>
-                <version>2.1</version>
-            </dependency>
+            <!--<dependency>-->
+                <!--<groupId>org.sonatype.gshell</groupId>-->
+                <!--<artifactId>gshell-plexus</artifactId>-->
+                <!--<version>2.1</version>-->
+            <!--</dependency>-->
 
             <!-- INTERNAL -->
 
             <dependency>
                 <groupId>org.sonatype.pmaven</groupId>
                 <artifactId>pmaven-common</artifactId>
-                <version>1.0-SNAPSHOT</version>
+                <version>0.7-SNAPSHOT</version>
             </dependency>
 
             <dependency>
                 <groupId>org.sonatype.pmaven</groupId>
                 <artifactId>pmaven-cli</artifactId>
-                <version>1.0-SNAPSHOT</version>
+                <version>0.7-SNAPSHOT</version>
             </dependency>
 
             <dependency>
                 <groupId>org.sonatype.pmaven</groupId>
                 <artifactId>pmaven-maven-plugin</artifactId>
-                <version>1.0-SNAPSHOT</version>
+                <version>0.7-SNAPSHOT</version>
             </dependency>
 
             <dependency>
                 <groupId>org.sonatype.pmaven</groupId>
                 <artifactId>pmaven-groovy</artifactId>
-                <version>1.0-SNAPSHOT</version>
+                <version>0.7-SNAPSHOT</version>
             </dependency>
 
             <dependency>
                 <groupId>org.sonatype.pmaven</groupId>
                 <artifactId>pmaven-yaml</artifactId>
-                <version>1.0-SNAPSHOT</version>
+                <version>0.7-SNAPSHOT</version>
             </dependency>
 
-            <dependency>
-                <groupId>org.sonatype.pmaven</groupId>
-                <artifactId>pmaven-jruby</artifactId>
-                <version>1.0-SNAPSHOT</version>
-            </dependency>
+            <!--<dependency>-->
+                <!--<groupId>org.sonatype.pmaven</groupId>-->
+                <!--<artifactId>pmaven-jruby</artifactId>-->
+                <!--<version>0.7-SNAPSHOT</version>-->
+            <!--</dependency>-->
 
-            <dependency>
-                <groupId>org.sonatype.pmaven</groupId>
-                <artifactId>pmaven-commands</artifactId>
-                <version>1.0-SNAPSHOT</version>
-            </dependency>
+            <!--<dependency>-->
+                <!--<groupId>org.sonatype.pmaven</groupId>-->
+                <!--<artifactId>pmaven-commands</artifactId>-->
+                <!--<version>0.7-SNAPSHOT</version>-->
+            <!--</dependency>-->
 
             <dependency>
                 <groupId>org.sonatype.pmaven</groupId>
                 <artifactId>pmaven-clojure</artifactId>
-                <version>1.0-SNAPSHOT</version>
+                <version>0.7-SNAPSHOT</version>
             </dependency>
             
             <dependency>
                 <groupId>org.sonatype.pmaven</groupId>
                 <artifactId>pmaven-scala</artifactId>
-                <version>1.0-SNAPSHOT</version>
+                <version>0.7-SNAPSHOT</version>
             </dependency>
         </dependencies>
     </dependencyManagement>
@@ -224,7 +224,7 @@
         <!--<module>pmaven-jruby</module>-->
         <module>pmaven-scala</module>
         <module>pmaven-cli</module>
-        <module>pmaven-commands</module>
+        <!--<module>pmaven-commands</module>-->
     </modules>
 
     <build>

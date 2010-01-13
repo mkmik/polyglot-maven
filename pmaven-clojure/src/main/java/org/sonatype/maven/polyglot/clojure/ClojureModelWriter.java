@@ -1,23 +1,55 @@
+/*
+ * Copyright (C) 2010 the original author or authors.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ * http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
 package org.sonatype.maven.polyglot.clojure;
 
 import com.google.common.base.Join;
-import com.google.common.base.Nullable;
 import com.google.common.base.Predicate;
 import com.google.common.collect.Iterables;
-import com.google.common.collect.Lists;
-import org.apache.maven.model.*;
+import org.apache.maven.model.Build;
+import org.apache.maven.model.BuildBase;
+import org.apache.maven.model.Dependency;
+import org.apache.maven.model.DependencyManagement;
+import org.apache.maven.model.DistributionManagement;
+import org.apache.maven.model.Exclusion;
+import org.apache.maven.model.Model;
+import org.apache.maven.model.Notifier;
+import org.apache.maven.model.Parent;
+import org.apache.maven.model.Plugin;
+import org.apache.maven.model.PluginExecution;
+import org.apache.maven.model.Profile;
 import org.apache.maven.model.io.ModelWriter;
 import org.codehaus.plexus.component.annotations.Component;
 import org.codehaus.plexus.util.xml.Xpp3Dom;
 import org.sonatype.maven.polyglot.io.ModelWriterSupport;
 
-import java.io.*;
+import java.io.IOException;
+import java.io.Writer;
 import java.text.MessageFormat;
-import java.util.Date;
 import java.util.List;
 import java.util.Map;
 import java.util.Properties;
 
+/**
+ * Writes a Maven {@link org.apache.maven.model.Model} to a <tt>pom.clj</tt>.
+ *
+ * @author <a href="mailto:mark@derricutt.com">Mark Derricutt</a>
+ *
+ * @since 0.7
+ */
 @Component(role = ModelWriter.class, hint = "clojure")
 public class ClojureModelWriter extends ModelWriterSupport {
 
@@ -84,9 +116,9 @@ public class ClojureModelWriter extends ModelWriterSupport {
     private void writeDom(ClojurePrintWriter out, Xpp3Dom dom) {
 
         if (dom.getChildCount() == 0) {
-            out.printLnAtCurrent("\"" + dom.getName() + "\" \"" + dom.getValue() + "\"");
+            out.printLnAtCurrent(":" + dom.getName() + " \"" + dom.getValue() + "\"");
         } else {
-            out.printAtNewIndent("\"" + dom.getChild(0).getName() + "\" [");
+            out.printAtNewIndent(":" + dom.getChild(0).getName() + " [");
 
             boolean pad = false;
             for (Xpp3Dom xpp3Dom : dom.getChildren()) {
@@ -184,7 +216,13 @@ public class ClojureModelWriter extends ModelWriterSupport {
 
         ClojurePrintWriter out = new ClojurePrintWriter(writer);
 
-        out.printLnAtCurrent("(defproject main \"" + model.getGroupId() + ":" + model.getArtifactId() + ":" + model.getVersion() + "\"");
+        out.printAtCurrent("(defproject main");
+        String ref = getArtifactReference(model);
+        if (ref != null) {
+            out.printLnAtCurrent(" \"" + ref + "\"");
+        }
+        out.printLnAtCurrent("");
+
         out.pushIndent(4);
         out.printField(":model-version", model.getModelVersion());
         out.printField(":add-default-plugins", false);
@@ -215,6 +253,11 @@ public class ClojureModelWriter extends ModelWriterSupport {
         out.print(")\n");
         out.flush();
 
+    }
+
+    public String getArtifactReference(Model model) {
+        return (model.getGroupId() != null && model.getArtifactId() != null && model.getVersion() != null)
+                ? model.getGroupId() + ":" + model.getArtifactId() + ":" + model.getVersion() : null;
     }
 
     private void writeDistributionManagement(DistributionManagement distributionManagement, ClojurePrintWriter out) {
@@ -396,7 +439,7 @@ public class ClojureModelWriter extends ModelWriterSupport {
     private void writeDependencies(List<Dependency> dependencies, final String scope, String prefix, final boolean includeNullScope, ClojurePrintWriter out) {
 
         Iterable<Dependency> scopedDependencies = Iterables.filter(dependencies, new Predicate<Dependency>() {
-            public boolean apply(@Nullable Dependency dependency) {
+            public boolean apply(Dependency dependency) {
                 return includeNullScope
                   ? (scope.equals(dependency.getScope()) || dependency.getScope() == null)
                   : scope.equals(dependency.getScope());
@@ -421,7 +464,7 @@ public class ClojureModelWriter extends ModelWriterSupport {
 
             out.printAtNewIndent(":properties {");
             for (Map.Entry<Object, Object> entry : properties.entrySet()) {
-                out.printLnAtCurrent("\"" + entry.getKey() + "\" \"" + entry.getValue() + "\"");
+                out.printLnAtCurrent(":" + entry.getKey() + " \"" + entry.getValue() + "\"");
             }
 
             out.print("}");

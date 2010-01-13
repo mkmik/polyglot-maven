@@ -10,6 +10,7 @@ import org.codehaus.plexus.PlexusTestCase;
 import org.codehaus.plexus.util.xml.Xpp3Dom;
 import org.junit.Test;
 
+import java.io.IOException;
 import java.io.StringWriter;
 import java.net.URL;
 import java.util.HashMap;
@@ -147,6 +148,26 @@ public class ClojureModelWriterTest extends PlexusTestCase {
     }
 
     @Test
+    public void testNullArtifactReference() throws IOException {
+        Model model = new Model();
+
+        ClojureModelWriter writer = new ClojureModelWriter();
+
+        String ref = writer.getArtifactReference(model);
+
+        assertThat(ref).isNull();
+
+        StringWriter sw = new StringWriter();
+
+        writer.write(sw, new HashMap(), model);
+
+        assertThat(sw.toString()).excludes(":model-version");
+
+
+
+    }
+
+    @Test
     public void testPluginWithConfigurationAndNoExecution() {
 
         Plugin plugin = new Plugin();
@@ -171,7 +192,7 @@ public class ClojureModelWriterTest extends PlexusTestCase {
 
         assertThat(sw.getBuffer().toString())
                 .isEqualTo("" +
-                        "[\"group:artifact:1.0\" {:configuration {\"name\" \"Mark\"}}]");
+                        "[\"group:artifact:1.0\" {:configuration {:name \"Mark\"}}]");
 
     }
 
