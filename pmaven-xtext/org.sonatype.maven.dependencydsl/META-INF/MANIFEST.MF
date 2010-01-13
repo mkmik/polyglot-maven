@@ -1,0 +1,31 @@
+Manifest-Version: 1.0
+Bundle-ManifestVersion: 2
+Bundle-Name: org.sonatype.maven.dependencydsl
+Bundle-Vendor: My Company
+Bundle-Version: 1.0.0
+Bundle-SymbolicName: org.sonatype.maven.dependencydsl; singleton:=true
+Eclipse-RegisterBuddy: org.eclipse.xtext.log4j
+Bundle-ActivationPolicy: lazy
+Require-Bundle: org.eclipse.xtext,
+ org.eclipse.xtext.generator;resolution:=optional,
+ de.itemis.xtext.antlr;resolution:=optional,
+ org.apache.commons.logging;resolution:=optional,
+ org.eclipse.emf.codegen.ecore;resolution:=optional,
+ org.eclipse.xtext.log4j;resolution:=optional,
+ org.eclipse.emf.mwe.utils;resolution:=optional,
+ org.eclipse.emf.mwe.core;resolution:=optional,
+ com.ibm.icu;resolution:=optional,
+ org.eclipse.xtext.xtend;resolution:=optional,
+ org.eclipse.xtext.util,
+ org.eclipse.emf.ecore,
+ org.eclipse.emf.common,
+ org.antlr.runtime
+Bundle-RequiredExecutionEnvironment: J2SE-1.5
+Export-Package: org.sonatype.maven,
+ org.sonatype.maven.services,
+ org.sonatype.maven.dependencyDsl,
+ org.sonatype.maven.dependencyDsl.impl,
+ org.sonatype.maven.dependencyDsl.util,
+ org.sonatype.maven.parseTreeConstruction,
+ org.sonatype.maven.parser.antlr,
+ org.sonatype.maven.validation

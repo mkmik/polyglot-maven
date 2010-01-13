@@ -1,0 +1,61 @@
+grammar org.sonatype.maven.DependencyDsl with org.eclipse.xtext.common.Terminals
+
+generate dependencyDsl "http://www.sonatype.org/maven/DependencyDsl"
+
+Project :
+  'project' '{'
+    'groupId'    ':' groupId=GroupId
+    'artifactId' ':' artifactId=ArtifactId
+    'version'    ':' version=Version
+
+    'dependencies' ':'  
+    (dependencies+=Dependency)*	
+'}'
+;
+
+GA :
+  'groupId'    ':' groupId=GroupId ','
+  'artifactId' ':' artifactId=ArtifactId
+;
+	
+GAV :
+  'groupId'    ':' groupId=GroupId ','
+  'artifactId' ':' artifactId=ArtifactId ','
+  'version'    ':' version=Version
+;
+	
+Dependency :
+  //
+  //
+  //
+  GAV
+  
+  //
+  //
+  //
+  (',' 'scope' )?
+  (',' 'classifier' )?
+  (',' 'type' )?
+  
+  //
+  //
+  //
+  (
+  ','
+  'exclusions' '{'  
+  (exclusions+=GA)*
+  '}'
+  )?  
+;	
+	
+GroupId : 
+  ( ID ('.' | '-')? )*
+;
+
+ArtifactId :
+  ( ID ('.' | '-')? )*  
+;
+
+Version :
+  INT ( '.' INT )*
+;
