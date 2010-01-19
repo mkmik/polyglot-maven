@@ -45,9 +45,8 @@
         <dependency>
             <groupId>org.scalatest</groupId>
             <artifactId>scalatest</artifactId>
-            <version>1.0.1-for-scala-2.8.0.Beta1-RC5-with-test-interfaces-0.2-SNAPSHOT</version>
-            <systemPath>${pom.basedir}/lib/scalatest.jar</systemPath>
-            <scope>system</scope>
+            <version>1.0.1-for-scala-2.8.0.Beta1-RC5-with-test-interfaces-0.2-SONATYPE-1</version>
+            <scope>test</scope>
         </dependency>
     </dependencies>
 
@@ -88,23 +87,14 @@
         </plugins>
     </build>
 
-    <!--
     <repositories>
         <repository>
-            <id>scala-tools.release</id>
-            <url>http://scala-tools.org/repo-releases</url>
+            <id>sonatype-public-grid</id>
+            <url>http://repository.sonatype.org/content/groups/sonatype-public-grid/</url>
             <snapshots>
                 <enabled>false</enabled>
             </snapshots>
         </repository>
-        <repository>
-            <id>scala-tools.snapshot</id>
-            <url>http://scala-tools.org/repo-snapshots</url>
-            <releases>
-                <enabled>false</enabled>
-            </releases>
-        </repository>
     </repositories>
-    -->
 
 </project>
