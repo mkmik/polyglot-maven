@@ -23,7 +23,7 @@
     <parent>
         <groupId>org.sonatype.pmaven</groupId>
         <artifactId>pmaven</artifactId>
-        <version>0.7</version>
+        <version>0.8-SNAPSHOT</version>
     </parent>
 
     <artifactId>pmaven-maven-plugin</artifactId>

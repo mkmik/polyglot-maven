@@ -12,7 +12,7 @@
     <groupId>org.sonatype.pmaven</groupId>
     <artifactId>pmaven</artifactId>
     <name>Polyglot Maven</name>
-    <version>0.7</version>
+    <version>0.8-SNAPSHOT</version>
 
     <packaging>pom</packaging>
 
@@ -147,31 +147,31 @@
             <dependency>
                 <groupId>org.sonatype.pmaven</groupId>
                 <artifactId>pmaven-common</artifactId>
-                <version>0.7</version>
+                <version>0.8-SNAPSHOT</version>
             </dependency>
 
             <dependency>
                 <groupId>org.sonatype.pmaven</groupId>
                 <artifactId>pmaven-cli</artifactId>
-                <version>0.7</version>
+                <version>0.8-SNAPSHOT</version>
             </dependency>
 
             <dependency>
                 <groupId>org.sonatype.pmaven</groupId>
                 <artifactId>pmaven-maven-plugin</artifactId>
-                <version>0.7</version>
+                <version>0.8-SNAPSHOT</version>
             </dependency>
 
             <dependency>
                 <groupId>org.sonatype.pmaven</groupId>
                 <artifactId>pmaven-groovy</artifactId>
-                <version>0.7</version>
+                <version>0.8-SNAPSHOT</version>
             </dependency>
 
             <dependency>
                 <groupId>org.sonatype.pmaven</groupId>
                 <artifactId>pmaven-yaml</artifactId>
-                <version>0.7</version>
+                <version>0.8-SNAPSHOT</version>
             </dependency>
 
             <!--<dependency>-->
@@ -189,13 +189,13 @@
             <dependency>
                 <groupId>org.sonatype.pmaven</groupId>
                 <artifactId>pmaven-clojure</artifactId>
-                <version>0.7</version>
+                <version>0.8-SNAPSHOT</version>
             </dependency>
             
             <dependency>
                 <groupId>org.sonatype.pmaven</groupId>
                 <artifactId>pmaven-scala</artifactId>
-                <version>0.7</version>
+                <version>0.8-SNAPSHOT</version>
             </dependency>
         </dependencies>
     </dependencyManagement>
