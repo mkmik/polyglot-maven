@@ -10,6 +10,7 @@ package org.sonatype.maven.polyglot.commands;
 
 import com.google.inject.Inject;
 import org.sonatype.gshell.command.Command;
+import org.sonatype.gshell.util.i18n.ResourceBundleMessageSource;
 import org.sonatype.maven.shell.commands.maven.MavenCommand;
 import org.sonatype.maven.shell.maven.MavenSystem;
 
@@ -28,7 +29,10 @@ public class PMavenCommand
         super(maven);
 
         // TODO: Hookup the correct model processor
+    }
 
-        // TODO: Hookup i18n to re-use the MavenCommand.properties
+    @Override
+    protected ResourceBundleMessageSource createMessages() {
+        return new ResourceBundleMessageSource(getClass(), MavenCommand.class);
     }
 }
