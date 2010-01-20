@@ -1,5 +1,5 @@
 /*
- * Sonatype Maven Shell (TM) Professional Version.
+ * Sonatype Maven Shell (TM) Commercial Version.
  *
  * Copyright (c) 2009 Sonatype, Inc. All rights reserved.
  * Includes the third-party code listed at http://www.sonatype.com/products/mvnsh/attributions/.
@@ -16,7 +16,7 @@ import org.sonatype.gshell.command.IO;
 import org.sonatype.gshell.console.completer.FileNameCompleter;
 import org.sonatype.gshell.plexus.PlexusRuntime;
 import org.sonatype.gshell.util.FileAssert;
-import org.sonatype.gshell.util.cli.Argument;
+import org.sonatype.gshell.util.cli2.Argument;
 import org.sonatype.maven.polyglot.PolyglotModelTranslator;
 
 import java.io.File;
@@ -25,7 +25,7 @@ import java.io.File;
  * Translate Maven pom file formats..
  *
  * @author <a href="mailto:jason@planet57.com">Jason Dillon</a>
- * @since 0.7
+ * @since 0.9
  */
 @Command(name="translate")
 public class TranslateCommand
