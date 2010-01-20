@@ -9,9 +9,14 @@
 package org.sonatype.maven.polyglot.commands;
 
 import com.google.inject.Inject;
+import org.apache.maven.model.building.ModelProcessor;
+import org.codehaus.plexus.DefaultPlexusContainer;
+import org.codehaus.plexus.component.repository.ComponentDescriptor;
 import org.sonatype.gshell.command.Command;
+import org.sonatype.gshell.util.Function;
 import org.sonatype.gshell.util.i18n.ResourceBundleMessageSource;
 import org.sonatype.maven.shell.commands.maven.MavenCommand;
+import org.sonatype.maven.shell.maven.MavenRuntimeConfiguration;
 import org.sonatype.maven.shell.maven.MavenSystem;
 
 /**
@@ -27,12 +32,32 @@ public class PMavenCommand
     @Inject
     public PMavenCommand(final MavenSystem maven) {
         super(maven);
-
-        // TODO: Hookup the correct model processor
     }
 
     @Override
     protected ResourceBundleMessageSource createMessages() {
         return new ResourceBundleMessageSource(getClass(), MavenCommand.class);
+    }
+
+    @Override
+    protected void customize(final MavenRuntimeConfiguration config) {
+        assert config != null;
+
+        config.setContainerConfigurationDelegate(new Function<Void, DefaultPlexusContainer,Exception>()
+        {
+            public Void invoke(final DefaultPlexusContainer container) throws Exception {
+                assert container != null;
+
+                // HACK: Wedge our processor in as the default
+                ComponentDescriptor<?> source = container.getComponentDescriptor(ModelProcessor.class.getName(), "polyglot");
+                ComponentDescriptor<?> target = container.getComponentDescriptor(ModelProcessor.class.getName());
+                target.setImplementation(source.getImplementation());
+                target.addRequirements(source.getRequirements());
+
+                container.addComponentDescriptor(target);
+
+                return null;
+            }
+        });
     }
 }
