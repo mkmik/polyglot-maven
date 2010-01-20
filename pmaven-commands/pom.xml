@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!--
-  ~ Sonatype Maven Shell (TM) Professional Version.
+  ~ Sonatype Maven Shell (TM) Commercial Version.
   ~
   ~ Copyright (c) 2009 Sonatype, Inc. All rights reserved.
   ~ Includes the third-party code listed at http://www.sonatype.com/products/mvnsh/attributions/.
@@ -14,7 +14,7 @@
     <parent>
         <groupId>org.sonatype.pmaven</groupId>
         <artifactId>pmaven</artifactId>
-        <version>0.7-SNAPSHOT</version>
+        <version>0.8-SNAPSHOT</version>
     </parent>
 
     <artifactId>pmaven-commands</artifactId>
@@ -29,23 +29,8 @@
 
     <dependencies>
         <dependency>
-            <groupId>org.sonatype.gshell</groupId>
-            <artifactId>gshell-core</artifactId>
-        </dependency>
-
-        <dependency>
-            <groupId>org.sonatype.gshell</groupId>
-            <artifactId>gshell-plexus</artifactId>
-        </dependency>
-
-        <dependency>
-            <groupId>org.sonatype.grrrowl</groupId>
-            <artifactId>grrrowl</artifactId>
-        </dependency>
-
-        <dependency>
-            <groupId>net.java.dev.jna</groupId>
-            <artifactId>jna</artifactId>
+            <groupId>org.sonatype.maven.shell</groupId>
+            <artifactId>mvnsh-maven</artifactId>
         </dependency>
 
         <dependency>

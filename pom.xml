@@ -15,8 +15,9 @@
   ~ See the License for the specific language governing permissions and
   ~ limitations under the License.
   -->
-  
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
 
     <parent>
@@ -47,7 +48,7 @@
     </scm>
 
     <url>http://polyglot.sonatype.org/</url>
-    
+
     <mailingLists>
         <mailingList>
             <name>Development</name>
@@ -55,7 +56,7 @@
             <post>polyglot@maven.org</post>
         </mailingList>
     </mailingLists>
-    
+
     <ciManagement>
         <system>Hudson</system>
         <url>https://grid.sonatype.org/ci/job/Polyglot_Maven</url>
@@ -77,7 +78,7 @@
             </roles>
         </developer>
     </developers>
-    
+
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <mavenVersion>3.0-alpha-6</mavenVersion>
@@ -148,35 +149,18 @@
             </dependency>
 
             <dependency>
-                <groupId>org.sonatype.grrrowl</groupId>
-                <artifactId>grrrowl</artifactId>
-                <version>1.0</version>
+                <groupId>org.sonatype.maven.shell</groupId>
+                <artifactId>mvnsh-maven</artifactId>
+                <version>0.9-SNAPSHOT</version>
             </dependency>
 
             <dependency>
-                <groupId>net.java.dev.jna</groupId>
-                <artifactId>jna</artifactId>
-                <version>3.2.3</version>
+                <groupId>org.sonatype.gshell</groupId>
+                <artifactId>gshell-core</artifactId>
+                <classifier>tests</classifier>
+                <version>2.3.1</version>
             </dependency>
 
-            <!--<dependency>-->
-                <!--<groupId>org.sonatype.gshell</groupId>-->
-                <!--<artifactId>gshell-core</artifactId>-->
-                <!--<version>2.1</version>-->
-            <!--</dependency>-->
-
-            <!--<dependency>-->
-                <!--<groupId>org.sonatype.gshell</groupId>-->
-                <!--<artifactId>gshell-core</artifactId>-->
-                <!--<classifier>tests</classifier>-->
-                <!--<version>2.1</version>-->
-            <!--</dependency>-->
-
-            <!--<dependency>-->
-                <!--<groupId>org.sonatype.gshell</groupId>-->
-                <!--<artifactId>gshell-plexus</artifactId>-->
-                <!--<version>2.1</version>-->
-            <!--</dependency>-->
 
             <!-- INTERNAL -->
 
@@ -211,23 +195,23 @@
             </dependency>
 
             <!--<dependency>-->
-                <!--<groupId>org.sonatype.pmaven</groupId>-->
-                <!--<artifactId>pmaven-jruby</artifactId>-->
-                <!--<version>0.7-SNAPSHOT</version>-->
+            <!--<groupId>org.sonatype.pmaven</groupId>-->
+            <!--<artifactId>pmaven-jruby</artifactId>-->
+            <!--<version>0.7-SNAPSHOT</version>-->
             <!--</dependency>-->
 
-            <!--<dependency>-->
-                <!--<groupId>org.sonatype.pmaven</groupId>-->
-                <!--<artifactId>pmaven-commands</artifactId>-->
-                <!--<version>0.7-SNAPSHOT</version>-->
-            <!--</dependency>-->
+            <dependency>
+                <groupId>org.sonatype.pmaven</groupId>
+                <artifactId>pmaven-commands</artifactId>
+                <version>0.8-SNAPSHOT</version>
+            </dependency>
 
             <dependency>
                 <groupId>org.sonatype.pmaven</groupId>
                 <artifactId>pmaven-clojure</artifactId>
                 <version>0.8-SNAPSHOT</version>
             </dependency>
-            
+
             <dependency>
                 <groupId>org.sonatype.pmaven</groupId>
                 <artifactId>pmaven-scala</artifactId>
@@ -260,7 +244,7 @@
         <!--<module>pmaven-jruby</module>-->
         <module>pmaven-scala</module>
         <module>pmaven-cli</module>
-        <!--<module>pmaven-commands</module>-->
+        <module>pmaven-commands</module>
     </modules>
 
     <build>
@@ -270,7 +254,7 @@
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-surefire-plugin</artifactId>
-                <version>2.4.3</version>
+                <version>2.5</version>
                 <configuration>
                     <redirectTestOutputToFile>true</redirectTestOutputToFile>
                     <forkMode>once</forkMode>
