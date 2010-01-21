@@ -83,7 +83,9 @@ public class ClojureModelReader extends ModelReaderSupport {
 
         } catch (Exception e) {
             e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
-            throw new IOException(e);
+
+	    // Don't use new IOException(e) because it doesn't exist in Java 5
+            throw (IOException) new IOException(e.toString()).initCause(e);
         }
 
         return model;
