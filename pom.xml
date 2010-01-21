@@ -78,10 +78,12 @@
             </roles>
         </developer>
     </developers>
-
+    
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <mavenVersion>3.0-alpha-6</mavenVersion>
+        <forgeSiteId>forge-sites</forgeSiteId>
+        <forgeSiteUrl>dav:http://repository.sonatype.org/content/sites/forge-sites/${project.artifactId}/${project.version}</forgeSiteUrl>
     </properties>
 
     <dependencyManagement>
@@ -242,7 +244,31 @@
 
     <build>
         <defaultGoal>install</defaultGoal>
-
+        
+        <pluginManagement>
+            <plugins>
+                <!--
+                <plugin>
+                    <groupId>org.apache.maven.plugins</groupId>
+                    <artifactId>maven-javadoc-plugin</artifactId>
+                    <version>2.4</version>
+                    <configuration>
+                        <configuration>
+                            <source>1.5</source>
+                            <encoding>${project.build.sourceEncoding}</encoding>
+                        </configuration>
+                    </configuration>
+                </plugin>
+                -->
+                
+                <plugin>
+                    <groupId>org.apache.maven.plugins</groupId>
+                    <artifactId>maven-site-plugin</artifactId>
+                    <version>2.1</version>
+                </plugin>
+            </plugins>
+        </pluginManagement>
+        
         <plugins>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
@@ -326,5 +352,35 @@
             </plugin>
         </plugins>
     </build>
+    
+    <reporting>
+        <plugins>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-javadoc-plugin</artifactId>
+                <version>2.6.1</version>
+                <configuration>
+                    <configuration>
+                        <source>1.5</source>
+                        <encoding>${project.build.sourceEncoding}</encoding>
+                    </configuration>
+                </configuration>
+            </plugin>
+            
+            <plugin>
+                <groupId>org.codehaus.mojo</groupId>
+                <artifactId>cobertura-maven-plugin</artifactId>
+                <version>2.3</version>
+                <inherited>false</inherited>
+            </plugin>
+        </plugins>
+    </reporting>
+    
+    <distributionManagement>
+        <site>
+            <id>${forgeSiteId}</id>
+            <url>${forgeSiteUrl}</url>
+        </site>
+    </distributionManagement>
 
 </project>
