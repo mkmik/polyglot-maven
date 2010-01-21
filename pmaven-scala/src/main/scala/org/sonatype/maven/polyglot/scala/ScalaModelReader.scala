@@ -44,7 +44,7 @@ class ScalaModelReader extends ModelReaderSupport {
     def errorFn(err: String) {
     }
     
-    val cmdLine = List("-savecompiled", "-nocompdaemon", "-d ./target/pmaven-scala/")
+    val cmdLine = List("-nocompdaemon")
     val settings = new GenericRunnerSettings(errorFn _)
     settings.parseParams(cmdLine)
         
