@@ -7,7 +7,7 @@
     <parent>
         <groupId>org.sonatype.pmaven</groupId>
         <artifactId>pmaven</artifactId>
-        <version>0.7-SNAPSHOT</version>
+        <version>0.8-SNAPSHOT</version>
     </parent>
 
     <artifactId>pmaven-jruby</artifactId>
@@ -22,7 +22,7 @@
         <dependency>
             <groupId>org.jruby</groupId>
             <artifactId>jruby-complete</artifactId>
-            <version>1.4.0RC1</version>
+            <version>1.4.0</version>
         </dependency>
     </dependencies>
     
@@ -31,7 +31,7 @@
             <plugin>
                 <groupId>org.jruby.plugins</groupId>
                 <artifactId>jruby-rake-plugin</artifactId>
-                <version>1.4.0RC1</version>
+                <version>1.4.0</version>
                 <executions>
                     <execution>
                         <id>install-gems</id>
