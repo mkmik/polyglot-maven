@@ -13,7 +13,6 @@ import org.apache.maven.model.building.ModelProcessor;
 import org.codehaus.plexus.DefaultPlexusContainer;
 import org.codehaus.plexus.component.repository.ComponentDescriptor;
 import org.sonatype.gshell.command.Command;
-import org.sonatype.gshell.util.Function;
 import org.sonatype.gshell.util.i18n.ResourceBundleMessageSource;
 import org.sonatype.maven.shell.commands.maven.MavenCommand;
 import org.sonatype.maven.shell.maven.MavenRuntimeConfiguration;
@@ -43,9 +42,9 @@ public class PMavenCommand
     protected void customize(final MavenRuntimeConfiguration config) {
         assert config != null;
 
-        config.setContainerConfigurationDelegate(new Function<Void, DefaultPlexusContainer,Exception>()
+        config.setDelegate(new MavenRuntimeConfiguration.Delegate()
         {
-            public Void invoke(final DefaultPlexusContainer container) throws Exception {
+            public void configure(final DefaultPlexusContainer container) throws Exception {
                 assert container != null;
 
                 // HACK: Wedge our processor in as the default
@@ -55,8 +54,6 @@ public class PMavenCommand
                 target.addRequirements(source.getRequirements());
 
                 container.addComponentDescriptor(target);
-
-                return null;
             }
         });
     }
