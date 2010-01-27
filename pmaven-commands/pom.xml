@@ -20,19 +20,15 @@
     <artifactId>pmaven-commands</artifactId>
     <name>Polyglot Maven :: Commands</name>
 
-    <repositories>
-        <repository>
-            <id>maven2.java.net</id>
-            <url>http://download.java.net/maven/2</url>
-        </repository>
-        <repository>
-            <id>sonatype-public-grid</id>
-            <url>http://repository.sonatype.org/content/groups/sonatype-public-grid/</url>
-            <snapshots>
-                <enabled>true</enabled>
-            </snapshots>
-        </repository>
-    </repositories>
+    <!--<repositories>-->
+        <!--<repository>-->
+            <!--<id>sonatype-public-grid</id>-->
+            <!--<url>http://repository.sonatype.org/content/groups/sonatype-public-grid/</url>-->
+            <!--<snapshots>-->
+                <!--<enabled>true</enabled>-->
+            <!--</snapshots>-->
+        <!--</repository>-->
+    <!--</repositories>-->
 
     <dependencies>
         <dependency>
