@@ -189,11 +189,11 @@
                 <version>0.8-SNAPSHOT</version>
             </dependency>
 
-            <!--<dependency>-->
-            <!--<groupId>org.sonatype.pmaven</groupId>-->
-            <!--<artifactId>pmaven-jruby</artifactId>-->
-            <!--<version>0.7-SNAPSHOT</version>-->
-            <!--</dependency>-->
+            <dependency>
+                <groupId>org.sonatype.pmaven</groupId>
+                <artifactId>pmaven-jruby</artifactId>
+                <version>0.8-SNAPSHOT</version>
+            </dependency>
 
             <dependency>
                 <groupId>org.sonatype.pmaven</groupId>
@@ -207,6 +207,12 @@
                 <version>0.8-SNAPSHOT</version>
             </dependency>
 
+            <!--<dependency>-->
+                <!--<groupId>org.sonatype.pmaven</groupId>-->
+                <!--<artifactId>pmaven-xtext</artifactId>-->
+                <!--<version>0.8-SNAPSHOT</version>-->
+            <!--</dependency>-->
+            
             <dependency>
                 <groupId>org.sonatype.pmaven</groupId>
                 <artifactId>pmaven-scala</artifactId>
@@ -236,8 +242,9 @@
         <module>pmaven-groovy</module>
         <module>pmaven-yaml</module>
         <module>pmaven-clojure</module>
-        <!--<module>pmaven-jruby</module>-->
+        <module>pmaven-jruby</module>
         <module>pmaven-scala</module>
+        <!--<module>pmaven-xtext</module>-->
         <module>pmaven-cli</module>
         <module>pmaven-commands</module>
     </modules>
