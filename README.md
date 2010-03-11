@@ -18,7 +18,7 @@ Building
 
 Check-out and build:
 
-    git clone git@github.com:sonatype/polyglot-maven.git
+    git clone git://github.com/sonatype/polyglot-maven.git
     cd polyglot-maven
     mvn install
 
